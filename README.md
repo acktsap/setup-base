@@ -1,3 +1,3 @@
-# Setup
+# Terminal Setting
 
-An acktsap's development enviornment setup.
+An acktsap's terminal setting
