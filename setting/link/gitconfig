@@ -4,7 +4,13 @@
   ca = diff --cached .
   lo = log --graph --abbrev-commit --decorate --format=format:'%C(cyan)%h%C(reset) - %C(green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(yellow)%d%C(reset)' --all
   pu = "!git remote -v update && git status -u no"
-  cl = "!git fetch --prune && git branch | grep -v $(git branch --show-current) | xargs git branch -D"
+  # prune branch
+  pb = "!git fetch --prune && git branch -vv | awk '/: gone/{print $1}' | xargs git branch -d"
+  # clean all local branches without current one
+  cl = "!f() { b=$(git branch -l | grep -v $(git branch --show-current)); if [ -z $b ]; then echo 'no branches to delete'; return 0; fi; echo ${b[*]} | tr ' ' '\n'; echo '\nremove these branches? [y|n]'; read a; if [ $a = 'y' ]; then echo $b | xargs git branch -D; fi; }; f"
+  # checkout using fuzzy finder
+  ch = "!git checkout $(git branch | fzf)"
+
 
 # you have to keep it manually for each repository
 # git config --local user.name "${USER_NAME}"

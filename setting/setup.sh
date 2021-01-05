@@ -81,13 +81,13 @@ function main() {
   set_script_home
   prepare_install_command
 
-  install vim
-  install nvim neovim
+  install vim nvim neovim
   install direnv
   install tmux
   install tig
   install tree
   install zsh
+  install fzf
 
   # vim vundle plugin
   local vundle="$HOME/.vim/bundle/Vundle.vim"
