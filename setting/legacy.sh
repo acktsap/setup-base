@@ -81,13 +81,14 @@ function main() {
   set_script_home
   prepare_install_command
 
-  install vim nvim neovim
-  install direnv
-  install tmux
-  install tig
-  install tree
+  # install vim
+  install nvim
+  # install direnv
+  # install tmux
+  # install tig
+  # install tree
   install zsh
-  install fzf
+  # install fzf
 
   # vim vundle plugin
   local vundle="$HOME/.vim/bundle/Vundle.vim"
@@ -112,8 +113,8 @@ function main() {
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
   fi
 
-  setup_link
-  setup_copy
+  # setup_link
+  # setup_copy
 }
 
 main "$@"

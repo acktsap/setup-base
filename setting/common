@@ -1,0 +1,188 @@
+# Common functions
+
+
+# enter your path
+INSTALL_PATH=${INSTALL_PATH:-"${HOME}/.acktsap"}
+LIB_LINK_PATH=${LIB_LINK_PATH:-"/usr/local/lib"}
+BIN_LINK_PATH=${BIN_LINK_PATH:-"/usr/local/bin"}
+
+
+#######################################
+# Get install command.
+# Returns: install command
+#######################################
+function get_install_command() {
+  local install_command=""
+  if [[ "$OSTYPE" = darwin* ]]; then
+    install_command="brew install"
+  elif [[ "$OSTYPE" = linux* ]]; then
+    local os="$(grep . /etc/*-release | head -n 1 | cut -d"=" -f2)"
+    if [[ "$os" = "CentOS" ]]; then
+      install_command="sudo yum install -y"
+    elif [[ "$os" = "Ubuntu" ]]; then
+      install_command="sudo apt-get install -y"
+    fi
+  else
+    echo "Unsupported os type"
+    exit -1
+  fi
+
+  echo "${install_command}"
+}
+
+
+#######################################
+# Get os type.
+# Returns: os type
+#######################################
+function get_os_type() {
+  local ostype=""
+  if [[ "$OSTYPE" = darwin* ]]; then
+    # todo: check amd
+    ostype="DARWIN_AMD64"
+  elif [[ "$OSTYPE" = linux* ]]; then
+    local OS="$(grep . /etc/*-release | head -n 1 | cut -d"=" -f2)"
+    if [[ "$OS" = "CentOS" ]]; then
+      ostype="CENTOS"
+    elif [[ "$OS" = "Ubuntu" ]]; then
+      ostype="UBUNTU"
+    fi
+  else
+    echo "Unsupported os type"
+    exit -1
+  fi
+
+  echo "${ostype}"
+}
+
+
+#######################################
+# Check library installation.
+# Arguments:
+#   1 library prefix (required)
+# Returns: true/false
+#######################################
+function check_lib_installed() {
+  local library_prefix="${1:?library prefix is required}"
+
+  # to remove: find /usr/local/lib -name ${library_prefix}* -exec rm {} \;
+  local installed=false
+  if [[ ! -z $(find /usr/local/lib -name ${library_prefix}*) ]]; then
+    installed=true
+  fi
+
+  echo "${installed}"
+}
+
+
+#######################################
+# Check binary installation.
+# Arguments:
+#   1 binary name (required)
+# Returns: true/false
+#######################################
+function check_bin_installed() {
+  local binary_name="${1:?binary name is required}"
+
+  local installed=false
+  if [[ ! -z $(which "${binary_name}" | grep /usr/local/bin) ]]; then
+    installed=true
+  fi
+
+  echo "${installed}"
+}
+
+
+#######################################
+# Download file.
+# Arguments:
+#   1 url (required)
+#   2 target file (required)
+#######################################
+function download() {
+  local url="${1:?url file is required}"
+  local target_file="${2:?target file is required}"
+
+  echo "-- Downloading.."
+  curl -L "${url}" -o "${target_file}" --silent
+}
+
+
+#######################################
+# Extract file.
+# Arguments:
+#   1 source file (required)
+#   2 destination directory (required)
+#######################################
+function extract() {
+  local source_file="${1:?source file is required}"
+  local dest_dir="${2:?destination directory is required}"
+
+  echo "-- Extracting.."
+  if [[ ! -d "$dest_dir" ]]; then
+    mkdir -p "$dest_dir"
+  fi
+
+  if [[ ${source_file} == *tar.gz ]]; then
+    tar -zxf "${source_file}" -C "${dest_dir}"
+  else
+    echo "  Unsupported file format ${source_file}"
+    exit -1
+  fi
+}
+
+
+#######################################
+# Move file.
+# Arguments:
+#   1 source file (required)
+#   2 destination file (required)
+#######################################
+function move() {
+  local source_file="${1:?source file is required}"
+  local dest_file="${2:?destination file is required}"
+
+  echo "-- Moving.."
+  local dest_dir=$(dirname "${dest_file}")
+  if [[ ! -d "$dest_dir" ]]; then
+    mkdir -p "$dest_dir"
+  fi
+
+  mv "${source_file}" "${dest_file}"
+  chmod +x "${dest_file}"
+}
+
+
+#######################################
+# Copy file.
+# Arguments:
+#   1 source file (required)
+#   2 destination file (required)
+#######################################
+function copy() {
+  local source_file="${1:?source file is required}"
+  local dest_file="${2:?destination file is required}"
+
+  echo "-- Copying.."
+  local dest_dir=$(dirname "${dest_file}")
+  if [[ ! -d "$dest_dir" ]]; then
+    mkdir -p "$dest_dir"
+  fi
+
+  cp "$source_file" "$dest_file"
+}
+
+
+#######################################
+# Link file.
+# Arguments:
+#   1 source file (required)
+#   2 destination file (required)
+#######################################
+function link() {
+  local source_file="${1:?source file is required}"
+  local dest_file="${2:?destination file is required}"
+
+  echo "-- Linking.."
+  ln -sf "${source_file}" "${dest_file}"
+}
