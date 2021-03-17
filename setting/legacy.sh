@@ -117,4 +117,4 @@ function main() {
   # setup_copy
 }
 
-main "$@"
+# main "$@"

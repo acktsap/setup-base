@@ -2,7 +2,7 @@
 
 ## Setup
 
-- Setup : `setup.sh`
+- Setup : `setup-all.sh`
 - Setup vim : `vi .` and :PluginInstall
 
 ## Color
@@ -16,8 +16,8 @@ https://github.com/sindresorhus/hyper-snazzy
 
 ### Window terminal
 
-![wsl-color-1](./img/wsl-color-1.jpg)
-![wsl-color-2](./img/wsl-color-2.jpg)
+![wsl-color-1](./wsl-color-1.jpg)
+![wsl-color-2](./wsl-color-2.jpg)
 
 Set as ubuntu theme.
 
