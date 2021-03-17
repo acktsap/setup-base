@@ -125,6 +125,8 @@ function extract() {
 
   if [[ ${source_file} == *tar.gz ]]; then
     tar -zxf "${source_file}" -C "${dest_dir}"
+  elif [[ ${source_file} == *.zip ]]; then
+    unzip -q "${source_file}" -d "${dest_dir}"
   else
     echo "  Unsupported file format ${source_file}"
     exit -1
