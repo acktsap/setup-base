@@ -23,6 +23,7 @@ function main() {
   if [[ $(check_bin_installed direnv) != "true" ]]; then
     download "${url}" /tmp/direnv
     move /tmp/direnv "${INSTALL_PATH}/direnv/direnv"
+    chmod +x "${INSTALL_PATH}/direnv/direnv"
     link "${INSTALL_PATH}/direnv/direnv" "${BIN_LINK_PATH}/direnv"
   fi
 
