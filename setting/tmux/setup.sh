@@ -29,7 +29,6 @@ function main() {
     pushd "${INSTALL_PATH}/openssl/openssl-1.1.1j" > /dev/null
     ./Configure darwin64-x86_64-cc --prefix=/usr/local --o > /dev/null
     make CFLAGS='-I/usr/local/ssl/include' > /dev/null
-    make test > /dev/null
     sudo make install > /dev/null
   fi
 
