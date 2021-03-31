@@ -20,8 +20,12 @@
 # git config --local user.email "sibera21@gmail.com"
 [user]
   useConfigOnly = true
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+
+[pull]
+	ff = only
