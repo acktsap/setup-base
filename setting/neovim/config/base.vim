@@ -44,3 +44,4 @@ set visualbell           " don't beep
 set noerrorbells         " don't beep
 set confirm              " raise a confirm dislogue on unsaved changes
 set history=1000         " vim command history count, saved in ~/.viminfo
+set vb                   " replace beep with visual bell
