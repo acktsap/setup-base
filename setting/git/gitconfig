@@ -10,6 +10,8 @@
   cl = "!f() { b=$(git branch -l | grep -v $(git branch --show-current)); if [ -z $b ]; then echo 'no branches to delete'; return 0; fi; echo ${b[*]} | tr ' ' '\n'; echo '\nremove these branches? [y|n]'; read a; if [ $a = 'y' ]; then echo $b | xargs git branch -D; fi; }; f"
   # checkout using fuzzy finder
   ch = "!git checkout $(git branch | fzf)"
+  # rebase to develop
+  rb = "!git rebase develop"
 
 
 # you have to keep it manually for each repository
