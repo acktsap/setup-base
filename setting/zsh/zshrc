@@ -133,9 +133,9 @@ if [ ! -z $(which direnv | grep bin) ]; then
 fi
 
 # jdk setting (change path)
-alias usejdk8="export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home"
-alias usejdk11="export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home"
-alias usejdk14="export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-14.jdk/Contents/Home"
+alias usejdk8="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home"
+alias usejdk11="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home"
+alias usejdk17="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-14.jdk/Contents/Home"
 
 
 
