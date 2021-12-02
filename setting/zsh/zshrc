@@ -137,6 +137,9 @@ alias usejdk8="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-8.jdk/
 alias usejdk11="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home"
 alias usejdk17="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home"
 
+# thefuck
+eval $(thefuck --alias)
+
 
 
 #####################################################################
