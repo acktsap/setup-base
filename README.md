@@ -1,3 +1,3 @@
 # Terminal Setting
 
-An acktsap's terminal setting
+Taeik's terminal setting
