@@ -11,7 +11,7 @@
   # checkout using fuzzy finder
   ch = "!git checkout $(git branch | fzf)"
   # rebase to develop
-  rb = "!git rebase develop"
+  rb = "!git rebase $(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')"
 
 
 # you have to keep it manually for each repository
