@@ -1,13 +1,15 @@
-" Compile
-" %:p:h -> directory containing file ('head')
+" Global?
 set makeprg=javac
 set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
+
+" Compile
+" %:p:h -> directory containing file ('head')
 " nmap <F7> :w<ENTER>:make -cp %:p:h -d %:p:h %<ENTER>
-nmap <F7> :w<ENTER>:!javac -encoding utf-8 -cp %:p:h -d %:p:h %<ENTER>
+nmap <F7> :w<ENTER>:!javac -encoding utf-8 -cp %:p:h -d /tmp %<ENTER>
 
 " Run
 " %:t:r -> tail:name of file less one extension 
-nmap <F11> :w<ENTER>:!javac -encoding utf-8 -cp %:p:h -d %:p:h % && java -ea -cp %:p:h %:t:r<ENTER>
+nmap <F11> :w<ENTER>:!javac -encoding utf-8 -cp %:p:h -d /tmp % && java -ea -cp /tmp %:t:r<ENTER>
 
 " 컴파일 에러 찾아가기
 map ,n :cn<ENTER>
