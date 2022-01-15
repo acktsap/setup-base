@@ -38,7 +38,11 @@ function main() {
   fi
 
   if [[ ! -f "${HOME}/.zshrc" ]]; then
-    copy "${SCRIPT_HOME}/zshrc" "${HOME}/.zshrc"
+    link "${SCRIPT_HOME}/zshrc" "${HOME}/.zshrc"
+  fi
+
+  if [[ ! -f "${HOME}/.zshrc_custom" ]]; then
+    touch "${HOME}/.zshrc_custom"
   fi
 }
 

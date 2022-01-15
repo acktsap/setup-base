@@ -45,6 +45,5 @@ Set as ubuntu theme.
 
 ## References
 
-wsl ubuntu theme
-
-https://webdir.tistory.com/546
+- [wsl ubuntu theme](https://webdir.tistory.com/546)
+- [github dotfile search](https://github.com/search?q=zsh+dotfiles&ref=commandbar)

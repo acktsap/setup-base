@@ -90,12 +90,11 @@ plugins=(
   vi-mode
 )
 
-source $ZSH/oh-my-zsh.sh
+. $ZSH/oh-my-zsh.sh
 
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
-export EDITOR=nvim
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -106,6 +105,7 @@ export EDITOR=nvim
 # else
 #   export EDITOR='mvim'
 # fi
+export EDITOR=nvim
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -143,6 +143,5 @@ alias tm="tmux"
 # thefuck
 eval $(thefuck --alias)
 
-#####################################################################
-## config from acktsap is done. Write customizing belows
-
+# load custom
+. ${HOME} ~/.zshrc_custom
