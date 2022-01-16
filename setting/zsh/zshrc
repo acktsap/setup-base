@@ -144,4 +144,4 @@ alias tm="tmux"
 eval $(thefuck --alias)
 
 # load custom
-. ${HOME} ~/.zshrc_custom
+. ${HOME}/.zshrc_custom
