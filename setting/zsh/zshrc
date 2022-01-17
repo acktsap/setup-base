@@ -90,6 +90,10 @@ plugins=(
   vi-mode
 )
 
+# enable autocomplete
+# https://github.com/wting/autojump/issues/353
+autoload -U compinit; compinit -u
+
 . $ZSH/oh-my-zsh.sh
 
 # User configuration

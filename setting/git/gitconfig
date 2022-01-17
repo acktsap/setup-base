@@ -7,11 +7,12 @@
   # prune branch
   pb = "!git fetch --prune && git branch -vv | awk '/: gone/{print $1}' | xargs git branch -D"
   # clean all local branches without current one
-  cl = "!f() { b=$(git branch -l | grep -v $(git branch --show-current)); if [ -z $b ]; then echo 'no branches to delete'; return 0; fi; echo ${b[*]} | tr ' ' '\n'; echo '\nremove these branches? [y|n]'; read a; if [ $a = 'y' ]; then echo $b | xargs git branch -D; fi; }; f"
+  cl = "!f() { b=$(git branch -l | grep -v $(git branch --show-current)); if [ -z '$b' ]; then echo 'no branches to delete'; return 0; fi; echo ${b[*]} | tr ' ' '\n'; echo '\nRemove these branches? [y|n]'; read a; if [ $a = 'y' ]; then echo $b | xargs git branch -D; fi }; f"
   # checkout using fuzzy finder
   ch = "!git checkout $(git branch | fzf)"
   # rebase to develop
   rb = "!git rebase $(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')"
+  may-the-force-be-with-you = "!f() { echo 'May the force be with you? [y|n]'; read a; if [ $a = 'y' ]; then git push origin -f; fi }; f"
 
 
 # you have to keep it manually for each repository
