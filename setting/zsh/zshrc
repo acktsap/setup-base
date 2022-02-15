@@ -152,4 +152,4 @@ eval $(thefuck --alias)
 
 # can use 'br' to use broot
 . /Users/acktsap/.config/broot/launcher/bash/br
-alias br="br --dates --permissions"
+alias br="br --dates --permissions --show-git-info"

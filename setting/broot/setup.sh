@@ -20,6 +20,7 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 function main() {
   if [[ $(check_bin_installed broot) != "true" ]]; then
     install broot
+    link "$SCRIPT_HOME/conf.hjson" "$HOME/.config/broot/conf.hjson"
   fi
 }
 
