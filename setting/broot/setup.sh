@@ -18,8 +18,8 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 # readonly DIRENV_DARWIN_AMD64_URL=https://github.com/direnv/direnv/releases/download/v2.28.0/direnv.darwin-amd64
 
 function main() {
-  if [[ $(check_bin_installed tree) != "true" ]]; then
-    install tree
+  if [[ $(check_bin_installed broot) != "true" ]]; then
+    install broot
   fi
 }
 

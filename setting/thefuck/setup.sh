@@ -15,11 +15,8 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 . $SCRIPT_HOME/../common
 
 function main() {
-  local command=$(get_install_command)
-
   if [[ $(check_bin_installed thefuck) != "true" ]]; then
-    echo "-- Installing.."
-    ${command} thefuck > /dev/null
+    install thefuck
   fi
 }
 

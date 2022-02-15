@@ -1,35 +1,9 @@
 # Common functions
 
-
 # enter your path
 INSTALL_PATH=${INSTALL_PATH:-"${HOME}/.acktsap"}
 LIB_LINK_PATH=${LIB_LINK_PATH:-"/usr/local/lib"}
 BIN_LINK_PATH=${BIN_LINK_PATH:-"/usr/local/bin"}
-
-
-#######################################
-# Get install command.
-# Returns: install command
-#######################################
-function get_install_command() {
-  local install_command=""
-  if [[ "$OSTYPE" = darwin* ]]; then
-    install_command="brew install"
-  elif [[ "$OSTYPE" = linux* ]]; then
-    local os="$(grep . /etc/*-release | head -n 1 | cut -d"=" -f2)"
-    if [[ "$os" = "CentOS" ]]; then
-      install_command="sudo yum install -y"
-    elif [[ "$os" = "Ubuntu" ]]; then
-      install_command="sudo apt-get install -y"
-    fi
-  else
-    echo "Unsupported os type"
-    exit -1
-  fi
-
-  echo "${install_command}"
-}
-
 
 #######################################
 # Get os type.
@@ -38,7 +12,7 @@ function get_install_command() {
 function get_os_type() {
   local ostype=""
   if [[ "$OSTYPE" = darwin* ]]; then
-    # todo: check amd
+    # todo: check arm
     ostype="DARWIN_AMD64"
   elif [[ "$OSTYPE" = linux* ]]; then
     local OS="$(grep . /etc/*-release | head -n 1 | cut -d"=" -f2)"
@@ -54,7 +28,6 @@ function get_os_type() {
 
   echo "${ostype}"
 }
-
 
 #######################################
 # Check library installation.
@@ -74,7 +47,6 @@ function check_lib_installed() {
   echo "${installed}"
 }
 
-
 #######################################
 # Check binary installation.
 # Arguments:
@@ -92,6 +64,33 @@ function check_bin_installed() {
   echo "${installed}"
 }
 
+
+#######################################
+# Install tool.
+# Arguments:
+#   1 tool name
+#######################################
+function install() {
+  local tool="${1:?tool name is required}"
+
+  local install_command=""
+  if [[ "$OSTYPE" = darwin* ]]; then
+    install_command="brew install"
+  elif [[ "$OSTYPE" = linux* ]]; then
+    local os="$(grep . /etc/*-release | head -n 1 | cut -d"=" -f2)"
+    if [[ "$os" = "CentOS" ]]; then
+      install_command="sudo yum install -y"
+    elif [[ "$os" = "Ubuntu" ]]; then
+      install_command="sudo apt-get install -y"
+    fi
+  else
+    echo "Unsupported os type"
+    exit -1
+  fi
+
+  echo "-- Installing.."
+  ${install_command} ${tool} > /dev/null
+}
 
 #######################################
 # Download file.
@@ -133,7 +132,6 @@ function extract() {
   fi
 }
 
-
 #######################################
 # Move file.
 # Arguments:
@@ -154,7 +152,6 @@ function move() {
   chmod +x "${dest_file}"
 }
 
-
 #######################################
 # Copy file.
 # Arguments:
@@ -173,7 +170,6 @@ function copy() {
 
   cp "$source_file" "$dest_file"
 }
-
 
 #######################################
 # Link file.
