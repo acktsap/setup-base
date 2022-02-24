@@ -151,5 +151,5 @@ eval $(thefuck --alias)
 . ${HOME}/.zshrc_custom
 
 # can use 'br' to use broot
-. /Users/acktsap/.config/broot/launcher/bash/br
+. ${HOME}/.config/broot/launcher/bash/br
 alias br="br --dates --permissions --show-git-info"
