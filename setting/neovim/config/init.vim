@@ -5,3 +5,4 @@
 " load per extentions
 au BufNewFile,BufRead *.java :source ${HOME}/.config/nvim/java.vim
 au BufNewFile,BufRead *.go :source ${HOME}/.config/nvim/go.vim
+au BufNewFile,BufRead *.sh :source ${HOME}/.config/nvim/shell-script.vim
