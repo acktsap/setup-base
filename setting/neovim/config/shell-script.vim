@@ -1,2 +1,2 @@
 " run current shell script
-nmap <F11> :!%:p<ENTER>
+nmap <F11> :w<ENTER> :!%:p<ENTER>
