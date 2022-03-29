@@ -147,9 +147,12 @@ alias tm="tmux"
 # thefuck
 eval $(thefuck --alias)
 
-# load custom
-. ${HOME}/.zshrc_custom
-
 # can use 'br' to use broot
 . ${HOME}/.config/broot/launcher/bash/br
 alias br="br --dates --permissions --show-git-info"
+
+# podman
+alias docker=podman
+
+# load custom
+. ${HOME}/.zshrc_custom
