@@ -141,6 +141,10 @@ alias usejdk8="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-8.jdk/
 alias usejdk11="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home"
 alias usejdk17="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home"
 
+# aliased commands passed to xargs will be expanded
+# https://stackoverflow.com/questions/979453/how-can-i-use-aliased-commands-with-xargs/59842439#59842439
+alias xargs='xargs '
+
 # tmux
 alias tm="tmux"
 
@@ -152,7 +156,7 @@ eval $(thefuck --alias)
 alias br="br --dates --permissions --show-git-info"
 
 # podman
-alias docker=podman
+alias docker="podman"
 
 # load custom
 . ${HOME}/.zshrc_custom
