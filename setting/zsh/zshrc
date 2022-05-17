@@ -158,5 +158,11 @@ alias br="br --dates --permissions --show-git-info"
 # podman
 alias docker="podman"
 
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 # load custom
 . ${HOME}/.zshrc_custom
+
