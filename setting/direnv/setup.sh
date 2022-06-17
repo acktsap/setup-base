@@ -14,7 +14,8 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 
 . $SCRIPT_HOME/../common
 
-readonly DIRENV_DARWIN_AMD64_URL=https://github.com/direnv/direnv/releases/download/v2.28.0/direnv.darwin-amd64
+readonly DIRENV_DARWIN_AMD64_URL=https://github.com/direnv/direnv/releases/download/v2.32.0/direnv.darwin-amd64
+readonly DIRENV_DARWIN_ARM64_URL=https://github.com/direnv/direnv/releases/download/v2.32.0/direnv.darwin-arm64
 
 function main() {
   local ostype=$(get_os_type)

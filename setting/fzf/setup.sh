@@ -14,15 +14,16 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 
 . $SCRIPT_HOME/../common
 
-readonly FZF_DARWIN_AMD64_URL=https://github.com/junegunn/fzf/releases/download/0.26.0/fzf-0.26.0-darwin_amd64.tar.gz
+readonly FZF_DARWIN_AMD64_URL=https://github.com/junegunn/fzf/releases/download/0.30.0/fzf-0.30.0-darwin_amd64.zip
+readonly FZF_DARWIN_ARM64_URL=https://github.com/junegunn/fzf/releases/download/0.30.0/fzf-0.30.0-darwin_arm64.zip
 
 function main() {
   local ostype=$(get_os_type)
   local url=$(eval echo \$FZF_${ostype}_URL)
 
   if [[ $(check_bin_installed fzf) != "true" ]]; then
-    download "${url}" /tmp/fzf.tar.gz
-    extract /tmp/fzf.tar.gz "${INSTALL_PATH}/fzf"
+    download "${url}" /tmp/fzf.zip
+    extract /tmp/fzf.zip "${INSTALL_PATH}/fzf"
     link "${INSTALL_PATH}/fzf/fzf" "${BIN_LINK_PATH}/fzf"
   fi
 }

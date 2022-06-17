@@ -17,9 +17,9 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 readonly OMZ_URL=https://github.com/ohmyzsh/ohmyzsh/archive/master.zip
 
 function main() {
-  if [[ $(check_bin_installed direnv) != "true" ]]; then
+  if [[ $(check_bin_installed zsh) != "true" ]]; then
     # TODO: install zsh
-    echo "Zsh is not installed. Install zsh manually."
+    echo "zsh is not installed. Install zsh manually."
     exit -1
   fi
 

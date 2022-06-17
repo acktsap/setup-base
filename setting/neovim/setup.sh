@@ -15,6 +15,7 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 . $SCRIPT_HOME/../common
 
 readonly NEOVIM_DARWIN_AMD64_URL=https://github.com/neovim/neovim/releases/download/v0.7.0/nvim-macos.tar.gz
+readonly NEOVIM_DARWIN_ARM64_URL=https://github.com/neovim/neovim/releases/download/v0.7.0/nvim-macos.tar.gz
 readonly VUNDLE_VIM_URL=https://github.com/VundleVim/Vundle.vim/archive/master.zip
 
 function main() {

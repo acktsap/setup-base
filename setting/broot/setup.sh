@@ -15,7 +15,8 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 . $SCRIPT_HOME/../common
 
 # FIXME download from url
-# readonly DIRENV_DARWIN_AMD64_URL=https://github.com/direnv/direnv/releases/download/v2.28.0/direnv.darwin-amd64
+# readonly BROOT_DARWIN_AMD64_URL=https://github.com/direnv/direnv/releases/download/v2.28.0/direnv.darwin-amd64
+# readonly BROOT_DARWIN_ARM64_URL=https://github.com/direnv/direnv/releases/download/v2.28.0/direnv.darwin-amd64
 
 function main() {
   if [[ $(check_bin_installed broot) != "true" ]]; then

@@ -19,29 +19,40 @@ readonly LIBEVENT_SRC_URL=https://github.com/libevent/libevent/releases/download
 readonly TMUX_SRC_URL=https://github.com/tmux/tmux/releases/download/3.1c/tmux-3.1c.tar.gz
 
 function main() {
-  if [[ $(check_lib_installed libssl) != "true" ]]; then
+  local ostype=$(get_os_type)
+  local url=$(eval echo \$FZF_${ostype}_URL)
+
+  if [[ $(check_lib_installed libssl.dylib) != "true" ]]; then
     download "${OPENSSL_SRC_URL}" /tmp/openssl.tar.gz
     extract /tmp/openssl.tar.gz "${INSTALL_PATH}/openssl"
 
-    # TODO: link library
-    # https://gist.github.com/tomasbasham/1e405cfa16e88c0f5d2f49bbbd161944
+    # see also: https://gist.github.com/tomasbasham/1e405cfa16e88c0f5d2f49bbbd161944
     echo "-- Installing openssl.."
     pushd "${INSTALL_PATH}/openssl/openssl-1.1.1j" > /dev/null
-    ./Configure darwin64-x86_64-cc --prefix=/usr/local --o > /dev/null
-    make CFLAGS='-I/usr/local/ssl/include' > /dev/null
-    sudo make install > /dev/null
+
+    if [[ "$ostype" == "DARWIN_AMD64" ]]; then
+      ./Configure darwin64-x86_64-cc --prefix=/usr/local --o > /dev/null
+      make CFLAGS='-I/usr/local/ssl/include' > /dev/null
+      sudo make install > /dev/null
+    elif [[ "$ostype" == "DARWIN_ARM64" ]]; then
+      ./Configure darwin64-arm64-cc --prefix=/usr/local --o > /dev/null
+      make CFLAGS='-I/usr/local/ssl/include' > /dev/null
+      sudo make install > /dev/null
+    else
+      echo "Unsupported os type $ostype"
+      exit -1
+    fi
   fi
 
   if [[ $(check_lib_installed libevent) != "true" ]]; then
     download "${LIBEVENT_SRC_URL}" /tmp/libevent.tar.gz
     extract /tmp/libevent.tar.gz "${INSTALL_PATH}/libevent"
 
-    # TODO: link library
-    # https://gist.github.com/tomasbasham/1e405cfa16e88c0f5d2f49bbbd161944
+    # see also: https://gist.github.com/tomasbasham/1e405cfa16e88c0f5d2f49bbbd161944
     echo "-- Installing libevent.."
     pushd "${INSTALL_PATH}/libevent/libevent-2.1.12-stable" > /dev/null
     ./configure > /dev/null
-    make> /dev/null
+    make > /dev/null
     sudo make install > /dev/null
     popd > /dev/null
   fi
