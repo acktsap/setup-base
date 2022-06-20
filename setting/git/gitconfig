@@ -13,8 +13,7 @@
   # rebase to develop
   rb = "!git rebase $(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')"
   may-the-force-be-with-you = "!f() { echo 'May the force be with you? [y|n]'; read a; if [ $a = 'y' ]; then git push origin -f; fi }; f"
-  cm = "!git commit"
-  cl = "!git clean -id ."
+  me = "!git config user.name 'Taeik Lim' && git config user.email 'sibera21@gmail.com'"
 
 
 # you have to keep it manually for each repository
