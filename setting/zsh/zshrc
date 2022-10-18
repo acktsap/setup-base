@@ -159,6 +159,7 @@ alias br="br --dates --permissions --show-git-info"
 
 # podman
 alias docker="podman"
+alias rmc="docker ps -qa | xargs docker rm" # to force it, type rmc -f
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
