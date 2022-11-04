@@ -140,6 +140,7 @@ fi
 alias usejdk8="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home"
 alias usejdk11="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home"
 alias usejdk17="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home"
+alias usejdk18="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-18.jdk/Contents/Home"
 export GRAALVM_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-java17-22.2.0/Contents/Home
 alias usegraalvm="export JAVA_HOME=$GRAALVM_HOME"
 
