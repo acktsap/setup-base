@@ -158,8 +158,8 @@ eval $(thefuck --alias)
 . ${HOME}/.config/broot/launcher/bash/br
 alias br="br --dates --permissions --show-git-info"
 
-# podman
-alias docker="podman"
+# docker
+# alias docker="podman" # use rancher desktop instead
 alias rmc="docker ps -qa | xargs docker rm" # to force it, type rmc -f
 function docker_bash() {
   docker exec -ti ${1} /bin/bash
@@ -174,7 +174,3 @@ export NVM_DIR="$HOME/.nvm"
 # load custom
 . ${HOME}/.zshrc_custom
 
-
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/user/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
