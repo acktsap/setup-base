@@ -122,7 +122,7 @@ export EDITOR=nvim
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias ll="ls -alF"
+alias ll="ls -alFh"
 alias vi="nvim"
 alias vim="nvim"
 alias vimdiff="vimdiff -c 'set wrap' -c 'wincmd w' -c 'set wrap'"
