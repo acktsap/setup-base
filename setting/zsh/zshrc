@@ -127,6 +127,7 @@ alias vi="nvim"
 alias vim="nvim"
 alias vimdiff="vimdiff -c 'set wrap' -c 'wincmd w' -c 'set wrap'"
 alias run="eval"
+alias k="kubectl"
 
 
 # Additional
