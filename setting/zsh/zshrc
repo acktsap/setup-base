@@ -142,7 +142,10 @@ alias usejdk8="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-8.jdk/
 alias usejdk11="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home"
 alias usejdk17="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home"
 alias usejdk18="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-18.jdk/Contents/Home"
-export GRAALVM_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-java17-22.2.0/Contents/Home
+alias usejdk19="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-si19.jdk/Contents/Home"
+export GRAALVM_HOME="$(find /Library/Java/JavaVirtualMachines -name "graalvm*" -type d -maxdepth 1)/Contents/Home"
+# export GRAALVM_HOME="$GRAALVM_INSTALL_PATH/Contents/Home"
+unset GRAALVM_INSTALL_PATH
 alias usegraalvm="export JAVA_HOME=$GRAALVM_HOME"
 
 # aliased commands passed to xargs will be expanded
