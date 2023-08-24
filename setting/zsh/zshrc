@@ -158,9 +158,10 @@ alias tm="tmux"
 # thefuck
 eval $(thefuck --alias)
 
-# can use 'br' to use broot
+# broot
 . ${HOME}/.config/broot/launcher/bash/br
 alias br="br --dates --permissions --show-git-info"
+source ${HOME}/.config/broot/launcher/bash/br
 
 # docker
 # alias docker="podman" # use rancher desktop instead
@@ -176,9 +177,6 @@ alias gi="git"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# broot
-source /Users/user/.config/broot/launcher/bash/br
 
 # load custom
 . ${HOME}/.zshrc_custom
