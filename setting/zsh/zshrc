@@ -169,6 +169,9 @@ function docker_bash() {
   docker exec -ti ${1} /bin/bash
 }
 
+# git
+alias gi="git"
+
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
