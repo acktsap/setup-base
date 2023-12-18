@@ -175,6 +175,9 @@ function docker_bash() {
 # git
 alias gi="git"
 
+# kubectl
+alias k="kubectl"
+
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -182,4 +185,3 @@ export NVM_DIR="$HOME/.nvm"
 
 # load custom
 . ${HOME}/.zshrc_custom
-
