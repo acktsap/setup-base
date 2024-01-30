@@ -175,13 +175,17 @@ function docker_bash() {
 # git
 alias gi="git"
 
-# kubectl
-alias k="kubectl"
-
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# kubectl
+alias k="kubectl"
+alias kn="kubectl -n \$NS"
+alias k_list_container="kubectl get pods -o jsonpath='{.spec.containers[*].name} {.status.containerStatuses[*].restartCount} {.status.containerStatuses[*].state}'"
+alias kn_list_container="kubectl -n \$NS get pods -o jsonpath='{.spec.containers[*].name} {.status.containerStatuses[*].restartCount} {.status.containerStatuses[*].state}'"
+alias setup_k_alias="source <(kubectl completion zsh)"
 
 # load custom
 . ${HOME}/.zshrc_custom
