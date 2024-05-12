@@ -12,9 +12,16 @@ done
 SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 
 
+. $SCRIPT_HOME/common
 
 function main() {
   readonly local directories=$(find * -type d)
+
+  echo "Install path: $INSTALL_PATH"
+
+  create_dir "$INSTALL_PATH"
+  create_dir "$LIB_LINK_PATH"
+  create_dir "$BIN_LINK_PATH"
 
   for target in ${directories[@]}; do
     if [ -e ${target}/setup.sh ]; then

@@ -21,7 +21,10 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 function main() {
   if [[ $(check_bin_installed broot) != "true" ]]; then
     install broot
-    mkdir -p ${HOME}/.config/broot/
+  fi
+
+  mkdir -p ${HOME}/.config/broot/
+  if [[ $(check_link_installed "$HOME/.config/broot/conf.hjson") != "true" ]]; then
     link "$SCRIPT_HOME/conf.hjson" "$HOME/.config/broot/conf.hjson"
   fi
 }

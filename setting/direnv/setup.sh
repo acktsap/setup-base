@@ -22,8 +22,8 @@ function main() {
   local url=$(eval echo \$DIRENV_${ostype}_URL)
 
   if [[ $(check_bin_installed direnv) != "true" ]]; then
-    download "${url}" /tmp/direnv
-    move /tmp/direnv "${INSTALL_PATH}/direnv/direnv"
+    download "${url}" $TMPDIR/direnv
+    move $TMPDIR/direnv "${INSTALL_PATH}/direnv/direnv"
     chmod +x "${INSTALL_PATH}/direnv/direnv"
     link "${INSTALL_PATH}/direnv/direnv" "${BIN_LINK_PATH}/direnv"
   fi

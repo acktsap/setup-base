@@ -14,8 +14,12 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 
 . $SCRIPT_HOME/../common
 
-readonly NEOVIM_DARWIN_AMD64_URL=https://github.com/neovim/neovim/releases/download/v0.7.0/nvim-macos.tar.gz
-readonly NEOVIM_DARWIN_ARM64_URL=https://github.com/neovim/neovim/releases/download/v0.7.0/nvim-macos.tar.gz
+readonly NEOVIM_DARWIN_AMD64_URL="https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-macos.tar.gz"
+readonly NEOVIM_DARWIN_ARM64_URL="https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-arm64.tar.gz"
+
+readonly NEOVIM_DARWIN_AMD64_DIR_PATH="neovim/nvim-osx64/bin/nvim"
+readonly NEOVIM_DARWIN_ARM64_DIR_PATH="neovim/nvim-macos-arm64/bin/nvim"
+
 readonly VUNDLE_VIM_URL=https://github.com/VundleVim/Vundle.vim/archive/master.zip
 
 function main() {
@@ -23,9 +27,10 @@ function main() {
   local url=$(eval echo \$NEOVIM_${ostype}_URL)
 
   if [[ $(check_bin_installed nvim) != "true" ]]; then
-    download "${url}" /tmp/neovim.tar.gz
-    extract /tmp/neovim.tar.gz "${INSTALL_PATH}/neovim"
-    link "${INSTALL_PATH}/neovim/nvim-osx64/bin/nvim" "${BIN_LINK_PATH}/nvim"
+    download "${url}" $TMPDIR/neovim.tar.gz
+    extract $TMPDIR/neovim.tar.gz "${INSTALL_PATH}/neovim"
+    local DIR_PATH=$(eval echo \$NEOVIM_${ostype}_DIR_PATH)
+    link "${INSTALL_PATH}/${DIR_PATH}" "${BIN_LINK_PATH}/nvim"
   fi
 
   if [[ ! -d "$HOME/.vim/bundle/Vundle.vim" ]]; then

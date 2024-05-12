@@ -1,9 +1,26 @@
 # Common functions
 
 # enter your path
-INSTALL_PATH=${INSTALL_PATH:-"${HOME}/.acktsap"}
-LIB_LINK_PATH=${LIB_LINK_PATH:-"/usr/local/lib"}
-BIN_LINK_PATH=${BIN_LINK_PATH:-"/usr/local/bin"}
+export INSTALL_PATH=${INSTALL_PATH:-"${HOME}/.acktsap"}
+
+# static path
+export LIB_LINK_PATH="/usr/local/lib"
+export BIN_LINK_PATH="/usr/local/bin"
+
+#######################################
+# Make a directory
+# Returns: os type
+#######################################
+function create_dir() {
+  local dir_path="${1:?directory path is required}"
+  if [[ ! -e "${dir_path}" ]]; then
+    sudo mkdir -p "$dir_path"
+  fi
+  local group_name=$(id -gn)
+  local user_name=$(whoami)
+  sudo chown "${user_name}:${group_name}" "${dir_path}"
+}
+
 
 #######################################
 # Get os type.
@@ -35,6 +52,25 @@ function get_os_type() {
 }
 
 #######################################
+# Check link installation.
+# Arguments:
+#   1 link name (required)
+# Returns: true/false
+#######################################
+function check_link_installed() {
+  local file_name="${1:?library prefix is required}"
+
+  # to remove: find /usr/local/lib -name ${library_prefix}* -exec rm {} \;
+  local installed=false
+  if [[ ! -z "$file_name" ]]; then
+    installed=true
+  fi
+
+  echo "${installed}"
+}
+
+
+#######################################
 # Check library installation.
 # Arguments:
 #   1 library prefix (required)
@@ -45,7 +81,7 @@ function check_lib_installed() {
 
   # to remove: find /usr/local/lib -name ${library_prefix}* -exec rm {} \;
   local installed=false
-  if [[ ! -z $(find /usr/local/lib -name ${library_prefix}*) ]]; then
+  if [[ ! -z $(find "${LIB_LINK_PATH}" -name ${library_prefix}*) ]]; then
     installed=true
   fi
 

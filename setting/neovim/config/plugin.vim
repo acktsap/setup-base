@@ -28,8 +28,9 @@ Plugin 'vim-airline/vim-airline'          " status bar
 
 " navigating
 Plugin 'scrooloose/nerdtree'              " file view tree
-Plugin 'ctrlpvim/ctrlp.vim'               " file finder
-Plugin 'majutsushi/tagbar'                " show tagbar
+" disable not used
+"Plugin 'ctrlpvim/ctrlp.vim'               " file finder
+"Plugin 'majutsushi/tagbar'                " show tagbar
 
 " intellisence
 " youcompleteme
