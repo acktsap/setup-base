@@ -17,7 +17,7 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 readonly NEOVIM_DARWIN_AMD64_URL="https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-macos.tar.gz"
 readonly NEOVIM_DARWIN_ARM64_URL="https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-arm64.tar.gz"
 
-readonly NEOVIM_DARWIN_AMD64_DIR_PATH="neovim/nvim-osx64/bin/nvim"
+readonly NEOVIM_DARWIN_AMD64_DIR_PATH="neovim/nvim-macos/bin/nvim"
 readonly NEOVIM_DARWIN_ARM64_DIR_PATH="neovim/nvim-macos-arm64/bin/nvim"
 
 readonly VUNDLE_VIM_URL=https://github.com/VundleVim/Vundle.vim/archive/master.zip
