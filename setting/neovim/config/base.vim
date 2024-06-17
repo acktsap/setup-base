@@ -31,7 +31,7 @@ set et                   " expandtab, tab are spaces
 set ai                   " autoindent
 set smartindent          " add smartly based on language
 set shiftwidth=2         " width on operations like >>, <<
-set wrap                 " wrap lines longer than the width of the window
+set wrap                 " wrap lines longer than the width of the window to the next line
 
 " file
 set autoread             " automatically apply file changes outside of vim

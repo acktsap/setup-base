@@ -125,7 +125,7 @@ export EDITOR=nvim
 alias ll="ls -alFh"
 alias vi="nvim"
 alias vim="nvim"
-alias vimdiff="vimdiff -c 'set wrap' -c 'wincmd w' -c 'set wrap'"
+alias vimdiff="vimdiff -c 'windo set foldlevel=999' -c 'windo set wrap'"
 alias run="eval"
 alias k="kubectl"
 
@@ -185,7 +185,7 @@ alias k="kubectl"
 alias kn="kubectl -n \$NS"
 alias k_list_container="kubectl get pods -o jsonpath='{.spec.containers[*].name} {.status.containerStatuses[*].restartCount} {.status.containerStatuses[*].state}'"
 alias kn_list_container="kubectl -n \$NS get pods -o jsonpath='{.spec.containers[*].name} {.status.containerStatuses[*].restartCount} {.status.containerStatuses[*].state}'"
-alias setup_k_alias="source <(kubectl completion zsh)"
+alias k_alias_setup="source <(kubectl completion zsh)"
 
 # load custom
 . ${HOME}/.zshrc_custom
