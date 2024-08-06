@@ -62,7 +62,7 @@ function check_link_installed() {
 
   # to remove: find /usr/local/lib -name ${library_prefix}* -exec rm {} \;
   local installed=false
-  if [[ ! -z "$file_name" ]]; then
+  if [[ -e "$file_name" ]]; then
     installed=true
   fi
 
