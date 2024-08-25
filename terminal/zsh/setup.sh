@@ -37,12 +37,13 @@ function main() {
     link "${INSTALL_PATH}/oh-my-zsh/ohmyzsh-master" "${HOME}/.oh-my-zsh"
   fi
 
-  if [[ ! -f "${HOME}/.zshrc" ]]; then
-    link "${SCRIPT_HOME}/zshrc" "${HOME}/.zshrc"
+  if [[ -z $(grep "\${HOME}/.zshrc_custom" "${HOME}/.zshrc") ]]; then
+    echo "-- Appending '\${HOME}/.zshrc_custom' to \${HOME}/.zshrc"
+    echo ". \${HOME}/.zshrc_custom" >> "${HOME}/.zshrc"
   fi
 
-  if [[ ! -f "${HOME}/.zshrc_custom" ]]; then
-    touch "${HOME}/.zshrc_custom"
+  if [[ $(check_link_installed "$HOME/.zshrc_custom") != "true" ]]; then
+    link "${SCRIPT_HOME}/zshrc_custom" "${HOME}/.zshrc_custom"
   fi
 }
 

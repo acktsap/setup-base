@@ -223,5 +223,5 @@ function link() {
   local dest_file="${2:?destination file is required}"
 
   echo "-- Linking.."
-  sudo ln -sf "${source_file}" "${dest_file}"
+  ln -sf "${source_file}" "${dest_file}"
 }
