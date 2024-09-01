@@ -34,3 +34,7 @@
 
 [pull]
   ff = only
+
+[core]
+  # resolve broken hangul in git diff
+	quotepath = false
