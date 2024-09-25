@@ -55,15 +55,42 @@
 
 ### Keymap
 
-Use Eclipse (macOS)
+Configure by search
 
-- Tool Windows
-    - Project : Command + 8
-        - see also: [Shortcut to toggle focus between project sidebar and editor?](https://intellij-support.jetbrains.com/hc/en-us/community/posts/206887115-Shortcut-to-toggle-focus-between-project-sidebar-and-editor-)
-- By search
-    - Go to Implementations : Ctrl + i
+- File
+    - Close All Tabs : Ctrl (Cmd) + Shift + w
+- Navigation
+    - Go to Symbol : Ctrl (Cmd) + o
+    - Go to Class : Ctrl (Cmd) + Shift + t
+    - Go to File : Ctrl (Cmd) + Shift + r
     - Go to Test : Ctrl + t
-    - Rename (Refactor) : Command + option + r
+    - Go to Implementation : Ctrl (Cmd) + Shift + i
+- Edit
+    - Show Context Actions : Cmd + 1
+    - Reformat Code : Ctrl (Cmd) + Shift + f
+    - Up (Editor Actions) : Ctrl + k
+    - Down (Editor Actions) : Ctrl + j
+- Refactor
+    - Rename : Ctrl (Cmd) + Alt + r
+    - Introduce Variable : Ctrl (Cmd) + Alt + L
+    - Inline : Ctrl (Cmd) + Alt + i
+- Debugging & Run
+    - Toggle Line Breakpoint : Ctrl (Cmd) + Shift + b
+    - Step Into : F5
+    - Step Over : F6
+    - Step Out : F7
+    - Resume Program : F8
+- Windows
+    - Project (Tool Windows) : Command + 2
+    - Left (Editor Actions) : Ctrl + h
+    - Right (Editor Actions) : Ctrl + l
+- Find & Search
+    - Subtypes Hierarchy : F4
+
+Use ide in vim plugin list
+
+- Ctrl + t (Go to test)
+- Ctrl + k (Up)
 
 ### Editor
 
