@@ -66,10 +66,12 @@ Configure by search
     - Go to Test : Ctrl + t
     - Go to Implementation : Ctrl (Cmd) + Shift + i
 - Edit
+    - Quick Documentation : F2, Ctrl (Cmd) + k + i
     - Show Context Actions : Cmd + 1
     - Reformat Code : Ctrl (Cmd) + Shift + f
     - Up (Editor Actions) : Ctrl + k
     - Down (Editor Actions) : Ctrl + j
+    - Optimize Imports : Ctrl (Cmd) + Shift + o
 - Refactor
     - Rename : Ctrl (Cmd) + Alt + r
     - Introduce Variable : Ctrl (Cmd) + Alt + L
@@ -86,6 +88,7 @@ Configure by search
     - Right (Editor Actions) : Ctrl + l
 - Find & Search
     - Subtypes Hierarchy : F4
+    - Find Usages : Ctrl (Cmd) + Shift + g
 
 Use ide in vim plugin list
 
