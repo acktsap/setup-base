@@ -60,7 +60,6 @@ Configure by search
 - File
     - Close All Tabs : Ctrl (Cmd) + Shift + w
 - Navigation
-    - Go to Symbol : Ctrl (Cmd) + o
     - Go to Class : Ctrl (Cmd) + Shift + t
     - Go to File : Ctrl (Cmd) + Shift + r
     - Go to Test : Ctrl + t
@@ -89,6 +88,7 @@ Configure by search
 - Find & Search
     - Subtypes Hierarchy : F4
     - Find Usages : Ctrl (Cmd) + Shift + g
+    - File Structure : Ctrl (Cmd) + o
 
 Use ide in vim plugin list
 
