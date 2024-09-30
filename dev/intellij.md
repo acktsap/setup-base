@@ -89,6 +89,7 @@ Configure by search
     - Subtypes Hierarchy : F4
     - Find Usages : Ctrl (Cmd) + Shift + g
     - File Structure : Ctrl (Cmd) + o
+    - Find in Files : Ctrl (Cmd) + Shift + h
 
 Use ide in vim plugin list
 
