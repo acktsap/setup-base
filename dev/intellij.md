@@ -72,9 +72,10 @@ Configure by search
     - Down (Editor Actions) : Ctrl + j
     - Optimize Imports : Ctrl (Cmd) + Shift + o
 - Refactor
-    - Rename : Ctrl (Cmd) + Alt + r
-    - Introduce Variable : Ctrl (Cmd) + Alt + L
-    - Inline : Ctrl (Cmd) + Alt + i
+    - Rename : Ctrl (Cmd) + r + r
+    - Introduce Variable : Ctrl (Cmd) + r + l
+    - Inline : Ctrl (Cmd) + r + i
+    - Extract Routine : Ctrl (Cmd) + r + m
 - Debugging & Run
     - Toggle Line Breakpoint : Ctrl (Cmd) + Shift + b
     - Step Into : F5

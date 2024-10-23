@@ -24,9 +24,7 @@ function main() {
   fi
 
   mkdir -p ${HOME}/.config/broot/
-  if [[ $(check_link_installed "$HOME/.config/broot/conf.hjson") != "true" ]]; then
-    link "$SCRIPT_HOME/conf.hjson" "$HOME/.config/broot/conf.hjson"
-  fi
+  link "$SCRIPT_HOME/conf.hjson" "$HOME/.config/broot/conf.hjson"
 }
 
 main "$@"

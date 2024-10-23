@@ -171,6 +171,7 @@ function docker_bash() {
 }
 
 # git
+alias g="git"
 alias gi="git"
 alias gt="git status ."
 alias ga="git add"
