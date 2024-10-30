@@ -165,10 +165,11 @@ alias br="br --dates --permissions --show-git-info"
 
 # docker
 # alias docker="podman" # use rancher desktop instead
-alias rmc="docker ps -qa | xargs docker rm" # to force it, type rmc -f
-function docker_bash() {
+alias d-rmc="docker ps -qa | xargs docker rm" # to force it, type d-rmc -f
+function d-bash() {
   docker exec -ti ${1} /bin/bash
 }
+alias d-run-all="docker ps -qa | xargs docker start"
 
 # git
 alias g="git"
