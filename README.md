@@ -6,5 +6,4 @@ My setup base.
 - [Windows](./os/windows.md)
 - [Terminal](./terminal/README.md)
 - [Browser](./browser)
-- [Dev](./dev)
 - [Other](./other)
