@@ -68,7 +68,7 @@ let g:airline_theme='onehalfdark'
 
 """ nerdtree
 " ne -> run nerd tree
-nmap ne :NERDTreeToggle<CR>
+nmap  <C-e> :NERDTreeToggle<CR>
 " arrow synbols
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
