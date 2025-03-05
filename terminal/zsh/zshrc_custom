@@ -125,7 +125,7 @@ export EDITOR=nvim
 alias ll="ls -alFh"
 alias vi="nvim"
 alias vim="nvim"
-alias vimdiff="vimdiff -c 'windo set foldlevel=999' -c 'windo set wrap'"
+alias vimdiff_all="vimdiff -c 'windo set foldlevel=999' -c 'windo set wrap'"
 alias run="eval"
 alias k="kubectl"
 
