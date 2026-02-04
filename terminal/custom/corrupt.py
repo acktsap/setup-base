@@ -4,22 +4,18 @@ import argparse
 import os
 import random
 
-def completely_corrupt_file(file_path):
+def completely_corrupt_file(file_path, passes=3):
     try:
-        # Read the original file
-        with open(file_path, 'rb') as file:
-            data = file.read()
+        file_size = os.path.getsize(file_path)
 
-        # Replace every byte with random garbage
-        corrupted_data = bytearray(random.getrandbits(8) for _ in range(len(data)))
-
-        # Optionally truncate the file to simulate total destruction
-        if random.choice([True, False]):
-            corrupted_data = bytearray()
-
-        # Overwrite the original file
-        with open(file_path, 'wb') as file:
-            file.write(corrupted_data)
+        # Overwrite multiple times with random data
+        for i in range(passes):
+            with open(file_path, 'r+b') as file:
+                file.seek(0)
+                file.write(bytearray(random.getrandbits(8) for _ in range(file_size)))
+                file.flush()
+                os.fsync(file.fileno())
+            print(f"Pass {i + 1}/{passes} completed.")
 
         print(f"{file_path} has been completely corrupted and is unrecoverable.")
 
