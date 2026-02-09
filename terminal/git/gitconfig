@@ -3,7 +3,6 @@
   di = diff .
   ca = diff --cached .
   lo = log --graph --abbrev-commit --decorate --format=format:'%C(cyan)%h%C(reset) - %C(green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(yellow)%d%C(reset)' --all
-  pu = "!git remote -v update && git status -u no"
   # prune branch
   pb = "!git fetch --prune && git branch -vv | awk '/: gone/{print $1}' | xargs git branch -D"
   # clean all local branches without current one

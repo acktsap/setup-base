@@ -175,7 +175,7 @@ alias d-run-all="docker ps -qa | xargs docker start"
 alias g="git"
 alias gi="git"
 alias gt="git status ."
-alias ga="git add"
+alias gp="git pull"
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
