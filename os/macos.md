@@ -19,6 +19,7 @@
   - [Rectangle](#rectangle)
   - [RunCat](#runcat)
   - [Hammerspoon](#hammerspoon)
+  - [Itsycal](#itsycal)
 - [Optional Utils](#optional-utils)
   - [Alfred](#alfred)
   - [IINA](#iina)
@@ -257,6 +258,12 @@ end)
   - [Hammerspoon official](http://www.hammerspoon.org/go/)
   - [esc 키로 편하게 한영 변환하기 for vim](https://humblego.tistory.com/10)
   - [vim - normal mode에서 자동으로 한영전환하기](https://frhyme.github.io/vim/vim09_type_kor_on_command_mode/)
+
+### Itsycal
+
+- Calendar on menu bar.
+- [Download](https://www.mowglii.com/itsycal/)
+- [GitHub](https://github.com/sfsam/Itsycal)
 
 ## Optional Utils
 
