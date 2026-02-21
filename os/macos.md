@@ -9,7 +9,7 @@
   - [Desktop \& Dock](#desktop--dock)
   - [Displays](#displays)
   - [Battery](#battery)
-  - [Control Center](#control-center)
+  - [Menu Bar](#menu-bar)
   - [Date \& Time](#date--time)
 - [Finder](#finder)
 - [Utils](#utils)
@@ -98,11 +98,26 @@ Options
 - [ ] Slightly dim the display while on battery power
 - [ ] Prevent automatic sleeping on power adapter when the display is off
 
-### Control Center
+### Menu Bar
 
-- Menu Bar Only
-  - Clock Options
-    - [x] Display the time with seconds
+- Menu Bar Controls
+    - Clock
+        - [ ] Show date
+        - [ ] Show the day of the week
+        - Time
+            - [x] Display the time with seconds
+    - Check those only
+        - [x] Wi-Fi
+        - [x] Battery
+        - [x] Text Input
+- Allow in the Menu Bar
+    - Check those only
+        - [x] DisplayLink Manager
+        - [x] Itsycal
+        - [x] KakaoTalk
+        - [x] Rectangle
+        - [x] RunCat
+        - [x] Scroll Reverser
 
 ### Date & Time
 
