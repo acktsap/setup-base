@@ -101,23 +101,24 @@ Options
 ### Menu Bar
 
 - Menu Bar Controls
-    - Clock
+  - Clock
+    - Date
         - [ ] Show date
         - [ ] Show the day of the week
-        - Time
-            - [x] Display the time with seconds
-    - Check those only
-        - [x] Wi-Fi
-        - [x] Battery
-        - [x] Text Input
+      - Time
+        - [x] Display the time with seconds
+  - Check those only
+    - [x] Wi-Fi
+    - [x] Battery
+    - [x] Text Input
 - Allow in the Menu Bar
-    - Check those only
-        - [x] DisplayLink Manager
-        - [x] Itsycal
-        - [x] KakaoTalk
-        - [x] Rectangle
-        - [x] RunCat
-        - [x] Scroll Reverser
+  - Check those only
+    - [x] DisplayLink Manager
+    - [x] Itsycal
+    - [x] KakaoTalk
+    - [x] Rectangle
+    - [x] RunCat
+    - [x] Scroll Reverser
 
 ### Date & Time
 
@@ -277,6 +278,15 @@ end)
 ### Itsycal
 
 - Calendar on menu bar.
+- Setting
+  - General
+    - [x] Launch at login
+    - [ ] Automatically check for updates
+    - [ ] Beep beep on the hour
+  - Appearance
+    - [x] Show month in icon
+    - [x] Show day of week in icon
+    - Datetime pattern : '' (empty)
 - [Download](https://www.mowglii.com/itsycal/)
 - [GitHub](https://github.com/sfsam/Itsycal)
 
