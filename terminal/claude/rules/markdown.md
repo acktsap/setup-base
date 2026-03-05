@@ -11,5 +11,6 @@ paths:
 - Prefer list format over paragraphs when possible
 - Use hyphen (-) for list items, not asterisk (*)
 - Use proper heading hierarchy (h1 > h2 > h3)
+- Always add a blank line after headings (#, ##, ###, etc.)
 - Always specify language in code blocks
 - Use 4 spaces for indentation
