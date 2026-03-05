@@ -14,7 +14,6 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 
 . $SCRIPT_HOME/../common
 
-
 function main() {
   if [[ ! -f "${HOME}/.screenrc" ]]; then
     link "${SCRIPT_HOME}/screenrc" "${HOME}/.screenrc"

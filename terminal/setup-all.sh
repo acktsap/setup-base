@@ -19,9 +19,9 @@ function main() {
 
   echo "Install path: $INSTALL_PATH"
 
-  create_dir "$INSTALL_PATH"
-  create_dir "$LIB_LINK_PATH"
-  create_dir "$BIN_LINK_PATH"
+  mkdir -p "$INSTALL_PATH"
+  mkdir -p "$LIB_LINK_PATH"
+  mkdir -p "$BIN_LINK_PATH"
 
   for target in ${directories[@]}; do
     if [ -e ${target}/setup.sh ]; then

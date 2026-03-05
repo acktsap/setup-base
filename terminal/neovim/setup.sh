@@ -27,8 +27,8 @@ function main() {
   local url=$(eval echo \$NEOVIM_${ostype}_URL)
 
   if [[ $(check_bin_installed nvim) != "true" ]]; then
-    download "${url}" $TMPDIR/neovim.tar.gz
-    extract $TMPDIR/neovim.tar.gz "${INSTALL_PATH}/neovim"
+    download "${url}" "$TMPDIR/neovim.tar.gz"
+    extract "$TMPDIR/neovim.tar.gz" "${INSTALL_PATH}/neovim"
     local DIR_PATH=$(eval echo \$NEOVIM_${ostype}_DIR_PATH)
     link "${INSTALL_PATH}/${DIR_PATH}" "${BIN_LINK_PATH}/nvim"
   fi
@@ -39,8 +39,8 @@ function main() {
       mkdir -p "${bundle_dir}"
     fi
 
-    download "${VUNDLE_VIM_URL}" /tmp/Vundle.vim.zip
-    extract /tmp/Vundle.vim.zip "${bundle_dir}"
+    download "${VUNDLE_VIM_URL}" "$TMPDIR/Vundle.vim.zip"
+    extract "$TMPDIR/Vundle.vim.zip" "${bundle_dir}"
     mv "${bundle_dir}/Vundle.vim-master" "${bundle_dir}/Vundle.vim"
   fi
 

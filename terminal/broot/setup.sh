@@ -23,7 +23,7 @@ function main() {
     install broot
   fi
 
-  mkdir -p ${HOME}/.config/broot/
+  mkdir -p "${HOME}/.config/broot"
   link "$SCRIPT_HOME/conf.hjson" "$HOME/.config/broot/conf.hjson"
 }
 

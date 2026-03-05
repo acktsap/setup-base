@@ -20,8 +20,8 @@ function main() {
   local name=tig
 
   if [[ $(check_bin_installed tig) != "true" ]]; then
-    download "${TIG_SRC_URL}" /tmp/tig.tar.gz
-    extract /tmp/tig.tar.gz "${INSTALL_PATH}/tig"
+    download "${TIG_SRC_URL}" "$TMPDIR/tig.tar.gz"
+    extract "$TMPDIR/tig.tar.gz" "${INSTALL_PATH}/tig"
     
     # https://jonas.github.io/tig/INSTALL.html
     # no readline

@@ -20,11 +20,10 @@ readonly TMUX_SRC_URL=https://github.com/tmux/tmux/releases/download/3.1c/tmux-3
 
 function main() {
   local ostype=$(get_os_type)
-  local url=$(eval echo \$FZF_${ostype}_URL)
 
   if [[ $(check_lib_installed libssl.dylib) != "true" ]]; then
-    download "${OPENSSL_SRC_URL}" /tmp/openssl.tar.gz
-    extract /tmp/openssl.tar.gz "${INSTALL_PATH}/openssl"
+    download "${OPENSSL_SRC_URL}" "$TMPDIR/openssl.tar.gz"
+    extract "$TMPDIR/openssl.tar.gz" "${INSTALL_PATH}/openssl"
 
     # see also: https://gist.github.com/tomasbasham/1e405cfa16e88c0f5d2f49bbbd161944
     echo "-- Installing openssl.."
@@ -45,8 +44,8 @@ function main() {
   fi
 
   if [[ $(check_lib_installed libevent) != "true" ]]; then
-    download "${LIBEVENT_SRC_URL}" /tmp/libevent.tar.gz
-    extract /tmp/libevent.tar.gz "${INSTALL_PATH}/libevent"
+    download "${LIBEVENT_SRC_URL}" "$TMPDIR/libevent.tar.gz"
+    extract "$TMPDIR/libevent.tar.gz" "${INSTALL_PATH}/libevent"
 
     # see also: https://gist.github.com/tomasbasham/1e405cfa16e88c0f5d2f49bbbd161944
     echo "-- Installing libevent.."
@@ -58,8 +57,8 @@ function main() {
   fi
 
   if [[ $(check_bin_installed tmux) != "true" ]]; then
-    download "${TMUX_SRC_URL}" /tmp/tmux.tar.gz
-    extract /tmp/tmux.tar.gz "${INSTALL_PATH}/tmux"
+    download "${TMUX_SRC_URL}" "$TMPDIR/tmux.tar.gz"
+    extract "$TMPDIR/tmux.tar.gz" "${INSTALL_PATH}/tmux"
 
     # https://github.com/tmux/tmux#installation
     # https://github.com/tmux/tmux/wiki/Installing#building-dependencies

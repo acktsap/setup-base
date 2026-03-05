@@ -22,8 +22,8 @@ function main() {
   local url=$(eval echo \$FZF_${ostype}_URL)
 
   if [[ $(check_bin_installed fzf) != "true" ]]; then
-    download "${url}" /tmp/fzf.zip
-    extract /tmp/fzf.zip "${INSTALL_PATH}/fzf"
+    download "${url}" "$TMPDIR/fzf.zip"
+    extract "$TMPDIR/fzf.zip" "${INSTALL_PATH}/fzf"
     link "${INSTALL_PATH}/fzf/fzf" "${BIN_LINK_PATH}/fzf"
   fi
 }

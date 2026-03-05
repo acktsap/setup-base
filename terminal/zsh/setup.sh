@@ -32,8 +32,8 @@ function main() {
 
   if [[ ! -d "${HOME}/.oh-my-zsh" ]]; then
     echo "-- Setting on-my-ash.."
-    download "${OMZ_URL}" /tmp/oh-my-zsh.zip
-    extract /tmp/oh-my-zsh.zip "${INSTALL_PATH}/oh-my-zsh"
+    download "${OMZ_URL}" "$TMPDIR/oh-my-zsh.zip"
+    extract "$TMPDIR/oh-my-zsh.zip" "${INSTALL_PATH}/oh-my-zsh"
     link "${INSTALL_PATH}/oh-my-zsh/ohmyzsh-master" "${HOME}/.oh-my-zsh"
   fi
 

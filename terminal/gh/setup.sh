@@ -23,9 +23,9 @@ function main() {
   local url=$(eval echo \$GH_${ostype}_URL)
 
   if [[ $(check_bin_installed gh) != "true" ]]; then
-    download "${url}" $TMPDIR/gh.zip
-    extract $TMPDIR/gh.zip $TMPDIR/gh
-    move $TMPDIR/gh/gh_*/bin/gh "${INSTALL_PATH}/gh/gh"
+    download "${url}" "$TMPDIR/gh.zip"
+    extract "$TMPDIR/gh.zip" "$TMPDIR/gh"
+    move "$TMPDIR/gh"/gh_*/bin/gh "${INSTALL_PATH}/gh/gh"
     link "${INSTALL_PATH}/gh/gh" "${BIN_LINK_PATH}/gh"
   fi
 }
