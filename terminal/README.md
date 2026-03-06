@@ -66,6 +66,9 @@ General
         - import Snazzy.itermcolors
   - Text
     - Size as 13
+- Keys
+  - General
+    - Left Option key: `Esc+` (to use Option as Meta key for tmux)
 - Selection
   - [x] Application in terminal may access clipboard
 
