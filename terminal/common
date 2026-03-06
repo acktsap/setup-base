@@ -204,5 +204,5 @@ function link() {
   local dest_file="${2:?destination file is required}"
 
   echo "-- Linking.."
-  ln -sf "${source_file}" "${dest_file}"
+  ln -snf "${source_file}" "${dest_file}"
 }
