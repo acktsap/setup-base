@@ -23,9 +23,9 @@ function main() {
   fi
 
   # Link settings.json
-  if [[ -f "${SCRIPT_HOME}/settings.json" ]]; then
-    link "${SCRIPT_HOME}/settings.json" "${claude_home}/settings.json"
-  fi
+  # if [[ -f "${SCRIPT_HOME}/settings.json" ]]; then
+  #   link "${SCRIPT_HOME}/settings.json" "${claude_home}/settings.json"
+  # fi
 
   # Link CLAUDE.md (user memory)
   if [[ -f "${SCRIPT_HOME}/CLAUDE.md" ]]; then
