@@ -22,11 +22,11 @@ Search and set
 In compatible store
 
 - [Dark Reader](https://chrome.google.com/webstore/detail/dark-reader/eimadpbcbfnmbkopoojfekhnkhdbieeh?hl=en-US)
-  - Drak
-    - Brightness : off
-    - Contrast : -10
-    - Sepia : +35
-    - Grayscale : off
+    - Drak
+        - Brightness : off
+        - Contrast : -10
+        - Sepia : +35
+        - Grayscale : off
 - [AdBlock — best ad blocker](https://chrome.google.com/webstore/detail/adblock-%E2%80%94-best-ad-blocker/gighmmpiobklfepjocnamgkkbiglidom?hl=en-US)
 - Better Pull Request for Github
 - [JSON Formatter](https://chrome.google.com/webstore/detail/json-formatter/bcjindcccaagfpapjjmafapmmgkkhgoa/related?hl=en)

@@ -1,6 +1,6 @@
 ---
 paths:
-  - "**/*.md"
+- "**/*.md"
 ---
 
 # Markdown Writing Rules

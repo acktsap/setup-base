@@ -3,8 +3,8 @@
 - [Bootstrap](#bootstrap)
 - [Setup](#setup)
 - [Color](#color)
-  - [Iterm](#iterm)
-  - [Window terminal](#window-terminal)
+    - [Iterm](#iterm)
+    - [Window terminal](#window-terminal)
 - [See also](#see-also)
 
 ## Bootstrap
@@ -28,16 +28,16 @@ Write following contents to `~/.ssh/config`
 # make sure IdentityFile is in 400 mode
     
 Host github.com
-  IdentityFile ~/.ssh/blablabla
-  StrictHostKeyChecking no
+    IdentityFile ~/.ssh/blablabla
+    StrictHostKeyChecking no
     
 Host bitbucket.org
-  IdentityFile ~/.ssh/blablabla
-  StrictHostKeyChecking no
+    IdentityFile ~/.ssh/blablabla
+    StrictHostKeyChecking no
     
 Host *
-  IdentityFile ~/.ssh/blablabla
-  StrictHostKeyChecking no
+    IdentityFile ~/.ssh/blablabla
+    StrictHostKeyChecking no
 ```
 
 Fetch setup-base.
@@ -60,17 +60,17 @@ https://github.com/sindresorhus/hyper-snazzy
 General
 
 - Profile
-  - Colors
-    - Color Presents
-      - Import
-        - import Snazzy.itermcolors
-  - Text
-    - Size as 13
-- Keys
-  - General
-    - Left Option key: `Esc+` (to use Option as Meta key for tmux)
+    - Colors
+        - Color Presents
+            - Import
+                - import Snazzy.itermcolors
+    - Text
+        - Size as 13
+    - Keys
+        - General
+            - Left Option key: `Esc+` (to use Option as Meta key for tmux)
 - Selection
-  - [x] Application in terminal may access clipboard
+    - [x] Application in terminal may access clipboard
 
 ### Window terminal
 

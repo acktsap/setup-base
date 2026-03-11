@@ -3,12 +3,12 @@
 - [Installation](#installation)
 - [Appearance](#appearance)
 - [Setting](#setting)
-  - [General](#general)
-  - [Home](#home)
-  - [Privacy \& Security](#privacy--security)
+    - [General](#general)
+    - [Home](#home)
+    - [Privacy \& Security](#privacy--security)
 - [Developer Tools](#developer-tools)
 - [Extensions \& Themes](#extensions--themes)
-  - [Extensions](#extensions)
+    - [Extensions](#extensions)
 - [Bookmark](#bookmark)
 
 ## Installation
@@ -45,7 +45,7 @@ Firefox Home Content
 Logins and Passwords
 
 - [ ] Ask to save logins and passwords for websites
-  - ...
+    - ...
 
 History
 
@@ -54,12 +54,12 @@ History
 ## Developer Tools
 
 - setting : "..." -> Settings
-  - Theme
-    - [X] Dark
-  - Advanced Setttings
-    - Enabling the Browser Toolbox
-      - [X] Enable browser chrome and add-on debugging toolboxes
-        - [X] Enable remote debugging
+    - Theme
+        - [X] Dark
+    - Advanced Setttings
+        - Enabling the Browser Toolbox
+            - [X] Enable browser chrome and add-on debugging toolboxes
+                - [X] Enable remote debugging
 
 ## Extensions & Themes
 

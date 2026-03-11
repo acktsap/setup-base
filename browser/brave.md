@@ -2,11 +2,11 @@
 
 - [Installation](#installation)
 - [Settings](#settings)
-  - [Get started](#get-started)
-  - [Privacy and security](#privacy-and-security)
-  - [Search engine](#search-engine)
+    - [Get started](#get-started)
+    - [Privacy and security](#privacy-and-security)
+    - [Search engine](#search-engine)
 - [Additional Settings](#additional-settings)
-  - [Autofill](#autofill)
+    - [Autofill](#autofill)
 - [Extensions](#extensions)
 - [Bookmark](#bookmark)
 

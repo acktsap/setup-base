@@ -2,7 +2,7 @@
 
 - [Installation](#installation)
 - [Setting](#setting)
-  - [Manage what you sync](#manage-what-you-sync)
+    - [Manage what you sync](#manage-what-you-sync)
 - [Run in incognito mode](#run-in-incognito-mode)
 - [Bookmark](#bookmark)
 
