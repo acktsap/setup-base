@@ -19,6 +19,7 @@ function main() {
 
   # Create ~/.claude if not exists
   if [[ ! -d "${claude_home}" ]]; then
+    echo "-- Creating ${claude_home}"
     mkdir -p "${claude_home}"
   fi
 
@@ -27,24 +28,40 @@ function main() {
   #   link "${SCRIPT_HOME}/settings.json" "${claude_home}/settings.json"
   # fi
 
-  # Link CLAUDE.md (user memory)
-  if [[ -f "${SCRIPT_HOME}/CLAUDE.md" ]]; then
-    link "${SCRIPT_HOME}/CLAUDE.md" "${claude_home}/CLAUDE.md"
-  fi
-
-  # Link rules directory
+  # Link rules individually
   if [[ -d "${SCRIPT_HOME}/rules" ]]; then
-    link "${SCRIPT_HOME}/rules" "${claude_home}/rules"
+    if [[ ! -d "${claude_home}/rules" ]]; then
+      echo "-- Creating ${claude_home}/rules"
+      mkdir -p "${claude_home}/rules"
+    fi
+    for item in "${SCRIPT_HOME}/rules"/*; do
+      local name=$(basename "${item}")
+      link "${item}" "${claude_home}/rules/${name}"
+    done
   fi
 
-  # Link skills directory
+  # Link skills individually
   if [[ -d "${SCRIPT_HOME}/skills" ]]; then
-    link "${SCRIPT_HOME}/skills" "${claude_home}/skills"
+    if [[ ! -d "${claude_home}/skills" ]]; then
+      echo "-- Creating ${claude_home}/skills"
+      mkdir -p "${claude_home}/skills"
+    fi
+    for item in "${SCRIPT_HOME}/skills"/*; do
+      local name=$(basename "${item}")
+      link "${item}" "${claude_home}/skills/${name}"
+    done
   fi
 
-  # Link agents directory
+  # Link agents individually
   if [[ -d "${SCRIPT_HOME}/agents" ]]; then
-    link "${SCRIPT_HOME}/agents" "${claude_home}/agents"
+    if [[ ! -d "${claude_home}/agents" ]]; then
+      echo "-- Creating ${claude_home}/agents"
+      mkdir -p "${claude_home}/agents"
+    fi
+    for item in "${SCRIPT_HOME}/agents"/*; do
+      local name=$(basename "${item}")
+      link "${item}" "${claude_home}/agents/${name}"
+    done
   fi
 
 }
