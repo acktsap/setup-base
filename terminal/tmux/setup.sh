@@ -77,6 +77,8 @@ function main() {
   if [[ ! -f "${HOME}/.tmux.conf" ]]; then
     link "${SCRIPT_HOME}/tmux.conf" "${HOME}/.tmux.conf"
   fi
+
+  link "${SCRIPT_HOME}/scripts/ai-status.sh" "${BIN_LINK_PATH}/tmux-ai-status"
 }
 
 main "$@"
