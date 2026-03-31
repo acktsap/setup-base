@@ -1,0 +1,36 @@
+# Use a widely supported TERM for better compatibility (tmux, vim, etc.)
+term = xterm-256color
+
+# Treat Option key as Alt so tmux can detect Meta bindings
+macos-option-as-alt = true
+
+# background: default #282c34, darkened for more contrast
+background = #252a32
+foreground = #ffffff
+# cursor-color, cursor-text, selection-foreground, selection-background
+# are unset by default (cursor follows fg/bg, selection is inverted)
+palette = 0=#1d1f21
+# red: default #cc6666, brightened for error visibility
+palette = 1=#e05252
+# green: default #b5bd68, brightened for tmux AI status visibility
+palette = 2=#8cc265
+# yellow: default #f0c674, brightened for visibility
+palette = 3=#e5b84c
+# blue: default #81a2be, brightened for tab visibility
+palette = 4=#5aafe6
+palette = 5=#b294bb
+# cyan: default #8abeb7, brightened for directory visibility
+palette = 6=#6edcd0
+palette = 7=#c5c8c6
+# brightblack: default #666666, brightened for comment readability
+palette = 8=#7a7a7a
+# bright red: default #d54e53, brightened to match red
+palette = 9=#f04444
+palette = 10=#b9ca4a
+palette = 11=#e7c547
+# bright blue: default #7aa6da, brightened for directory visibility
+palette = 12=#5aafe6
+palette = 13=#c397d8
+# bright cyan: default #70c0b1, brightened for directory visibility
+palette = 14=#82e2d8
+palette = 15=#eaeaea

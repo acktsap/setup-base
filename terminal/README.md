@@ -3,6 +3,7 @@
 - [Bootstrap](#bootstrap)
 - [Setup](#setup)
 - [Color](#color)
+    - [Ghostty](#ghostty)
     - [Iterm](#iterm)
     - [Window terminal](#window-terminal)
 - [See also](#see-also)
@@ -54,6 +55,11 @@ git clone git@github.com:acktsap/setup-base.git
 ## Color
 
 https://github.com/sindresorhus/hyper-snazzy
+
+### Ghostty
+
+- Config: `ghostty/config`
+- Setup links config to `$HOME/.config/ghostty/config`
 
 ### Iterm
 
