@@ -1,6 +1,12 @@
 ---
 name: git-sync-main
 description: Checkout master/main branch, pull latest changes, and prune stale remote references. Use when switching back to the default branch to start fresh.
+allowed-tools:
+  - Bash(git branch *)
+  - Bash(git checkout main)
+  - Bash(git checkout master)
+  - Bash(git pull)
+  - Bash(git fetch --prune)
 ---
 
 Sync the current git repository to the latest state of the default branch.
