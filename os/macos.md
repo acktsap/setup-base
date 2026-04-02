@@ -287,6 +287,14 @@ end)
         - [x] Show month in icon
         - [x] Show day of week in icon
         - Datetime pattern : '' (empty)
+        - Calandar
+            - Text size : middle one
+            - Highlight
+                - [X] Sun
+                - [X] Sat
+            - [X] Show event dots
+                - [X] Use colored dots
+            - [X] Show calander weeks
 - [Download](https://www.mowglii.com/itsycal/)
 - [GitHub](https://github.com/sfsam/Itsycal)
 
