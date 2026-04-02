@@ -72,6 +72,14 @@ nmap  <C-e> :NERDTreeToggle<CR>
 " arrow synbols
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
+" ctrl+j/k to navigate and auto-preview file
+autocmd FileType nerdtree nmap <buffer> <C-j> jgo
+autocmd FileType nerdtree nmap <buffer> <C-k> kgo
+autocmd FileType nerdtree nmap <buffer> <C-h> o
+autocmd FileType nerdtree nmap <buffer> <C-l> o
+" ctrl+j/k from file view: focus nerdtree, navigate, and preview (only when nerdtree is open)
+nmap <silent> <C-j> :if g:NERDTree.IsOpen() <Bar> NERDTreeFocus <Bar> normal jgo <Bar> endif<CR>
+nmap <silent> <C-k> :if g:NERDTree.IsOpen() <Bar> NERDTreeFocus <Bar> normal kgo <Bar> endif<CR>
 
 """ ctrlpvim
 " Shortcuts
