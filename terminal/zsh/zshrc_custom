@@ -26,10 +26,8 @@ function parse_git_branch() {
 
 # primary prompt
 # FG[xxx] is an 8 bit colors, see also https://jonasjacek.github.io/colors/
-PROMPT='$FG[237]${(l.COLUMNS..-.)}%{$reset_color%}
-$FG[039]%~%{$reset_color%}\
-$FG[040]$(parse_git_branch)%{$reset_color%} \
-$FG[105]%(!.#.»)%{$reset_color%} '
+PROMPT='%{$FG[237]%}${(l.COLUMNS..-.)}%{$reset_color%}
+%{$FG[039]%}%~%{$reset_color%}%{$FG[040]%}$(parse_git_branch)%{$reset_color%} %{$FG[105]%}%(!.#.»)%{$reset_color%} '
 PROMPT2='%{$fg[red]%}\ %{$reset_color%}'
 RPS1='${return_code}'
 
