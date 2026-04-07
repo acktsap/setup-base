@@ -1,6 +1,9 @@
 # Use a widely supported TERM for better compatibility (tmux, vim, etc.)
 term = xterm-256color
 
+# Disable paste protection warning for multiline/command-like text
+clipboard-paste-protection = false
+
 # Treat Option key as Alt so tmux can detect Meta bindings
 macos-option-as-alt = true
 
