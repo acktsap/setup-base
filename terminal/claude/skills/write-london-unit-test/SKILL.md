@@ -1,14 +1,9 @@
 ---
 name: write-london-unit-test
-description: Write unit tests following London School (mockist) TDD style. Use when creating or modifying unit tests.
+description: Write unit tests following London School (mockist) TDD style.
 ---
 
-Write unit tests following the London School (mockist) TDD approach and the conventions below.
-
-## Input
-
-The argument specifies the target class or method to test.
-Read the target source file first, then write tests for it.
+`write-london-unit-test <class-or-method>` — read target source first, then write tests.
 
 ## Core Principles
 

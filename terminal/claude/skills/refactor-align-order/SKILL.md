@@ -1,13 +1,9 @@
 ---
-name: align-order
-description: Align declaration order across related files (e.g., config → Dockerfile env vars, source → test cases) so that items appear in a consistent sequence.
+name: refactor-align-order
+description: Align declaration order across related files so items appear in consistent sequence.
 ---
 
-Align the declaration order of items across related files so they follow a consistent sequence.
-
-## Input
-
-Format: `align-order <source-file> <target-file>`
+`align-order <source-file> <target-file>`
 
 - source-file: the file whose order is the canonical reference
 - target-file: the file to reorder

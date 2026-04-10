@@ -1,15 +1,9 @@
 ---
 name: write-module-readme
-description: Write or update a module-level README.md. Triggers on "모듈 README", "module readme", "write module readme", "모듈 설명 작성", "서브모듈 README".
+description: Write or update a module-level README.md. Triggers on "모듈 README", "모듈 설명 작성", "서브모듈 README".
 ---
 
-Write a README.md for the specified module directory.
-
-## Trigger
-
-`write-module-readme <module-path>`
-
-If no path is given, use the current working directory.
+`write-module-readme <module-path>` (no path → cwd)
 
 ## Process
 
