@@ -45,3 +45,4 @@ set noerrorbells         " don't beep
 set confirm              " raise a confirm dislogue on unsaved changes
 set history=1000         " vim command history count, saved in ~/.viminfo
 set vb                   " replace beep with visual bell
+set updatetime=250       " CursorHold delay (ms), used for LSP document highlight

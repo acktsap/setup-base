@@ -14,13 +14,14 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 
 . $SCRIPT_HOME/../common
 
-readonly NEOVIM_DARWIN_AMD64_URL="https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-macos.tar.gz"
-readonly NEOVIM_DARWIN_ARM64_URL="https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-arm64.tar.gz"
+# https://github.com/neovim/neovim/releases
+readonly NEOVIM_DARWIN_AMD64_URL="https://github.com/neovim/neovim/releases/download/v0.12.1/nvim-macos-x86_64.tar.gz"
+readonly NEOVIM_DARWIN_ARM64_URL="https://github.com/neovim/neovim/releases/download/v0.12.1/nvim-macos-arm64.tar.gz"
 
-readonly NEOVIM_DARWIN_AMD64_DIR_PATH="neovim/nvim-macos/bin/nvim"
+readonly NEOVIM_DARWIN_AMD64_DIR_PATH="neovim/nvim-macos-x86_64/bin/nvim"
 readonly NEOVIM_DARWIN_ARM64_DIR_PATH="neovim/nvim-macos-arm64/bin/nvim"
 
-readonly VUNDLE_VIM_URL=https://github.com/VundleVim/Vundle.vim/archive/master.zip
+readonly VUNDLE_VIM_REPO=https://github.com/VundleVim/Vundle.vim.git
 
 function main() {
   local ostype=$(get_os_type)
@@ -34,20 +35,31 @@ function main() {
   fi
 
   if [[ ! -d "$HOME/.vim/bundle/Vundle.vim" ]]; then
-    local bundle_dir="$HOME/.vim/bundle"
-    if [[ ! -d "${bundle_dir}" ]]; then
-      mkdir -p "${bundle_dir}"
-    fi
-
-    download "${VUNDLE_VIM_URL}" "$TMPDIR/Vundle.vim.zip"
-    extract "$TMPDIR/Vundle.vim.zip" "${bundle_dir}"
-    mv "${bundle_dir}/Vundle.vim-master" "${bundle_dir}/Vundle.vim"
+    mkdir -p "$HOME/.vim/bundle"
+    git clone "${VUNDLE_VIM_REPO}" "$HOME/.vim/bundle/Vundle.vim"
   fi
 
   if [[ ! -d "${HOME}/.config/nvim" ]]; then
     mkdir -p "${HOME}/.config" > /dev/null 2>&1
     link "${SCRIPT_HOME}/config" "${HOME}/.config/nvim"
   fi
+
+  # LSP servers
+  if [[ $(check_bin_installed clangd) != "true" ]]; then
+    install llvm                  # C/C++
+  fi
+  if [[ $(check_bin_installed gopls) != "true" ]]; then
+    go install golang.org/x/tools/gopls@latest  # Go
+  fi
+  if [[ $(check_bin_installed jdtls) != "true" ]]; then
+    install jdtls                 # Java
+  fi
+  if [[ $(check_bin_installed bash-language-server) != "true" ]]; then
+    install bash-language-server  # Shell script
+  fi
+
+  # Vundle plugins
+  nvim +PluginInstall +qall
 
   if [[ ! -f "${HOME}/.ideavimrc" ]]; then
     link "${SCRIPT_HOME}/ideavimrc" "${HOME}/.ideavimrc"

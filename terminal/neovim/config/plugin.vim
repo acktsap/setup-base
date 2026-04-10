@@ -32,17 +32,14 @@ Plugin 'scrooloose/nerdtree'              " file view tree
 "Plugin 'ctrlpvim/ctrlp.vim'               " file finder
 "Plugin 'majutsushi/tagbar'                " show tagbar
 
-" intellisence
-" youcompleteme
-"   Precondition
-"     cmake installed
-"     golang installed
-"     pynvim : python3 -m pip install --user --upgrade pynvim
-"
-"   Setup
-"     cd ~/.vim/bundle/YouCompleteMe
-"     ./install.py --all
-Plugin 'valloric/youcompleteme'           " autocomplete
+" completion (nvim-cmp + LSP)
+Plugin 'neovim/nvim-lspconfig'
+Plugin 'hrsh7th/nvim-cmp'
+Plugin 'hrsh7th/cmp-nvim-lsp'
+Plugin 'hrsh7th/cmp-buffer'
+Plugin 'hrsh7th/cmp-path'
+Plugin 'L3MON4D3/LuaSnip'
+Plugin 'saadparwaiz1/cmp_luasnip'
 
 " git
 Plugin 'tpope/vim-fugitive'               " use git in vim within vim-airline
@@ -97,6 +94,3 @@ let g:ctrlp_cmd = 'CtrlP'
 " f4 -> view tag bar
 nmap <F4> :TagbarToggle<CR>
 
-""" youcompleteme
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_autoclose_preview_window_after_completion = 1

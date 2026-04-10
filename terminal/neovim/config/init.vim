@@ -2,6 +2,10 @@
 :source ${HOME}/.config/nvim/base.vim
 :source ${HOME}/.config/nvim/plugin.vim
 
+" load completion & LSP (lua)
+lua require('lsp')
+lua require('completion')
+
 " load per extentions
 au BufNewFile,BufRead *.java :source ${HOME}/.config/nvim/java.vim
 au BufNewFile,BufRead *.c :source ${HOME}/.config/nvim/c.vim
