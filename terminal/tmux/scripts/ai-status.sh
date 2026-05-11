@@ -5,8 +5,8 @@
 # Outputs a short symbol and sets the window tab color:
 #   (empty)        - no AI tool running
 #   ?  (yellow)    - waiting for user input (permission/confirmation)
-#   ●  (green)     - AI tool is working
-#   ✓  (default)   - AI tool is idle (done)
+#   ●  (cyan)      - AI tool is working
+#   ✓  (green)     - AI tool is idle (done)
 #
 # Also checks non-active panes in the same window:
 #   If any background pane is waiting for input, appends ? to the output.
@@ -60,12 +60,33 @@ unset_style() {
 
 # --- 1. Determine active pane status ---
 # Classify the active (focused) pane into one of: waiting, working, idle, or "" (no AI).
-# Detection order matters — check from most specific to least:
+# Working requires an explicit progress signal (spinner + ellipsis). Anything else is
+# idle, with a short cooldown to avoid flicker between spinner frames.
 #   1. User input prompt (waiting)  — highest priority, needs immediate attention
 #   2. Spinner / progress text (working) — AI is actively processing
-#   3. Shell prompt visible (idle)  — AI finished, shell returned
-#   4. Fallback (working)           — AI process exists but state unclear
+#   3. Fallback (idle with cooldown) — AI process exists but no working signal
 ACTIVE_STATUS=""
+
+# Apply cooldown when no working signal is present.
+# Returns "working" during cooldown window, "idle" otherwise.
+idle_with_cooldown() {
+  if [[ -f "$STATE_FILE" ]]; then
+    local last
+    last=$(cat "$STATE_FILE" 2>/dev/null)
+    # If last state was "?" (input prompt), skip cooldown — transition immediately
+    if [[ "$last" != "?" ]] && [[ "$last" =~ ^[0-9]+$ ]]; then
+      local now elapsed
+      now=$(date +%s)
+      elapsed=$(( now - last ))
+      if (( elapsed < COOLDOWN )); then
+        echo "working"
+        return
+      fi
+    fi
+    rm -f "$STATE_FILE"
+  fi
+  echo "idle"
+}
 
 if pane_has_ai "$PANE_ID"; then
   CONTENT=$(tmux capture-pane -t "$PANE_ID" -p 2>/dev/null)
@@ -82,31 +103,9 @@ if pane_has_ai "$PANE_ID"; then
   elif echo "$CONTENT" | grep -qE '(^[✻✢✽✳◐⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏] .*…|Running…|Thinking…)'; then
     ACTIVE_STATUS="working"
     date +%s > "$STATE_FILE"
-  # 3. Shell prompt visible — AI has finished; apply cooldown to avoid flicker
-  elif echo "$CONTENT" | grep -qE '^\s*(❯|>|›|\$)\s*$'; then
-    if [[ -f "$STATE_FILE" ]]; then
-      LAST=$(cat "$STATE_FILE" 2>/dev/null)
-      # If last state was "?" (input prompt), skip cooldown — transition immediately
-      if [[ "$LAST" != "?" ]] && [[ "$LAST" =~ ^[0-9]+$ ]]; then
-        NOW=$(date +%s)
-        ELAPSED=$(( NOW - LAST ))
-        if (( ELAPSED < COOLDOWN )); then
-          ACTIVE_STATUS="working"
-        else
-          ACTIVE_STATUS="idle"
-          rm -f "$STATE_FILE"
-        fi
-      else
-        ACTIVE_STATUS="idle"
-        rm -f "$STATE_FILE"
-      fi
-    else
-      ACTIVE_STATUS="idle"
-    fi
-  # 4. Fallback: AI process exists but no recognized pattern — assume working
+  # 3. No working signal — idle (with cooldown to absorb spinner frame gaps)
   else
-    ACTIVE_STATUS="working"
-    date +%s > "$STATE_FILE"
+    ACTIVE_STATUS=$(idle_with_cooldown)
   fi
 else
   # No AI process running in this pane
@@ -146,13 +145,13 @@ if [[ "$BG_WAITING" == true && "$ACTIVE_STATUS" != "waiting" ]]; then
   OUTPUT="${OUTPUT:+$OUTPUT}?"
 fi
 
-# Color priority: yellow (needs attention) > green (working) > white (idle)
+# Color priority: yellow (needs attention) > green (done) > cyan (working)
 if [[ "$ACTIVE_STATUS" == "waiting" || "$BG_WAITING" == true ]]; then
   set_style "fg=yellow"
-elif [[ "$ACTIVE_STATUS" == "working" ]]; then
-  set_style "fg=green"
 elif [[ "$ACTIVE_STATUS" == "idle" ]]; then
-  set_style "fg=white"
+  set_style "fg=green"
+elif [[ "$ACTIVE_STATUS" == "working" ]]; then
+  set_style "fg=cyan"
 else
   unset_style
 fi
