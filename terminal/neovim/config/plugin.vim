@@ -1,64 +1,8 @@
 """""""""""""""""""""""""""""""""""""""""""""
 "" Plugin Configs
 
-" Remap code completion to Ctrl+Space {{{2
-" inoremap <C-Space> <C-n>
-
-" git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-" VundleVim Setting
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just
-" :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-" see :h vundle for more details or wiki for FAQ
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" syntax, statusbar
-Plugin 'sonph/onehalf', {'rtp': 'vim/'}   " syntax
-Plugin 'scrooloose/syntastic'             " syntax check
-Plugin 'vim-airline/vim-airline'          " status bar
-
-" navigating
-Plugin 'scrooloose/nerdtree'              " file view tree
-" disable not used
-"Plugin 'ctrlpvim/ctrlp.vim'               " file finder
-"Plugin 'majutsushi/tagbar'                " show tagbar
-
-" completion (nvim-cmp + LSP)
-Plugin 'neovim/nvim-lspconfig'
-Plugin 'hrsh7th/nvim-cmp'
-Plugin 'hrsh7th/cmp-nvim-lsp'
-Plugin 'hrsh7th/cmp-buffer'
-Plugin 'hrsh7th/cmp-path'
-Plugin 'L3MON4D3/LuaSnip'
-Plugin 'saadparwaiz1/cmp_luasnip'
-
-" git
-Plugin 'tpope/vim-fugitive'               " use git in vim within vim-airline
-Plugin 'airblade/vim-gitgutter'           " show git diff
-
-" language
-Plugin 'fatih/vim-go'                     " golang
-
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-
-
-
-
-
 """ onehalfdark
-color onehalfdark
+silent! colorscheme onehalfdark
 
 """ airline
 let g:airline_theme='onehalfdark'
@@ -93,4 +37,3 @@ let g:ctrlp_cmd = 'CtrlP'
 "  - ctrl
 " f4 -> view tag bar
 nmap <F4> :TagbarToggle<CR>
-
