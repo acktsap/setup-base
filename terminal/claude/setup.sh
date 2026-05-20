@@ -64,6 +64,22 @@ function main() {
     done
   fi
 
+  # Append @import for CLAUDE.md
+  if [[ -f "${SCRIPT_HOME}/CLAUDE.md" ]]; then
+    local claude_md="${claude_home}/CLAUDE.md"
+    local import_line="@${SCRIPT_HOME}/CLAUDE.md"
+    if [[ ! -f "${claude_md}" ]]; then
+      echo "-- Creating ${claude_md} with import"
+      echo "${import_line}" > "${claude_md}"
+    elif grep -qxF "${import_line}" "${claude_md}"; then
+      echo "-- Skipping import (already present in ${claude_md})"
+    else
+      echo "-- Appending import to ${claude_md}"
+      [[ -s "${claude_md}" && -n "$(tail -c 1 "${claude_md}")" ]] && echo "" >> "${claude_md}"
+      echo "${import_line}" >> "${claude_md}"
+    fi
+  fi
+
 }
 
 main "$@"
