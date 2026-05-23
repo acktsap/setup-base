@@ -12,6 +12,7 @@
     - [Menu Bar](#menu-bar)
     - [Date \& Time](#date--time)
 - [Finder](#finder)
+- [Agent](#agent)
 - [Utils](#utils)
     - [DisplayLink](#displaylink)
     - [Scroll Reverser](#scroll-reverser)
@@ -39,13 +40,14 @@
     - Mission Control
         - [ ] Show Desktop
     - Input Sources
-        - ~~Select the previous input source : Option + Space (⌥ + Space)~~ -> Karabiner Virtual Keyboard로 대체
+        - [ ] Select the previous input source
+        - [X] Select next source in Input menu : F18
     - Function Keys
         - [X] Use F1, F2, etc. Keys as standard function keys
         - Else, ${customizing}
     - Modifier Keys
         - Caps Lock -> Control
-        - ~~(External keyboard) only~~ -> Karabiner Virtual Keyboard로 대체
+        - (External keyboard) only
             - Control -> Control
             - Option -> Command
             - Command -> Optional
@@ -128,6 +130,64 @@ Options
 ## Finder
 
 - Make workspace dir & pin it to the Favorites
+
+## Launch Agent
+
+- Add this scripts to `~/Library/LaunchAgents/com.user.hidutil.f18.plist`.
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+ "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+<!--
+  macOS LaunchAgent for hidutil key remapping
+
+  Purpose:
+  - Remap Right Command key (⌘) -> F18 at login
+
+  HID codes:
+  - 0x7000000E7 = Right Command
+  - 0x70000006D = F18
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.user.hidutil.f18</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/hidutil</string>
+        <string>property</string>
+        <string>--set</string>
+        <string>
+        {
+            "UserKeyMapping":[
+                {
+                    "HIDKeyboardModifierMappingSrc":0x7000000E7,
+                    "HIDKeyboardModifierMappingDst":0x70000006D
+                }
+            ]
+        }
+        </string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
+```
+- Load
+```shell
+launchctl load ~/Library/LaunchAgents/com.user.hidutil.f18.plist
+```
+- Check
+```shell
+hidutil property --get "UserKeyMapping"
+```
+- Unload
+```shell
+launchctl unload ~/Library/LaunchAgents/com.user.hidutil.f18.plist
+```
 
 ## Utils
 
