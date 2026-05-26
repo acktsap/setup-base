@@ -83,3 +83,6 @@ function main() {
 }
 
 main "$@"
+
+echo "-- Applying to codex env.."
+"${SCRIPT_HOME}/apply-to-codex.sh"
