@@ -100,7 +100,7 @@ if pane_has_ai "$PANE_ID"; then
     ACTIVE_STATUS="waiting"
     echo "?" > "$STATE_FILE"
   # 2. Spinner characters or progress indicators
-  elif echo "$CONTENT" | grep -qE '(^[✻✢✽✳◐⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏] .*…|Running…|Thinking…)'; then
+  elif echo "$CONTENT" | grep -qE '(^[✻✢✽✳◐⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏] .*…|Running…|Thinking…|^[[:space:]]*• Working \()'; then
     ACTIVE_STATUS="working"
     date +%s > "$STATE_FILE"
   # 3. No working signal — idle (with cooldown to absorb spinner frame gaps)
