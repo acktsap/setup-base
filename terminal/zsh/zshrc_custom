@@ -142,6 +142,7 @@ alias usejdk17="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jd
 alias usejdk18="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-18.jdk/Contents/Home"
 alias usejdk19="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-19.jdk/Contents/Home"
 alias usejdk21="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home"
+alias usejdk25="export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-25.jdk/Contents/Home"
 
 export GRAALVM17_HOME="$(find /Library/Java/JavaVirtualMachines -name "graalvm*17*" -type d -maxdepth 1)/Contents/Home"
 export GRAALVM21_HOME="$(find /Library/Java/JavaVirtualMachines -name "graalvm*21*" -type d -maxdepth 1)/Contents/Home"
