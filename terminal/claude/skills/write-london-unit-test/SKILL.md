@@ -19,6 +19,8 @@ Only the SUT is real. Every dependency is a mock.
 
 Assert the SUT calls the right methods with the right arguments, the right number of times.
 
+If the return value already proves the interaction happened, asserting on the return value is enough — skip the redundant `verify()`.
+
 ### No shared state between tests
 
 No shared setup or class-level fields. Each test creates its own mocks and SUT inline.
@@ -39,11 +41,15 @@ Wire mocks via constructor. No reflection or annotation-driven injection.
 
 Each test follows this strict ordering:
 
-1. Given: Declare test variables → declare mock variables → configure stubs → construct SUT
+1. Given: setup, in four sub-steps with no blank lines between them:
+   1. value variables (primitives, strings, enums — anything generated via fixture-monkey / random helpers)
+   2. mock declarations (`Type x = mock();` lines, no stubbing yet)
+   3. stub setup (`when(...).thenReturn(...)` / `thenThrow(...)`)
+   4. SUT construction
 2. When: Call exactly one method on the SUT
 3. Then: Verify interactions and/or assert return values
 
-The three phases should be visually distinguishable by whitespace, without requiring comments to label them.
+The three phases (Given/When/Then) should be visually distinguishable by a blank line between them, without requiring comments to label them. Within Given, do not insert blank lines between the four sub-steps — the blank line is reserved for the phase boundary.
 
 ## Test Organization
 
@@ -65,4 +71,5 @@ Mock return values must also be randomized (UUID, Fixture Monkey, etc.). Extract
 
 - No shared setup (`@Mock`, `@InjectMocks`, `beforeEach`, `setUp`). Construct explicitly per test.
 - No `test` prefix in method names.
-- No state-only assertions when the SUT delegates. Verify the call.
+- No state-only assertions when the SUT delegates and nothing about that delegation surfaces in the return value. Verify the call.
+- No fixed exception message strings — couples tests to wording. Assert type only, or type plus a test-injected identifier when multiple paths share the type.
