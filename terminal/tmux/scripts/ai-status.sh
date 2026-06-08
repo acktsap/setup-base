@@ -20,8 +20,15 @@ PANE_ID="${1:-}"
 
 AI_PATTERN='claude|codex|gemini'
 COOLDOWN=15  # seconds to hold "working" state before allowing "done"
+CAPTURE_LINES=30
 
 # --- Helpers ---
+
+pane_recent_content() {
+  tmux capture-pane -t "$1" -p 2>/dev/null \
+    | grep -v '^[[:space:]]*$' \
+    | tail -"$CAPTURE_LINES" || true
+}
 
 # Check if a pane has an AI CLI tool (claude, codex, gemini) as a direct child process.
 pane_has_ai() {
@@ -33,14 +40,39 @@ pane_has_ai() {
     | grep -qiE "$AI_PATTERN"
 }
 
-# Check if a pane is showing a permission/confirmation prompt (e.g. Yes/No, [Y/n]).
-# Captures the last 15 non-empty lines and matches common interactive prompt patterns.
+# Check Codex permission prompts.
+content_is_codex_waiting() {
+  local lines
+  lines=$(printf '%s\n' "$1" | grep -v '^[[:space:]]*$' || true)
+  [[ -z "$lines" ]] && return 1
+
+  printf '%s\n' "$lines" | grep -qiE \
+    "Would you like to run the following command\?" || return 1
+  printf '%s\n' "$lines" | grep -qE \
+    '^[^[:alnum:]]*[0-9]+\.[[:space:]]*(Yes, proceed|Yes, and don'\''t ask again|No, and tell Codex)' || return 1
+  printf '%s\n' "$lines" | tail -1 | grep -qiE \
+    "^[[:space:]]*Press enter to confirm or esc to cancel$"
+}
+
+# Check Claude-style permission/confirmation prompts (e.g. Yes/No, [Y/n]).
+content_is_claude_waiting() {
+  local content="$1"
+  printf '%s\n' "$content" | grep -qiE \
+    '\. Yes$|\. No$|\(Y\)es|\(N\)o|\(A\)lways|\[Y/n\]|\[y/N\]|\(y/n\)|proceed[[:space:]]*\?'
+}
+
+content_is_waiting() {
+  local content="$1"
+  content_is_codex_waiting "$content" || content_is_claude_waiting "$content"
+}
+
+# Check if a pane is showing a permission/confirmation prompt.
+# Captures the most recent non-empty lines and matches per-tool prompt patterns.
 pane_is_waiting() {
   local content
-  content=$(tmux capture-pane -t "$1" -p 2>/dev/null | grep -v '^$' | tail -15)
+  content=$(pane_recent_content "$1")
   [[ -z "$content" ]] && return 1
-  echo "$content" | grep -qiE \
-    '\. Yes$|\. No$|\(Y\)es|\(N\)o|\(A\)lways|\[Y/n\]|\[y/N\]|\(y/n\)|proceed\s*\?'
+  content_is_waiting "$content"
 }
 
 # --- Window ID & state file ---
@@ -89,14 +121,12 @@ idle_with_cooldown() {
 }
 
 if pane_has_ai "$PANE_ID"; then
-  CONTENT=$(tmux capture-pane -t "$PANE_ID" -p 2>/dev/null)
-  CONTENT=$(echo "$CONTENT" | grep -v '^$' | tail -15)
+  CONTENT=$(pane_recent_content "$PANE_ID")
 
   if [[ -z "$CONTENT" ]]; then
     ACTIVE_STATUS="idle"
   # 1. Permission / confirmation prompt detected
-  elif echo "$CONTENT" | grep -qiE \
-    '\. Yes$|\. No$|\(Y\)es|\(N\)o|\(A\)lways|\[Y/n\]|\[y/N\]|\(y/n\)|proceed\s*\?'; then
+  elif content_is_waiting "$CONTENT"; then
     ACTIVE_STATUS="waiting"
     echo "?" > "$STATE_FILE"
   # 2. Spinner characters or progress indicators
