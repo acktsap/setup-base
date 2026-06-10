@@ -2,6 +2,6 @@
 
 - When writing unit tests, use the `write-london-unit-test` skill.
 
-## Comments
+## Code Intent
 
-- When writing comments, refer to the `prune-comments` skill.
+- When writing or modifying code, use the `clarify-code-intent` skill.
