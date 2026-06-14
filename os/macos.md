@@ -12,7 +12,7 @@
     - [Menu Bar](#menu-bar)
     - [Date \& Time](#date--time)
 - [Finder](#finder)
-- [Agent](#agent)
+- [Launch Agent](#launch-agent)
 - [Utils](#utils)
     - [DisplayLink](#displaylink)
     - [Scroll Reverser](#scroll-reverser)
@@ -86,6 +86,8 @@ Scroll & Zoom
 - Position on screen : Right
 - [X] Automatically hide and show the dock
 - [ ] Show recent application on Dock
+- Stage Manager
+    - [X] Enable
 
 ### Displays
 
@@ -246,6 +248,9 @@ Must be done before connecting to DisplayLink
 ### Rectangle
 
 - A Window Manager
+- Setting
+    - [X] Launch on login
+    - Stage manager recent app area : 90 px
 - [Download](https://rectangleapp.com)
 
 Usage
