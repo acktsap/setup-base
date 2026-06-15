@@ -17,6 +17,7 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 function main() {
   mkdir -p "${HOME}/.config/ghostty"
   link "${SCRIPT_HOME}/config" "${HOME}/.config/ghostty/config"
+  link "${SCRIPT_HOME}/scripts/auto-tmux.sh" "${BIN_LINK_PATH}/ghostty-auto-tmux"
 }
 
 main "$@"

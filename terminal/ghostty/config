@@ -1,6 +1,9 @@
 # Use a widely supported TERM for better compatibility (tmux, vim, etc.)
 term = xterm-256color
 
+# Start tmux only for the first Ghostty window.
+command = /usr/local/bin/ghostty-auto-tmux
+
 # Disable paste protection warning for multiline/command-like text
 clipboard-paste-protection = false
 

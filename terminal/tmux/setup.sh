@@ -17,6 +17,20 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 readonly OPENSSL_SRC_URL=https://www.openssl.org/source/openssl-1.1.1j.tar.gz
 readonly LIBEVENT_SRC_URL=https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz
 readonly TMUX_SRC_URL=https://github.com/tmux/tmux/releases/download/3.1c/tmux-3.1c.tar.gz
+readonly TPM_REPO_URL=https://github.com/tmux-plugins/tpm.git
+readonly TMUX_RESURRECT_REPO_URL=https://github.com/tmux-plugins/tmux-resurrect.git
+readonly TMUX_CONTINUUM_REPO_URL=https://github.com/tmux-plugins/tmux-continuum.git
+
+function reload_tmux_conf() {
+  if ! command -v tmux >/dev/null 2>&1 || ! tmux has-session >/dev/null 2>&1; then
+    return
+  fi
+
+  echo "-- Reloading tmux config.."
+  if ! tmux source-file "${HOME}/.tmux.conf"; then
+    echo "  Warning: failed to reload ${HOME}/.tmux.conf; run 'tmux source-file ~/.tmux.conf' manually." >&2
+  fi
+}
 
 function main() {
   local ostype=$(get_os_type)
@@ -78,7 +92,14 @@ function main() {
     link "${SCRIPT_HOME}/tmux.conf" "${HOME}/.tmux.conf"
   fi
 
+  clone_repo "${TPM_REPO_URL}" "${HOME}/.tmux/plugins/tpm"
+  clone_repo "${TMUX_RESURRECT_REPO_URL}" "${HOME}/.tmux/plugins/tmux-resurrect"
+  clone_repo "${TMUX_CONTINUUM_REPO_URL}" "${HOME}/.tmux/plugins/tmux-continuum"
+
   link "${SCRIPT_HOME}/scripts/ai-status.sh" "${BIN_LINK_PATH}/tmux-ai-status"
+  link "${SCRIPT_HOME}/scripts/ai-resurrect.sh" "${BIN_LINK_PATH}/tmux-ai-resurrect"
+
+  reload_tmux_conf
 }
 
 main "$@"

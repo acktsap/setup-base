@@ -116,6 +116,22 @@ function install() {
 }
 
 #######################################
+# Clone git repository if missing.
+# Arguments:
+#   1 repository url (required)
+#   2 target directory (required)
+#######################################
+function clone_repo() {
+  local repo_url="${1:?repository url is required}"
+  local target_dir="${2:?target directory is required}"
+
+  if [[ ! -d "${target_dir}" ]]; then
+    mkdir -p "$(dirname "${target_dir}")"
+    git clone "${repo_url}" "${target_dir}"
+  fi
+}
+
+#######################################
 # Download file.
 # Arguments:
 #   1 url (required)
