@@ -174,6 +174,7 @@ alias d-run-all="docker ps -qa | xargs docker start"
 alias g="git"
 alias gi="git"
 alias gt="git status ."
+alias lg="lazygit"
 alias gp="git pull"
 alias gpp="git pull && git pb"
 

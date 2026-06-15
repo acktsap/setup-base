@@ -40,3 +40,12 @@
 [core]
   # resolve broken hangul in git diff
   quotepath = false
+  # syntax-highlighting pager (requires delta; installed by delta/setup.sh)
+  pager = delta
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  navigate = true
+  line-numbers = true

@@ -1,0 +1,42 @@
+# https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+
+# at the root view, the "go back" key (return, remapped to q below) quits instead.
+quitOnTopLevelReturn: true
+
+gui:
+  # bigger jump per main-panel scroll keypress (default 2 lines).
+  scrollHeight: 8
+  # narrow the left side panels (1-4) so the main diff panel gets more width.
+  # default 0.3333; lower = narrower side panels.
+  sidePanelWidth: 0.2
+  # reclaim space / cut noise.
+  showCommandLog: false
+  showRandomTip: false
+  showBottomLine: false
+  # set to "3" if your Ghostty font is a Nerd Font (otherwise icons show as boxes).
+  nerdFontsVersion: ""
+
+git:
+  # render diffs through delta (installed by terminal/delta/setup.sh).
+  # lazygit does its own paging, so disable delta's pager.
+  pagers:
+    - colorArg: always
+      # syntax-theme=ansi : color code with the terminal (Ghostty) palette, not a fixed theme.
+      pager: delta --dark --syntax-theme=ansi --paging=never
+
+keybinding:
+  universal:
+    # ctrl+j / ctrl+k : move selection within the side panels (1-5). arrows still work.
+    prevItem-alt: <c-k>
+    nextItem-alt: <c-j>
+    # j / k : scroll the main (diff) panel while staying on the list.
+    scrollUpMain: k
+    scrollDownMain: j
+    # q : go back one level; at the root view it quits (quitOnTopLevelReturn).
+    # esc no longer goes back — q replaces it. real quit is ctrl+c.
+    return: q
+    quit: <c-c>
+    quit-alt1: <disabled>
+    # screen mode (enlarge/shrink focused panel) on shift-free keys instead of +/_.
+    nextScreenMode: ;
+    prevScreenMode: \
