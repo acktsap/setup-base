@@ -37,6 +37,9 @@ keybinding:
     return: q
     quit: <c-c>
     quit-alt1: <disabled>
+    # enter/ctrl+l : on a file-tree directory, toggle its collapsed state.
+    # Lazygit exposes selected-directory collapse/expand as one toggle action.
+    goInto: [<enter>, <c-l>]
     # screen mode (enlarge/shrink focused panel) on shift-free keys instead of +/_.
     nextScreenMode: ;
     prevScreenMode: \
