@@ -88,6 +88,7 @@ Scroll & Zoom
 - [ ] Show recent application on Dock
 - Stage Manager
     - [X] Enable
+    - Show windows from an application : Once at a Time
 
 ### Displays
 
