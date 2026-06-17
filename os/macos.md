@@ -84,6 +84,7 @@ Scroll & Zoom
 - Size : 33%
 - Magnification : 50%
 - Position on screen : Right
+- Double-click a window's title bar to : Do Nothing
 - [X] Automatically hide and show the dock
 - [ ] Show recent application on Dock
 - Stage Manager
@@ -251,6 +252,7 @@ Must be done before connecting to DisplayLink
 - A Window Manager
 - Setting
     - [X] Launch on login
+    - [X] Double-click window title bar to maximize/restore
     - Stage manager recent app area : 90 px
 - [Download](https://rectangleapp.com)
 
