@@ -38,9 +38,9 @@ keybind = super+i=esc:i
 keybind = super+w=esc:w
 keybind = super+n=esc:n
 
-# background: default #282c34, darkened for more contrast
-background = #252a32
-foreground = #ffffff
+# background: default #282c34; slightly lifted for readability
+background = #303641
+foreground = #e8edf2
 # cursor-color, cursor-text, selection-foreground, selection-background
 # are unset by default (cursor follows fg/bg, selection is inverted)
 palette = 0=#1d1f21
