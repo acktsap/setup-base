@@ -8,6 +8,24 @@ export LIB_LINK_PATH="/usr/local/lib"
 export BIN_LINK_PATH="/usr/local/bin"
 
 #######################################
+# Run a command, escalating with sudo only when the target dir
+# is not writable (e.g. root-owned /usr/local on a fresh machine).
+# Arguments:
+#   1 target directory (required)
+#   * command and args to run
+#######################################
+function sudo_if_needed() {
+  local target_dir="${1:?target directory is required}"
+  shift
+
+  if [[ -w "$target_dir" ]]; then
+    "$@"
+  else
+    sudo "$@"
+  fi
+}
+
+#######################################
 # Get os type.
 # Returns: os type
 #######################################
@@ -220,5 +238,6 @@ function link() {
   local dest_file="${2:?destination file is required}"
 
   echo "-- Linking.."
-  ln -snf "${source_file}" "${dest_file}"
+  local dest_dir=$(dirname "${dest_file}")
+  sudo_if_needed "${dest_dir}" ln -snf "${source_file}" "${dest_file}"
 }

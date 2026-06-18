@@ -20,8 +20,8 @@ function main() {
   echo "Install path: $INSTALL_PATH"
 
   mkdir -p "$INSTALL_PATH"
-  mkdir -p "$LIB_LINK_PATH"
-  mkdir -p "$BIN_LINK_PATH"
+  sudo_if_needed "$LIB_LINK_PATH" mkdir -p "$LIB_LINK_PATH"
+  sudo_if_needed "$BIN_LINK_PATH" mkdir -p "$BIN_LINK_PATH"
 
   # Bootstrap prerequisites (e.g. Homebrew on macOS) before tool setup
   . $SCRIPT_HOME/bootstrap.sh
