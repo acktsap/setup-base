@@ -45,7 +45,14 @@ If a comment mixes kept and removed clauses, rewrite it to preserve only the use
 - WHY behind a non-obvious choice: constraints, invariants, ordering, limitations, workarounds, empirically chosen magic numbers.
 - Pointers requiring outside lookup: tickets, RFCs, upstream bugs, vendor docs, design docs.
 - TODO / FIXME / HACK / NOTE - keep the marker; trim attached prose only if it restates code.
-- Module / class / method docstring: apply the test; also keep one sentence of purpose if the name is ambiguous.
+- Module / class / method docstring: apply the test. A one-sentence purpose earns its place only when the name *and* the adjacent declaration (signature, types, annotations, body) leave what-it-does non-obvious. If an adjacent line already shows it, that is restatement, not purpose — cut it. "The name is ambiguous" is not a standing license to keep a sentence; name the specific fact the reader cannot recover from the code, or remove it.
+
+  ```java
+  // Cut - the meta-annotation below already states the condition:
+  /** Registers the bean only when somefeature.enabled=true. */
+  @ConditionalOnProperty(name = "somefeature.enabled", havingValue = "true")
+  public @interface ConditionalOnSomeFeatureEnabled {}
+  ```
 - Public API, SDK, and interface docs that define caller-visible contracts: preconditions, postconditions, side effects, error behavior, ordering guarantees, compatibility notes, security/privacy constraints, or domain invariants. Only state behavior backed by existing docs, tests, API specs, or clearly established caller-visible behavior.
 - Operational constraints a caller or maintainer must know: retry safety, idempotency, consistency windows, backpressure, data retention, logging sensitivity, or rollout limitations.
 
