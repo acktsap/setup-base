@@ -26,6 +26,22 @@ function sudo_if_needed() {
 }
 
 #######################################
+# Ensure a link directory exists and is owned by the current user,
+# so subsequent link() calls don't need sudo on each invocation.
+# Claims ownership once (like Homebrew does for /usr/local on Intel Macs).
+# Arguments:
+#   1 target directory (required)
+#######################################
+function ensure_writable_dir() {
+  local dir="${1:?directory is required}"
+
+  sudo_if_needed "$dir" mkdir -p "$dir"
+  if [[ ! -w "$dir" ]]; then
+    sudo chown "$(whoami)" "$dir"
+  fi
+}
+
+#######################################
 # Get os type.
 # Returns: os type
 #######################################
