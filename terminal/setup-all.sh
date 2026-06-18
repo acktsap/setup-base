@@ -23,6 +23,9 @@ function main() {
   mkdir -p "$LIB_LINK_PATH"
   mkdir -p "$BIN_LINK_PATH"
 
+  # Bootstrap prerequisites (e.g. Homebrew on macOS) before tool setup
+  . $SCRIPT_HOME/bootstrap.sh
+
   for target in ${directories[@]}; do
     if [ -e ${target}/setup.sh ]; then
       echo "Setup ${target}.."
