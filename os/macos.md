@@ -1,8 +1,9 @@
 # MacOS Setup
 
+- [Launch Agent](#launch-agent)
 - [System preference](#system-preference)
     - [Keyboard](#keyboard)
-    - [Mouse](#mouse)
+    - [Pointer Control](#pointer-control)
     - [Trackpad](#trackpad)
     - [Sound](#sound)
     - [Appearance](#appearance)
@@ -12,132 +13,27 @@
     - [Menu Bar](#menu-bar)
     - [Date \& Time](#date--time)
 - [Finder](#finder)
-- [Launch Agent](#launch-agent)
 - [Utils](#utils)
     - [DisplayLink](#displaylink)
     - [Scroll Reverser](#scroll-reverser)
-    - [Karabiner](#karabiner)
     - [Rectangle](#rectangle)
     - [RunCat](#runcat)
     - [Hammerspoon](#hammerspoon)
     - [Itsycal](#itsycal)
 - [Optional Utils](#optional-utils)
-    - [Alfred](#alfred)
     - [IINA](#iina)
     - [Gif Brewery 3 by gfycat](#gif-brewery-3-by-gfycat)
 - [See also](#see-also)
 
-## System preference
-
-### Keyboard
-
-- [ ] Adjust keyboard brightness in low light
-- Keyboard brightness to 30%
-- Turn keyboard backlight off after inactivity to **Never**
-- Keyboard Shortcuts
-    - Launchpad & Dock
-        - [ ] Turn Dock hiding on/off
-    - Mission Control
-        - [ ] Show Desktop
-    - Input Sources
-        - [ ] Select the previous input source
-        - [X] Select next source in Input menu : F18
-    - Function Keys
-        - [X] Use F1, F2, etc. Keys as standard function keys
-        - Else, ${customizing}
-    - Modifier Keys
-        - Caps Lock -> Control
-        - (External keyboard) only
-            - Control -> Control
-            - Option -> Command
-            - Command -> Optional
-
-### Mouse
-
-- Tracking speed : almost max
-- [ ] Natural Scrolling
-
-### Trackpad
-
-Point & Click
-
-- [X] Tap to click
-- Tracking speed : 6
-
-Scroll & Zoom
-
-- [X] Natural Scrolling
-
-### Sound
-
-- Sound Effects -> Alert volume to 0
-    - [ ] Play sound on startup
-    - [ ] Play user interface sound effects
-    - [ ] Play feedback when volue is changed
-
-### Appearance
-
-- Dark
-
-### Desktop & Dock
-
-- Size : 33%
-- Magnification : 50%
-- Position on screen : Right
-- Double-click a window's title bar to : Do Nothing
-- [X] Automatically hide and show the dock
-- [ ] Show recent application on Dock
-- Stage Manager
-    - [X] Enable
-    - Show windows from an application : Once at a Time
-
-### Displays
-
-- Set proper setting per monitor.
-
-### Battery
-
-- Turn display off after 5 minutes
-
-Options
-
-- [ ] Slightly dim the display while on battery power
-- [ ] Prevent automatic sleeping on power adapter when the display is off
-
-### Menu Bar
-
-- Menu Bar Controls
-    - Clock
-        - Date
-            - [ ] Show date
-            - [ ] Show the day of the week
-            - Time
-                - [x] Display the time with seconds
-    - Check those only
-        - [x] Wi-Fi
-        - [x] Battery
-        - [x] Text Input
-- Allow in the Menu Bar
-    - Check those only
-        - [x] DisplayLink Manager
-        - [x] Itsycal
-        - [x] KakaoTalk
-        - [x] Rectangle
-        - [x] RunCat
-        - [x] Scroll Reverser
-
-### Date & Time
-
-- [ ] Set time and date automatically
-- [x] 24-hour time
-
-## Finder
-
-- Make workspace dir & pin it to the Favorites
-
 ## Launch Agent
 
 - Add this scripts to `~/Library/LaunchAgents/com.user.hidutil.f18.plist`.
+- script
+```shell
+mkdir -p ~/Library/LaunchAgents/
+vi ~/Library/LaunchAgents/com.user.hidutil.f18.plist
+```
+- xml
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
@@ -193,6 +89,124 @@ hidutil property --get "UserKeyMapping"
 launchctl unload ~/Library/LaunchAgents/com.user.hidutil.f18.plist
 ```
 
+## System preference
+
+### Keyboard
+
+- [ ] Adjust keyboard brightness in low light
+- Keyboard brightness to 30%
+- Turn keyboard backlight off after inactivity to **Never**
+- Keyboard Shortcuts
+    - Launchpad & Dock
+        - [ ] Turn Dock hiding on/off
+    - Mission Control
+        - [ ] Show Desktop
+    - Input Sources
+        - [ ] Select the previous input source
+        - [X] Select next source in Input menu : F18 (right command, changed by [Launch Agent](#launch-agent))
+    - Function Keys
+        - [X] Use F1, F2, etc. Keys as standard function keys
+        - Else, ${customizing}
+    - Modifier Keys
+        - Caps Lock -> Control
+        - (External keyboard) only
+            - Control -> Control
+            - Option -> Command
+            - Command -> Optional
+
+### Pointer Control
+
+- Trackpad Options
+    - Scroll speed : 5
+- Mouse Options
+    - Scroll speed : 5
+
+### Trackpad
+
+- Point & Click
+    - Tracking speed : 6
+    - [X] Tap to click
+- Scroll & Zoom
+    - [ ] Natural scrolling
+
+Scroll & Zoom
+
+- [X] Natural Scrolling
+
+### Sound
+
+- Sound Effects
+    - Alert volume : 0
+    - [ ] Play sound on startup
+    - [ ] Play user interface sound effects
+    - [ ] Play feedback when volue is changed
+
+### Appearance
+
+- Dark
+
+### Desktop & Dock
+
+- Dock
+    - Size : 33%
+    - Magnification : 70%
+    - Dock position on screen : Right
+    - Window title bar double-click action : No Action
+- [X] Automatically hide and show the dock
+- [ ] Show suggested and recent apps in Dock
+- Desktop & Stage Manager
+    - Show items
+        - [X] On Desktop
+        - [ ] In Stage Manager
+    - [X] Stage Manager
+    - [X] Show recent apps in Stage Manager
+    - Show windows from an application : Once at a Time
+
+### Displays
+
+- Set proper setting per monitor.
+
+### Battery
+
+- Turn display off after 5 minutes -> ???
+- Options
+    - [ ] Slightly dim the display while on battery power
+    - [ ] Prevent automatic sleeping on power adapter when the display is off
+
+### Menu Bar
+
+- Menu Bar Controls
+    - Clock
+        - Date
+            - [ ] Show date
+            - [ ] Show the day of the week
+        - Time
+            - [ ] Show AM/PM
+            - [ ] Flash the time separators
+            - [x] Display the time with seconds
+    - Check those only
+        - [X] Wi-Fi
+        - [X] Battery
+        - [X] Text Input
+- Allow in the Menu Bar
+    - Check those only
+        - [X] DisplayLink Manager
+        - [X] Itsycal
+        - [X] KakaoTalk
+        - [X] Rectangle
+        - [X] RunCat
+        - [X] Scroll Reverser
+
+### Date & Time
+
+- [ ] Set time and date automatically
+- [X] 24-hour time
+- [ ] Set time zone automatically using your current location
+
+## Finder
+
+- Make workspace dir & pin it to the Favorites
+
 ## Utils
 
 ### DisplayLink
@@ -209,52 +223,28 @@ Must be done before connecting to DisplayLink
         - Scrolling Axes
             - [X] Reverse Vertical
             - [X] Reverse Horizontal
-        - Scroll Direction (Before this, set mouse scroll direction to natural)
-            - [ ] Reverse Trackpad
-            - [X] Reverse Mouse
-            - App
+        - ScrolX Direction (Before this, set mouse scroll direction to natural)
+            - [X] Reverse Trackpad
+            - [ ] Reverse Mouse
+    - App
         - [X] Start at login
         - [X] Show in menu bar
         - Check for update
             - [ ] Automatically
             - [ ] Include beta versions
 
-### Karabiner
-
-- Virtual keyboard
-- [Download](https://karabiner-elements.pqrs.org/)
-- Setting
-    - Simple modifications
-        - Apple Internal Keyboard
-            - right_command -> **F18**
-        - External keyboard (e.g. Realforce)
-            - caps_lick -> left_control
-            - left_command -> left_option
-            - left_option -> left_command
-            - right_command -> right_option
-            - right_option -> **F18**
-    - Function keys
-        - For all devices
-            - [X] Use all F1, F2, etc as standard function keys
-    - Devices
-        - [X] Apple Internal Keyboard
-            - [ ] Manipulate caps lock LED
-        - [X] External keyboard (eg. Realforce)
-            - [ ] Manipulate caps lock LED
-    - System Preference (Keyboard)
-        - Keyboard Shortcuts -> Input Sources
-            - Select the previous input source to **F18** (오른쪽 command key 누르기)
-    - See also
-        - https://ssossoblog.tistory.com/54
-
 ### Rectangle
 
 - A Window Manager
-- Setting
-    - [X] Launch on login
-    - [X] Double-click window title bar to maximize/restore
-    - Stage manager recent app area : 90 px
 - [Download](https://rectangleapp.com)
+- Setting
+    - Snap Areas
+        - [X] Snap windows by dragging
+    - General
+        - [X] Launch on login
+        - [ ] check for updates automaticallly
+        - [X] Double-click window title bar to maximize/restore
+        - Stage manager recent app area : 90 px
 
 Usage
 
@@ -279,7 +269,7 @@ Settting
         - Runner
             - Uncheck All
         - Launch
-            - [X] Launch Runcat at login
+            - [X] Launch Runcat automatically at login
     - System Info
         - [x] Memory Performance
         - [x] Storage Capacity
@@ -348,13 +338,15 @@ end)
 - Calendar on menu bar.
 - Setting
     - General
-        - [x] Launch at login
+        - [X] Launch at login
         - [ ] Automatically check for updates
         - [ ] Beep beep on the hour
     - Appearance
-        - [x] Show month in icon
-        - [x] Show day of week in icon
-        - Datetime pattern : '' (empty)
+        - Menu Bar
+            - Choose 2nd one
+            - [X] Show month in icon
+            - [X] Show day of week in icon
+            - Datetime pattern : '' (empty)
         - Calandar
             - Text size : middle one
             - Highlight
@@ -367,17 +359,6 @@ end)
 - [GitHub](https://github.com/sfsam/Itsycal)
 
 ## Optional Utils
-
-### Alfred
-
-- 알프레드
-- [Download](https://www.alfredapp.com)
-- Setting
-    - System Preference
-        - Keyboard Shortcuts
-            - Spotlight
-                - [ ] Show Spotlight search
-    - Alfred Hotkey: `command + Space`
 
 ### IINA
 

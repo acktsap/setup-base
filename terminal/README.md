@@ -2,6 +2,8 @@
 
 - [Bootstrap](#bootstrap)
 - [Setup](#setup)
+- [Download Terminal](#download-terminal)
+    - [MacOS](#macos)
 - [Color](#color)
     - [Ghostty (In use)](#ghostty-in-use)
     - [Iterm](#iterm)
@@ -51,6 +53,12 @@ git clone git@github.com:acktsap/setup-base.git
 
 - Setup : `setup-all.sh`
 - Setup vim : `vi .` and :PluginInstall
+
+## Download Terminal 
+
+### MacOS
+
+- [Download Ghostty](https://ghostty.org/download)
 
 ## Color
 
