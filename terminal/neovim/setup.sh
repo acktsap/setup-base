@@ -49,7 +49,7 @@ function main() {
     install llvm                  # C/C++
   fi
   if [[ $(check_bin_installed gopls) != "true" ]]; then
-    go install golang.org/x/tools/gopls@latest  # Go
+    install gopls                 # Go
   fi
   if [[ $(check_bin_installed jdtls) != "true" ]]; then
     install jdtls                 # Java
