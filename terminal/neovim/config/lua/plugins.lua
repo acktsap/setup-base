@@ -12,13 +12,22 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  -- UI / Syntax
-  { "sonph/onehalf", rtp = "vim/" },
-  { "scrooloose/syntastic" },
-  { "vim-airline/vim-airline" },
+  -- UI / Themes & Statusline
+  { "folke/tokyonight.nvim", lazy = false, priority = 1000 },
+  { "rebelot/kanagawa.nvim", lazy = false, priority = 1000 },
+  { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
 
   -- Navigating
-  { "scrooloose/nerdtree" },
+  { 
+    "preservim/nerdtree",
+    keys = {
+      { "<C-e>", ":NERDTreeToggle<CR>", desc = "Toggle NERDTree" },
+    },
+    config = function()
+      vim.g.NERDTreeDirArrowExpandable = '▸'
+      vim.g.NERDTreeDirArrowCollapsible = '▾'
+    end
+  },
 
   -- LSP / Completion
   { "neovim/nvim-lspconfig" },
