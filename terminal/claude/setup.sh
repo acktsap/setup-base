@@ -64,10 +64,10 @@ function main() {
     done
   fi
 
-  # Append @import for CLAUDE.md
-  if [[ -f "${SCRIPT_HOME}/CLAUDE.md" ]]; then
+  # Append @import for shared agent guidance
+  if [[ -f "${SCRIPT_HOME}/AGENTS.global.md" ]]; then
     local claude_md="${claude_home}/CLAUDE.md"
-    local import_line="@${SCRIPT_HOME}/CLAUDE.md"
+    local import_line="@${SCRIPT_HOME}/AGENTS.global.md"
     if [[ ! -f "${claude_md}" ]]; then
       echo "-- Creating ${claude_md} with import"
       echo "${import_line}" > "${claude_md}"
