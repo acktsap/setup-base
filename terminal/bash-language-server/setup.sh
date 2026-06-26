@@ -15,8 +15,12 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 . $SCRIPT_HOME/../common
 
 function main() {
-  if [[ $(check_bin_installed bash-language-server) != "true" ]]; then
+  if [[ $(check_bin_runs bash-language-server --version) != "true" ]]; then
     install bash-language-server
+  fi
+  if [[ $(check_bin_runs bash-language-server --version) != "true" ]]; then
+    echo "bash-language-server is installed but cannot run. Reinstall node and bash-language-server, then rerun setup."
+    exit 1
   fi
 }
 

@@ -13,8 +13,14 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   -- UI / Themes & Statusline
-  { "folke/tokyonight.nvim", lazy = false, priority = 1000 },
-  { "rebelot/kanagawa.nvim", lazy = false, priority = 1000 },
+  {
+    "sonph/onehalf",
+    lazy = false,
+    priority = 1000,
+    config = function(plugin)
+      vim.opt.rtp:append(plugin.dir .. "/vim")
+    end,
+  },
   { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
 
   -- Navigating

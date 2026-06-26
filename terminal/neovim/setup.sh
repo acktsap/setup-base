@@ -54,8 +54,12 @@ function main() {
   if [[ $(check_bin_installed jdtls) != "true" ]]; then
     install jdtls                 # Java
   fi
-  if [[ $(check_bin_installed bash-language-server) != "true" ]]; then
+  if [[ $(check_bin_runs bash-language-server --version) != "true" ]]; then
     install bash-language-server  # Shell script
+  fi
+  if [[ $(check_bin_runs bash-language-server --version) != "true" ]]; then
+    echo "bash-language-server is installed but cannot run. Reinstall node and bash-language-server, then rerun setup."
+    exit 1
   fi
 
   # Vundle plugins

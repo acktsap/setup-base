@@ -1,8 +1,9 @@
 """""""""""""""""""""""""""""""""""""""""""""
 "" Plugin Configs
 
-""" Colorscheme (Modern & Professional)
-silent! colorscheme kanagawa-wave
+""" Colorscheme
+set termguicolors
+silent! colorscheme onehalfdark
 
 """ lualine (Modern statusline)
 lua require('lualine').setup { options = { theme = 'auto' } }

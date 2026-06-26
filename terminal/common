@@ -123,6 +123,25 @@ function check_bin_installed() {
 }
 
 #######################################
+# Check that a binary exists and can start successfully.
+# Arguments:
+#   1 binary name (required)
+#   * optional command arguments
+# Returns: true/false
+#######################################
+function check_bin_runs() {
+  local binary_name="${1:?binary name is required}"
+  shift
+
+  local installed=false
+  if [[ $(check_bin_installed "${binary_name}") = "true" ]] && bash -c '"$0" "$@"; exit $?' "${binary_name}" "$@" > /dev/null 2>&1; then
+    installed=true
+  fi
+
+  echo "${installed}"
+}
+
+#######################################
 # Install tool.
 # Arguments:
 #   1 tool name
