@@ -1,6 +1,6 @@
 ---
 name: clarify-code-intent
-description: Improve comments and docs so they capture non-obvious intent, caller-visible contracts, invariants, and why-context; prune comments that only restate code. Triggers on "주석 정리", "주석 다듬기", "comment cleanup", "prune comments", "의도 정리", "clarify code intent", "intent comments", "contract docs", "API contract comments".
+description: Improve comments and docs so they capture non-obvious intent, caller-visible contracts, invariants, and why-context; prune comments that only restate code. Use whenever writing or modifying code (any new or edited source file), not just on explicit cleanup requests. Triggers on "주석 정리", "주석 다듬기", "comment cleanup", "prune comments", "의도 정리", "clarify code intent", "intent comments", "contract docs", "API contract comments".
 ---
 
 `clarify-code-intent <file-or-dir>` (no path -> only the single unambiguous recently edited file)
@@ -28,6 +28,13 @@ Code shows WHAT. Comments should show WHY: intent, contracts, constraints, and c
 For each clause, ask: "If I deleted this, would a reader seeing this file cold be confused about something they could not recover within ~30s of reading the code?" If no, cut it. If yes, keep or tighten it.
 
 If a comment mixes kept and removed clauses, rewrite it to preserve only the useful intent.
+
+## Stay within the documented code's own responsibility
+
+When a comment must reference something across a boundary, state it as this code's own contract or its requirement on others — never as a description of how a collaborator, downstream, framework, or library behaves. Describing another component's behavior couples the doc to it and usually restates what the reader can find at that component.
+
+- Wrong: `// safe because the downstream store's upsert merges duplicates by key`
+- Right: `// may emit an item more than once after a restart; consumers must be idempotent`
 
 ## Remove (code already shows this)
 
@@ -98,12 +105,13 @@ Keep - the constraint is invisible from the type:
 const cache = new Map<number, Entry>();
 ```
 
-Keep contract docs - the behavior is caller-visible:
+Keep contract docs - the behavior is caller-visible (state this method's own contract and its
+requirement on callers, not how any collaborator behaves):
 
 ```java
 /**
- * Sends each event at most once. Non-idempotent events are dropped on retryable
- * transport failures because downstream creates user-visible incidents.
+ * Sends each event at most once; a retryable transport failure drops the event instead of retrying.
+ * Callers that require delivery must detect and resend dropped events.
  */
 void publish(Event event);
 ```

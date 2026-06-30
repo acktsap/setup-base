@@ -29,6 +29,26 @@ No shared setup or class-level fields. Each test creates its own mocks and SUT i
 
 Wire mocks via constructor. No reflection or annotation-driven injection.
 
+When the production constructor hides a collaborator (a no-arg constructor that builds its own dependency), add a package-private constructor that takes the collaborator and keep the test in the same package, so the test injects a double through it — preferred over reflection, field injection, or static mocking.
+
+```java
+public class Reader {
+    private final Parser parser;
+
+    public Reader() {            // production
+        this(new RealParser());
+    }
+
+    Reader(Parser parser) {      // package-private: test seam
+        this.parser = parser;
+    }
+}
+
+// test, in the same package:
+Parser parser = mock();
+Reader sut = new Reader(parser);
+```
+
 ## Test Method Structure
 
 ### Naming
