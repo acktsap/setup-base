@@ -36,6 +36,10 @@ keybind = super+9=esc:9
 keybind = super+o=esc:o
 keybind = super+i=esc:i
 keybind = super+w=esc:w
+# Bracket shortcuts use tmux user-keys because ESC [ is also a CSI prefix.
+keybind = super+[=text:\x1b[9001u
+keybind = super+]=text:\x1b[9002u
+keybind = super+p=text:\x1b[9003u
 keybind = super+n=esc:n
 
 # background: default #282c34; slightly lifted for readability

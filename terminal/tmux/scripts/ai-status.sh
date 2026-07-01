@@ -1,17 +1,5 @@
 #!/usr/bin/env bash
-# ai-status.sh - detect AI CLI tool status in a tmux pane
-# Usage: ai-status.sh <pane_id>
-#
-# Outputs a short symbol and sets the window tab color:
-#   (empty)        - no AI tool running
-#   ?  (yellow)    - waiting for user input (permission/confirmation)
-#   ●  (cyan)      - AI tool is working
-#   ✓  (green)     - AI tool is idle (done)
-#
-# Also checks non-active panes in the same window:
-#   If any background pane is waiting for input, appends ? to the output.
-#
-# Uses a state file to debounce working→done transitions (15s cooldown)
+# Render one tmux pane's cached AI state as a compact status mark.
 
 set -euo pipefail
 
@@ -19,10 +7,8 @@ PANE_ID="${1:-}"
 [[ -z "$PANE_ID" ]] && exit 0
 
 AI_PATTERN='claude|codex|gemini'
-COOLDOWN=15  # seconds to hold "working" state before allowing "done"
 CAPTURE_LINES=30
-
-# --- Helpers ---
+STATE_DIR="${TMPDIR:-/tmp}/tmux-ai-status"
 
 pane_recent_content() {
   tmux capture-pane -t "$1" -p 2>/dev/null \
@@ -30,7 +16,6 @@ pane_recent_content() {
     | tail -"$CAPTURE_LINES" || true
 }
 
-# Check if a pane has an AI CLI tool (claude, codex, gemini) as a direct child process.
 pane_has_ai() {
   local pid
   pid=$(tmux display-message -p -t "$1" '#{pane_pid}' 2>/dev/null) || return 1
@@ -40,7 +25,6 @@ pane_has_ai() {
     | grep -qiE "$AI_PATTERN"
 }
 
-# Check Codex permission prompts.
 content_is_codex_waiting() {
   local lines
   lines=$(printf '%s\n' "$1" | grep -v '^[[:space:]]*$' || true)
@@ -54,11 +38,12 @@ content_is_codex_waiting() {
     "^[[:space:]]*Press enter to confirm or esc to cancel$"
 }
 
-# Check Claude-style permission/confirmation prompts (e.g. Yes/No, [Y/n]).
 content_is_claude_waiting() {
   local content="$1"
-  printf '%s\n' "$content" | grep -qiE \
-    '\. Yes$|\. No$|\(Y\)es|\(N\)o|\(A\)lways|\[Y/n\]|\[y/N\]|\(y/n\)|proceed[[:space:]]*\?'
+  local tail_lines
+  tail_lines=$(printf '%s\n' "$content" | grep -v '^[[:space:]]*$' | tail -8 || true)
+  printf '%s\n' "$tail_lines" | grep -qiE \
+    'permission_prompt|Enter to select.*Esc to cancel|\. Yes$|\. No$|\(Y\)es|\(N\)o|\(A\)lways|\[Y/n\]|\[y/N\]|\(y/n\)|proceed[[:space:]]*\?'
 }
 
 content_is_waiting() {
@@ -66,126 +51,82 @@ content_is_waiting() {
   content_is_codex_waiting "$content" || content_is_claude_waiting "$content"
 }
 
-# Check if a pane is showing a permission/confirmation prompt.
-# Captures the most recent non-empty lines and matches per-tool prompt patterns.
-pane_is_waiting() {
-  local content
-  content=$(pane_recent_content "$1")
-  [[ -z "$content" ]] && return 1
-  content_is_waiting "$content"
+state_file_for_pane() {
+  local server_pid
+  server_pid=$(tmux display-message -p '#{pid}' 2>/dev/null) || return 1
+  printf '%s/%s_%s.state\n' "$STATE_DIR" "$server_pid" "$1"
 }
 
-# --- Window ID & state file ---
-WIN_ID=$(tmux display-message -p -t "$PANE_ID" '#{window_id}' 2>/dev/null) || exit 0
-SERVER_PID=$(tmux display-message -p '#{pid}' 2>/dev/null) || exit 0
-STATE_DIR="${TMPDIR:-/tmp}/tmux-ai-status"
-mkdir -p "$STATE_DIR"
-STATE_FILE="$STATE_DIR/${SERVER_PID}_${PANE_ID}"
-
-set_style() {
-  tmux setw -t "$WIN_ID" window-status-style "$1" 2>/dev/null
+state_value() {
+  local key="$1"
+  local file="$2"
+  [[ -f "$file" ]] || return 0
+  awk -F= -v key="$key" '$1 == key {sub(/^[^=]*=/, ""); print; exit}' "$file" 2>/dev/null
 }
 
-unset_style() {
-  tmux setw -t "$WIN_ID" -u window-status-style 2>/dev/null
+status_mark() {
+  case "$1" in
+    waiting) printf '?' ;;
+    running) printf '●' ;;
+    idle) printf '✓' ;;
+    *) printf '' ;;
+  esac
 }
 
-# --- 1. Determine active pane status ---
-# Classify the active (focused) pane into one of: waiting, working, idle, or "" (no AI).
-# Working requires an explicit progress signal (spinner + ellipsis). Anything else is
-# idle, with a short cooldown to avoid flicker between spinner frames.
-#   1. User input prompt (waiting)  — highest priority, needs immediate attention
-#   2. Spinner / progress text (working) — AI is actively processing
-#   3. Fallback (idle with cooldown) — AI process exists but no working signal
-ACTIVE_STATUS=""
+set_window_style() {
+  local window_id="$1"
+  local status="$2"
 
-# Apply cooldown when no working signal is present.
-# Returns "working" during cooldown window, "idle" otherwise.
-idle_with_cooldown() {
-  if [[ -f "$STATE_FILE" ]]; then
-    local last
-    last=$(cat "$STATE_FILE" 2>/dev/null)
-    # If last state was "?" (input prompt), skip cooldown — transition immediately
-    if [[ "$last" != "?" ]] && [[ "$last" =~ ^[0-9]+$ ]]; then
-      local now elapsed
-      now=$(date +%s)
-      elapsed=$(( now - last ))
-      if (( elapsed < COOLDOWN )); then
-        echo "working"
-        return
-      fi
-    fi
-    rm -f "$STATE_FILE"
-  fi
-  echo "idle"
+  case "$status" in
+    waiting) tmux setw -t "$window_id" window-status-style "fg=yellow" 2>/dev/null ;;
+    running) tmux setw -t "$window_id" window-status-style "fg=cyan" 2>/dev/null ;;
+    idle) tmux setw -t "$window_id" window-status-style "fg=green" 2>/dev/null ;;
+    *) tmux setw -t "$window_id" -u window-status-style 2>/dev/null ;;
+  esac
 }
 
-if pane_has_ai "$PANE_ID"; then
-  CONTENT=$(pane_recent_content "$PANE_ID")
-
-  if [[ -z "$CONTENT" ]]; then
-    ACTIVE_STATUS="idle"
-  # 1. Permission / confirmation prompt detected
-  elif content_is_waiting "$CONTENT"; then
-    ACTIVE_STATUS="waiting"
-    echo "?" > "$STATE_FILE"
-  # 2. Spinner characters or progress indicators
-  elif echo "$CONTENT" | grep -qE '(^[✻✢✽✳◐⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏] .*…|Running…|Thinking…|^[[:space:]]*• Working \()'; then
-    ACTIVE_STATUS="working"
-    date +%s > "$STATE_FILE"
-  # 3. No working signal — idle (with cooldown to absorb spinner frame gaps)
+fallback_status() {
+  local content="$1"
+  if [[ -z "$content" ]]; then
+    printf 'idle\n'
+  elif content_is_waiting "$content"; then
+    printf 'waiting\n'
+  elif printf '%s\n' "$content" | grep -qiE '(^[✻✢✽✳◐⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏] .*…|Running…|Thinking…|still thinking|thinking with|^[[:space:]]*• Working \()'; then
+    printf 'running\n'
   else
-    ACTIVE_STATUS=$(idle_with_cooldown)
+    printf 'idle\n'
   fi
-else
-  # No AI process running in this pane
+}
+
+WIN_ID=$(tmux display-message -p -t "$PANE_ID" '#{window_id}' 2>/dev/null) || exit 0
+STATE_FILE=$(state_file_for_pane "$PANE_ID") || exit 0
+
+if ! pane_has_ai "$PANE_ID"; then
   rm -f "$STATE_FILE" 2>/dev/null
+  set_window_style "$WIN_ID" ""
+  exit 0
 fi
 
-# --- 2. Check non-active (background) panes for waiting ---
-# Scan all other panes in the same window. If any background pane has an AI tool
-# waiting for user input, flag it so we can surface it in the window status tab.
-# Only the "waiting" state is checked — working/idle in background panes is ignored.
-BG_WAITING=false
-OTHER_PANES=$(tmux list-panes -t "$WIN_ID" -F '#{pane_id}' 2>/dev/null \
-  | grep -v "^${PANE_ID}$" || true)
+CONTENT=$(pane_recent_content "$PANE_ID")
+STATUS=$(state_value status "$STATE_FILE")
 
-for pane in $OTHER_PANES; do
-  if pane_has_ai "$pane" && pane_is_waiting "$pane"; then
-    BG_WAITING=true
-    break
-  fi
-done
-
-# --- 3. Build output symbol and apply window tab color ---
-# Combine active pane status with background waiting indicator.
-# Examples:  "●"  = active working
-#            "?"  = active waiting (or no active AI + bg waiting)
-#            "●?" = active working + background pane waiting
-#            "✓?" = active idle + background pane waiting
-OUTPUT=""
-case "$ACTIVE_STATUS" in
-  waiting) OUTPUT="?" ;;
-  working) OUTPUT="●" ;;
-  idle)    OUTPUT="✓" ;;
-esac
-
-# Append "?" for background waiting, unless the active pane already shows "?"
-if [[ "$BG_WAITING" == true && "$ACTIVE_STATUS" != "waiting" ]]; then
-  OUTPUT="${OUTPUT:+$OUTPUT}?"
+# Hook waiting events are only wake-up hints; a visible prompt is the source of truth for ?.
+if [[ "$STATUS" == "waiting" ]]; then
+  STATUS=""
+fi
+if [[ -n "$CONTENT" ]] && content_is_waiting "$CONTENT"; then
+  STATUS="waiting"
 fi
 
-# Color priority: yellow (needs attention) > green (done) > cyan (working)
-if [[ "$ACTIVE_STATUS" == "waiting" || "$BG_WAITING" == true ]]; then
-  set_style "fg=yellow"
-elif [[ "$ACTIVE_STATUS" == "idle" ]]; then
-  set_style "fg=green"
-elif [[ "$ACTIVE_STATUS" == "working" ]]; then
-  set_style "fg=cyan"
-else
-  unset_style
+if [[ -z "$STATUS" ]]; then
+  STATUS=$(fallback_status "$CONTENT")
 fi
 
-if [[ -n "$OUTPUT" ]]; then
-  echo " $OUTPUT"
+MARK=$(status_mark "$STATUS")
+if [[ -z "$MARK" ]]; then
+  set_window_style "$WIN_ID" ""
+  exit 0
 fi
+
+set_window_style "$WIN_ID" "$STATUS"
+printf '%s' "$MARK"

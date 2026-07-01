@@ -97,6 +97,9 @@ function main() {
   clone_repo "${TMUX_CONTINUUM_REPO_URL}" "${HOME}/.tmux/plugins/tmux-continuum"
 
   link "${SCRIPT_HOME}/scripts/ai-status.sh" "${BIN_LINK_PATH}/tmux-ai-status"
+  link "${SCRIPT_HOME}/scripts/ai-summary.sh" "${BIN_LINK_PATH}/tmux-ai-summary"
+  link "${SCRIPT_HOME}/scripts/ai-hook.sh" "${BIN_LINK_PATH}/tmux-ai-hook"
+  link "${SCRIPT_HOME}/scripts/install-ai-hooks.sh" "${BIN_LINK_PATH}/tmux-ai-install-hooks"
   link "${SCRIPT_HOME}/scripts/ai-resurrect.sh" "${BIN_LINK_PATH}/tmux-ai-resurrect"
 
   reload_tmux_conf
