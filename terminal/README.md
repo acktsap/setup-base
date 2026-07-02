@@ -52,7 +52,7 @@ git clone git@github.com:acktsap/setup-base.git
 ## Setup
 
 - Setup : `setup-all.sh`
-- Setup vim : `vi .` and :PluginInstall
+- Setup Neovim : `setup-all.sh` restores plugins from `neovim/config/lazy-lock.json`
 
 ## Download Terminal 
 

@@ -39,7 +39,7 @@ set nobackup             " no backup file
 set noswapfile           " no swap file
 
 " env
-set nocompatible         " Disable vi-compatibility, required for Vundle
+set nocompatible         " Modern plugin config assumes Vim defaults, not legacy vi emulation
 set visualbell           " don't beep
 set noerrorbells         " don't beep
 set confirm              " raise a confirm dislogue on unsaved changes

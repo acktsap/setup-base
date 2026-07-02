@@ -21,8 +21,6 @@ readonly NEOVIM_DARWIN_ARM64_URL="https://github.com/neovim/neovim/releases/down
 readonly NEOVIM_DARWIN_AMD64_DIR_PATH="neovim/nvim-macos-x86_64/bin/nvim"
 readonly NEOVIM_DARWIN_ARM64_DIR_PATH="neovim/nvim-macos-arm64/bin/nvim"
 
-readonly VUNDLE_VIM_REPO=https://github.com/VundleVim/Vundle.vim.git
-
 function main() {
   local ostype=$(get_os_type)
   local url=$(eval echo \$NEOVIM_${ostype}_URL)
@@ -32,11 +30,6 @@ function main() {
     extract "$TMPDIR/neovim.tar.gz" "${INSTALL_PATH}/neovim"
     local DIR_PATH=$(eval echo \$NEOVIM_${ostype}_DIR_PATH)
     link "${INSTALL_PATH}/${DIR_PATH}" "${BIN_LINK_PATH}/nvim"
-  fi
-
-  if [[ ! -d "$HOME/.vim/bundle/Vundle.vim" ]]; then
-    mkdir -p "$HOME/.vim/bundle"
-    git clone "${VUNDLE_VIM_REPO}" "$HOME/.vim/bundle/Vundle.vim"
   fi
 
   if [[ ! -d "${HOME}/.config/nvim" ]]; then
@@ -62,8 +55,8 @@ function main() {
     exit 1
   fi
 
-  # Vundle plugins
-  nvim +PluginInstall +qall
+  # init.vim bootstraps lazy.nvim; restore keeps setup aligned with the checked-in lockfile.
+  nvim --headless "+Lazy! restore" +qa
 
   if [[ ! -f "${HOME}/.ideavimrc" ]]; then
     link "${SCRIPT_HOME}/ideavimrc" "${HOME}/.ideavimrc"
