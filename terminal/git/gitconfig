@@ -18,6 +18,8 @@
   pr  = "!f() { git fetch -fu ${2:-origin} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
   pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
   amend-force-push = "!f() { echo \"Will: git add -A && git commit --amend --no-edit && git push --force-with-lease\"; read -p \"Proceed? [y/N] \" ans; [ \"$ans\" = \"y\" ] || [ \"$ans\" = \"Y\" ] || { echo \"Aborted.\"; exit 1; }; git add -A && git commit --amend --no-edit && git push --force-with-lease; }; f"
+  # prune worktrees whose upstream branch is gone (remote deleted); removes clean worktree + its branch, skips dirty
+  wt-gone = "!f() { git fetch --prune >/dev/null 2>&1; gone=$(git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads | awk '$2==\"[gone]\"{print $1}'); [ -z \"$gone\" ] && { echo 'no worktree with gone upstream'; return 0; }; git worktree list --porcelain | awk '/^worktree /{w=$2} /^branch /{sub(\"refs/heads/\",\"\",$2); print w\" \"$2}' | while read -r p b; do echo \"$gone\" | grep -qxF \"$b\" && { echo \"remove $p ($b)\"; git worktree remove \"$p\" && git branch -D \"$b\"; }; done; git worktree prune; }; f"
 
 # you have to keep it manually for each repository
 # git config --local user.name "${USER_NAME}"
