@@ -22,7 +22,13 @@ git:
   pagers:
     - colorArg: always
       # syntax-theme=ansi : color code with the terminal (Ghostty) palette, not a fixed theme.
-      pager: delta --dark --syntax-theme=ansi --paging=never
+      # tmux.conf enables truecolor for Ghostty, so keep added-line backgrounds subtle.
+      pager: >-
+        delta --dark --syntax-theme=ansi
+        --plus-style='syntax "#003900"'
+        --plus-emph-style='syntax "#004400"'
+        --plus-empty-line-marker-style='normal "#003900"'
+        --paging=never
 
 keybinding:
   universal:
