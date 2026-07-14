@@ -35,7 +35,14 @@ content_is_claude_waiting() {
   local content="$1"
   local tail_lines
   tail_lines=$(printf '%s\n' "$content" | grep -v '^[[:space:]]*$' | tail -8 || true)
-  grep -qiE 'permission_prompt|Enter to select.*Esc to cancel' <<< "$tail_lines"
+  if grep -qiE 'permission_prompt|Enter to select.*Esc to cancel' <<< "$tail_lines"; then
+    return 0
+  fi
+
+  grep -qiE 'Do you want to proceed\?' <<< "$tail_lines" || return 1
+  grep -qiE 'Esc to cancel' <<< "$tail_lines" || return 1
+  grep -qE '^[^[:alnum:]]*[0-9]+\.[[:space:]]*Yes([[:space:]]|$)' <<< "$tail_lines" || return 1
+  grep -qE '^[^[:alnum:]]*[0-9]+\.[[:space:]]*No([[:space:]]|$)' <<< "$tail_lines"
 }
 
 content_is_waiting() {
