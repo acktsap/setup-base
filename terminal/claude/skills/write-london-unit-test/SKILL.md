@@ -83,7 +83,7 @@ Group related test methods under a nested class when a single class has many beh
 
 ## Test Data
 
-Use a test data generator (Fixture Monkey, AutoFixture, faker). Only constrain fields relevant to the test — randomize everything else. Assert against generated values, not hardcoded ones.
+Use a test data generator (Fixture Monkey, AutoFixture, faker). Only constrain fields relevant to the test — randomize everything else. Assert against generated values, not hardcoded ones — that is, derive the *expected* side from the generated inputs instead of pinning literals. This does **not** mean asserting the whole value: assert the property that expresses the contract (a size, a key's presence, a single field), and compute its expected form from the generated data. A coarser assertion (e.g. `hasSameSizeAs(input)`) is fine when that property is the contract; do not add finer value checks the contract does not require, especially when they would couple the test to an implementation detail (rounding, truncation, formatting).
 
 Mock return values must also be randomized (UUID, Fixture Monkey, etc.). Extract all values into named variables before mock setup — never inline values inside `given().willReturn()` or `willThrow()`.
 
