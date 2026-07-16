@@ -8,6 +8,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, opts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
     vim.keymap.set('n', '<F2>', vim.lsp.buf.hover, opts)
     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
@@ -30,13 +31,17 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 -- Shared capabilities (nvim-cmp integration)
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+capabilities = vim.tbl_deep_extend(
+  'force',
+  capabilities,
+  require('lsp-file-operations').default_capabilities()
+)
 
 -- LSP servers (vim.lsp.config + vim.lsp.enable, neovim 0.11+ native API)
 -- server name -> binary name
 local servers = {
   clangd = 'clangd',
   gopls = 'gopls',
-  jdtls = 'jdtls',
   bashls = 'bash-language-server',
 }
 local enabled = {}

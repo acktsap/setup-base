@@ -19,9 +19,10 @@ execute 'source ' . s:config_dir . '/plugin.vim'
 " load completion & LSP (lua)
 lua require('lsp')
 lua require('completion')
+lua require('navigation')
+lua require('java')
 
 " load per extentions
-au BufNewFile,BufRead *.java execute 'source ' . s:config_dir . '/java.vim'
 au BufNewFile,BufRead *.c execute 'source ' . s:config_dir . '/c.vim'
 au BufNewFile,BufRead *.cpp execute 'source ' . s:config_dir . '/cpp.vim'
 au BufNewFile,BufRead *.go execute 'source ' . s:config_dir . '/go.vim'

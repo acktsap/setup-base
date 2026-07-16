@@ -57,6 +57,7 @@ function main() {
 
   # init.vim bootstraps lazy.nvim; restore keeps setup aligned with the checked-in lockfile.
   nvim --headless "+Lazy! restore" +qa
+  nvim --headless "+MasonInstall java-debug-adapter java-test" +qa
 
   if [[ ! -f "${HOME}/.ideavimrc" ]]; then
     link "${SCRIPT_HOME}/ideavimrc" "${HOME}/.ideavimrc"

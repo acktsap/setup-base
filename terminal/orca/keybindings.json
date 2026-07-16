@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "keybindings": {},
+  "platforms": {
+    "darwin": {
+      "worktree.navigateUp": ["Mod+O"],
+      "worktree.navigateDown": ["Mod+I"],
+      "workspace.delete": ["Mod+Shift+W"],
+      "sidebar.right.toggle": [],
+      "sidebar.explorer.toggle": ["Mod+E"],
+      "voice.dictation": []
+    },
+    "linux": {},
+    "win32": {}
+  }
+}
