@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "keybindings": {},
+  "platforms": {
+    "darwin": {
+      "tab.previousAllTypes": ["Mod+H", "Mod+O"],
+      "tab.nextAllTypes": ["Mod+L", "Mod+I"],
+      "tab.rename": [],
+      "browser.reload": [],
+      "browser.focusAddressBar": [],
+      "worktree.palette": [],
+      "worktree.navigateUp": ["Mod+K"],
+      "worktree.navigateDown": ["Mod+J"],
+      "workspace.rename": ["Mod+Alt+R"],
+      "workspace.delete": ["Mod+Shift+W"],
+      "sidebar.right.toggle": ["Mod+R"],
+      "sidebar.explorer.toggle": ["Mod+Shift+E"],
+      "voice.dictation": []
+    },
+    "linux": {},
+    "win32": {}
+  }
+}
