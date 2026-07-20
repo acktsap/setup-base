@@ -10,6 +10,9 @@ clipboard-paste-protection = false
 # Treat Option key as Alt so tmux can detect Meta bindings
 macos-option-as-alt = true
 
+# Match IntelliJ's default editor font when the font is installed locally.
+font-family = JetBrains Mono
+
 # Send Cmd shortcuts to tmux as Meta/Alt.
 keybind = super+h=esc:h
 keybind = super+j=esc:j
@@ -42,9 +45,9 @@ keybind = super+]=text:\x1b[9002u
 keybind = super+p=text:\x1b[9003u
 keybind = super+n=esc:n
 
-# background: default #282c34; slightly lifted for readability
-background = #303641
-foreground = #e8edf2
+# Keep terminal chrome close to the local IntelliJ Darcula Neovim scheme.
+background = #2b2b2b
+foreground = #a9b7c6
 # cursor-color, cursor-text, selection-foreground, selection-background
 # are unset by default (cursor follows fg/bg, selection is inverted)
 palette = 0=#1d1f21

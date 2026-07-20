@@ -20,6 +20,7 @@ readonly NEOVIM_DARWIN_ARM64_URL="https://github.com/neovim/neovim/releases/down
 
 readonly NEOVIM_DARWIN_AMD64_DIR_PATH="neovim/nvim-macos-x86_64/bin/nvim"
 readonly NEOVIM_DARWIN_ARM64_DIR_PATH="neovim/nvim-macos-arm64/bin/nvim"
+readonly LOMBOK_URL="https://projectlombok.org/downloads/lombok.jar"
 
 function main() {
   local ostype=$(get_os_type)
@@ -35,6 +36,12 @@ function main() {
   if [[ ! -d "${HOME}/.config/nvim" ]]; then
     mkdir -p "${HOME}/.config" > /dev/null 2>&1
     link "${SCRIPT_HOME}/config" "${HOME}/.config/nvim"
+  fi
+
+  local lombok_jar="${HOME}/.local/share/nvim/java/lombok.jar"
+  if [[ ! -f "${lombok_jar}" ]]; then
+    mkdir -p "$(dirname "${lombok_jar}")"
+    download "${LOMBOK_URL}" "${lombok_jar}"
   fi
 
   # LSP servers
@@ -55,8 +62,9 @@ function main() {
     exit 1
   fi
 
-  # init.vim bootstraps lazy.nvim; restore keeps setup aligned with the checked-in lockfile.
+  # LazyVim bootstraps lazy.nvim; restore keeps setup aligned with the checked-in lockfile.
   nvim --headless "+Lazy! restore" +qa
+  nvim --headless "+Lazy load mason.nvim" "+MasonInstall java-debug-adapter java-test" +qa
 
   if [[ ! -f "${HOME}/.ideavimrc" ]]; then
     link "${SCRIPT_HOME}/ideavimrc" "${HOME}/.ideavimrc"
