@@ -1,3 +1,7 @@
+## Editing
+
+- Before every edit to a file, re-read it first (even if read earlier in the turn). I edit files concurrently in an IDE, so the in-context version may be stale and the file on disk may have changed without notice. Do not rely on an earlier read or on a "file state is current" note.
+
 ## Git
 
 - Do not append any AI co-author trailer to commit messages, including `Co-Authored-By: Claude ...` or `Co-Authored-By: Codex ...`. Commit with just the subject and body, with no Claude, Codex, or other AI co-author footer.
