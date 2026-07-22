@@ -13,7 +13,7 @@
       "worktree.navigateDown": ["Mod+J"],
       "workspace.rename": ["Mod+Alt+R"],
       "workspace.delete": ["Mod+Shift+W"],
-      "sidebar.right.toggle": ["Mod+R"],
+      "sidebar.right.toggle": [],
       "sidebar.explorer.toggle": ["Mod+Shift+E"],
       "terminal.focusPreviousPane": ["Mod+H"],
       "terminal.focusNextPane": ["Mod+L"],
