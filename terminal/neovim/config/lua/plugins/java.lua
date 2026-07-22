@@ -78,6 +78,8 @@ return {
         local jdtls_dap = require("jdtls.dap")
         local map_opts = { buffer = args.buf, silent = true }
         vim.keymap.set("n", "<leader>jo", jdtls.organize_imports, vim.tbl_extend("force", map_opts, { desc = "Java Organize Imports" }))
+        vim.keymap.set("n", "<leader>rl", jdtls.extract_variable_all, vim.tbl_extend("force", map_opts, { desc = "Java Extract Variable" }))
+        vim.keymap.set("x", "<leader>rl", function() jdtls.extract_variable_all(true) end, vim.tbl_extend("force", map_opts, { desc = "Java Extract Variable" }))
         vim.keymap.set("n", "<leader>jv", jdtls.extract_variable_all, vim.tbl_extend("force", map_opts, { desc = "Java Extract Variable" }))
         vim.keymap.set("x", "<leader>jv", function() jdtls.extract_variable_all(true) end, vim.tbl_extend("force", map_opts, { desc = "Java Extract Variable" }))
         vim.keymap.set("n", "<leader>jc", jdtls.extract_constant, vim.tbl_extend("force", map_opts, { desc = "Java Extract Constant" }))

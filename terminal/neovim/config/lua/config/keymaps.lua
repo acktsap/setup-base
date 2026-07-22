@@ -9,6 +9,9 @@ vim.keymap.set("n", "<C-e>", "<cmd>Neotree toggle reveal position=left<cr>", { d
 vim.keymap.set("n", "<C-n>", function() require("config.new_file").from_explorer_or_current_buffer() end, { desc = "New File from Explorer Directory" })
 vim.keymap.set({ "n", "x" }, "<C-.>", vim.lsp.buf.code_action, { desc = "Code Action" })
 vim.keymap.set({ "n", "x" }, "<M-.>", vim.lsp.buf.code_action, { desc = "Code Action" })
+vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, { desc = "Rename Symbol" })
+vim.keymap.set({ "n", "x" }, "<leader>y", [["+y]], { desc = "Yank to Clipboard" })
+vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Yank Line to Clipboard" })
 -- Expose native path navigation in keymap discovery while keeping Vim's built-in behavior.
 vim.keymap.set("n", "gf", "gf", { desc = "Open Path Under Cursor" })
 vim.keymap.set("n", "gF", "gF", { desc = "Open Path Under Cursor at Line" })
