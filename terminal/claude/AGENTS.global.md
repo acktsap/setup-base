@@ -14,12 +14,9 @@
 
 - When writing or modifying code, treat `clarify-code-intent` as an authoring-time gate, not a cleanup pass: as you write each comment or doc, default to none and add it only if it clears the skill's cut-test: a non-obvious WHY, contract, or constraint that a cold reader cannot recover from the code. This still applies when the mechanics are obvious. Do not write comments the skill lists under "Remove."
 
-## Java Documentation
+## Java Writing
 
-- When writing or modifying Java, apply the Java documentation skills at authoring time as a default-deny gate: add Javadoc only where the skills call for it: a non-obvious boundary, invariant, contract, or constraint, including the caller-visible contract of published API, SPI, or extension-point elements, such as nullability, threading, ordering, or lifecycle. Keep each doc within that element's own responsibility.
-- Package boundaries → `java-package-info-javadoc`.
-- Public, interface, SPI, abstract types, factories, or core domain objects → `java-class-javadoc`.
-- Public, protected, interface, SPI, extension-point, or complex methods → `java-method-javadoc`.
+- Before the first edit to any `*.java` file in a turn, use the `java-writing` skill and read `references/java-style.md`; this is additive to Java/Javadoc/test skills.
 
 ## Loop
 

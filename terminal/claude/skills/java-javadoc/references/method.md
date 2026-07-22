@@ -1,9 +1,4 @@
----
-name: java-method-javadoc
-description: Write or update Java method-level Javadoc that documents caller-visible contracts, preconditions, postconditions, exceptions, externally visible side effects, and performance constraints. Use when modifying API, SPI, extension, or reused internal Java methods whose caller-visible or durable internal contract is non-obvious or not encoded by signatures, annotations, validation, or inherited documentation.
----
-
-`java-method-javadoc <method-or-file>` - document Java method contracts.
+# Method Javadoc
 
 ## Goal
 

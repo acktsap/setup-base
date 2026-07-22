@@ -1,9 +1,4 @@
----
-name: java-class-javadoc
-description: Write or update Java class-level Javadoc that documents responsibility, caller-visible boundaries, invariants, and thread-safety. Use when modifying API-facing or boundary-owning Java types, SPI and extension types, factories or coordinators that choose policy or workflow, abstract/interface contracts, or behavior-bearing core domain types whose responsibility, invariants, lifecycle, or threading are not obvious.
----
-
-`java-class-javadoc <class-or-file>` - document Java type responsibility and caller-visible constraints.
+# Class Javadoc
 
 ## Goal
 
@@ -87,10 +82,10 @@ public final class SchedulerState {
 
 - Prefer no Javadoc over low-value Javadoc; add documentation only when it clarifies a boundary, contract, invariant, lifecycle, or thread-safety constraint.
 - Document responsibility and contract, not internal implementation.
-- Stay within the type's own responsibility (SRP). Do not describe a collaborator's, downstream's, or upstream's behavior, and do not name a specific collaborator to justify this type's behavior. When a cross-boundary fact matters, state it as this type's own contract or as its requirement on others — not as a description of how the other component works.
+- Stay within the type's own responsibility. Do not describe a collaborator's, downstream's, or upstream's behavior, and do not name a specific collaborator to justify this type's behavior. When a cross-boundary fact matters, state it as this type's own contract or as its requirement on others, not as a description of how the other component works.
 
   ```java
-  // Wrong - justifies this type by describing a collaborator's behavior (leaks SRP, couples to it):
+  // Wrong - justifies this type by describing a collaborator's behavior:
   /**
    * ... Emitting an item more than once is safe because the downstream store's upsert merges
    * duplicates by key.

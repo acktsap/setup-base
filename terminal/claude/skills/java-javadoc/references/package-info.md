@@ -1,9 +1,4 @@
----
-name: java-package-info-javadoc
-description: Write or update Java package-info.java documentation that defines package responsibility, durable boundaries, optional non-responsibilities, package-wide invariants, and extension points. Use when adding, renaming, moving, or splitting packages; changing responsibility across package boundaries; or creating/updating package-info.java for API-facing or shared packages with durable ownership rules.
----
-
-`java-package-info-javadoc <package-or-directory>` - ensure meaningful Java packages have boundary documentation.
+# Package Javadoc
 
 ## Goal
 

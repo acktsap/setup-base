@@ -71,13 +71,13 @@ When a comment must reference something across a boundary, state it as this code
 
 ## Java Javadoc
 
-When the file is Java and the work touches a docstring the Comment Test says to keep or add, load the matching Javadoc skill for its placement rules and apply it, then continue:
+When the file is Java and the work touches a docstring the Comment Test says to keep or add, use `java-javadoc` for placement rules and apply it, then continue:
 
-- package-info.java or package-boundary docs -> `java-package-info-javadoc`
-- class / interface / SPI / abstract type / factory / core domain docs -> `java-class-javadoc`
-- method contract docs (public, protected, interface, SPI, or reused internal) -> `java-method-javadoc`
+- package-info.java or package-boundary docs
+- class / interface / SPI / abstract type / factory / core domain docs
+- method contract docs (public, protected, interface, SPI, or reused internal)
 
-Skip loading when only removing restatement or editing non-Java files; those skills are default-deny too, so a doc that fails the Comment Test here still gets cut.
+Skip loading when only removing restatement or editing non-Java files; `java-javadoc` is default-deny too, so a doc that fails the Comment Test here still gets cut.
 
 ## Workflow
 
