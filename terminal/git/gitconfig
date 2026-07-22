@@ -53,3 +53,18 @@
 [delta]
   navigate = true
   line-numbers = true
+  # Match Ghostty's IntelliJ Darcula palette; avoid delta's bright bundled theme.
+  syntax-theme = ansi
+  file-style = "#6897bb" bold
+  hunk-header-style = syntax bold
+  zero-style = syntax
+  minus-style = "#cf5b56" "#432f2f"
+  minus-emph-style = "#dc6a63" "#513636"
+  minus-empty-line-marker-style = normal "#432f2f"
+  plus-style = "#7fa461" "#344033"
+  plus-emph-style = "#8db46f" "#3e4c3d"
+  plus-empty-line-marker-style = normal "#344033"
+  line-numbers-left-style = "#555555"
+  line-numbers-right-style = "#555555"
+  line-numbers-minus-style = "#cf5b56"
+  line-numbers-plus-style = "#7fa461"

@@ -15,20 +15,43 @@ gui:
   showBottomLine: false
   # set to "3" if your Ghostty font is a Nerd Font (otherwise icons show as boxes).
   nerdFontsVersion: ""
+  # Match Ghostty's IntelliJ Darcula palette instead of lazygit's bright ANSI defaults.
+  theme:
+    activeBorderColor:
+      - "#6897bb"
+      - bold
+    inactiveBorderColor:
+      - "#555555"
+    searchingActiveBorderColor:
+      - "#bbb529"
+      - bold
+    optionsTextColor:
+      - "#6897bb"
+    selectedLineBgColor:
+      - "#323232"
+    inactiveViewSelectedLineBgColor:
+      - "#2b2d30"
+    cherryPickedCommitFgColor:
+      - "#9876aa"
+    cherryPickedCommitBgColor:
+      - "#3c3f41"
+    markedBaseCommitFgColor:
+      - "#ffc66d"
+    markedBaseCommitBgColor:
+      - "#3c3f41"
+    unstagedChangesColor:
+      - "#cf5b56"
+    defaultFgColor:
+      - "#a9b7c6"
 
 git:
   # render diffs through delta (installed by terminal/delta/setup.sh).
   # lazygit does its own paging, so disable delta's pager.
   pagers:
     - colorArg: always
-      # syntax-theme=ansi : color code with the terminal (Ghostty) palette, not a fixed theme.
-      # tmux.conf enables truecolor for Ghostty, so keep added-line backgrounds subtle.
+      # Delta colors come from terminal/git/gitconfig; lazygit only disables nested paging.
       pager: >-
-        delta --dark --syntax-theme=ansi
-        --plus-style='syntax "#003900"'
-        --plus-emph-style='syntax "#004400"'
-        --plus-empty-line-marker-style='normal "#003900"'
-        --paging=never
+        delta --dark --paging=never
 
 keybinding:
   universal:
