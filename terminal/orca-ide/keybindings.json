@@ -3,8 +3,8 @@
   "keybindings": {},
   "platforms": {
     "darwin": {
-      "tab.previousAllTypes": ["Mod+H", "Mod+O"],
-      "tab.nextAllTypes": ["Mod+L", "Mod+I"],
+      "tab.previousAllTypes": ["Mod+O"],
+      "tab.nextAllTypes": ["Mod+I"],
       "tab.rename": [],
       "browser.reload": [],
       "browser.focusAddressBar": [],
@@ -15,6 +15,10 @@
       "workspace.delete": ["Mod+Shift+W"],
       "sidebar.right.toggle": ["Mod+R"],
       "sidebar.explorer.toggle": ["Mod+Shift+E"],
+      "terminal.focusPreviousPane": ["Mod+H"],
+      "terminal.focusNextPane": ["Mod+L"],
+      "terminal.splitRight": ["Mod+D"],
+      "terminal.splitDown": ["Mod+Shift+D"],
       "voice.dictation": []
     },
     "linux": {},
