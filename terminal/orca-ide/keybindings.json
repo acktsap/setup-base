@@ -6,7 +6,6 @@
       "tab.previousAllTypes": ["Mod+O"],
       "tab.nextAllTypes": ["Mod+I"],
       "tab.rename": [],
-      "browser.reload": [],
       "browser.focusAddressBar": [],
       "worktree.palette": [],
       "worktree.navigateUp": ["Mod+K"],

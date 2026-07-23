@@ -22,6 +22,7 @@ const oldPath = settings.workspaceDir;
 const oldNestWorkspaces = settings.nestWorkspaces;
 const nextPath = ".worktree";
 const nextNestWorkspaces = false;
+const nextSkipCloseTerminalWithRunningProcessConfirm = false;
 const history = Array.isArray(settings.workspaceDirHistory) ? settings.workspaceDirHistory : [];
 
 if (oldPath && (oldPath !== nextPath || oldNestWorkspaces !== nextNestWorkspaces)) {
@@ -36,10 +37,12 @@ if (oldPath && (oldPath !== nextPath || oldNestWorkspaces !== nextNestWorkspaces
 if (
   settings.workspaceDir !== nextPath ||
   settings.nestWorkspaces !== nextNestWorkspaces ||
+  settings.skipCloseTerminalWithRunningProcessConfirm !== nextSkipCloseTerminalWithRunningProcessConfirm ||
   settings.workspaceDirHistory !== history
 ) {
   settings.workspaceDir = nextPath;
   settings.nestWorkspaces = nextNestWorkspaces;
+  settings.skipCloseTerminalWithRunningProcessConfirm = nextSkipCloseTerminalWithRunningProcessConfirm;
   settings.workspaceDirHistory = history;
   fs.writeFileSync(profileData, JSON.stringify(data));
 }
