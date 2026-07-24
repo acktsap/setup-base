@@ -3,25 +3,28 @@
   di = diff .
   ca = diff --cached .
   lo = log --graph --abbrev-commit --decorate --format=format:'%C(cyan)%h%C(reset) - %C(green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(yellow)%d%C(reset)' --all
+  # multi-line helpers below delegate to the git-helpers script (terminal/git/git-helpers, on PATH via setup.sh)
   # prune branch
-  pb = "!git fetch --prune && git branch -vv | awk '/: gone/ && $1!=\"+\" {b=$1; sub(/^\\*/,\"\",b); if(b!=\"\")print b}' | xargs -r git branch -D"
+  pb = "!git-helpers pb"
   # clean all local branches without current one
-  cb = "!f() { b=$(git branch -l | grep -v $(git branch --show-current)); if [ -z '$b' ]; then echo 'no branches to delete'; return 0; fi; echo ${b[*]} | tr ' ' '\n'; echo '\nRemove these branches? [y|n]'; read a; if [ $a = 'y' ]; then echo $b | xargs git branch -D; fi }; f"
+  cb = "!git-helpers cb"
   # switch using fuzzy finder
   ch = "!git switch $(git branch | fzf)"
   # print origin's default branch (main/master), falling back if origin/HEAD is unset
-  default-branch = "!git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || { git show-ref -q --verify refs/remotes/origin/main && echo main || echo master; }"
+  default-branch = "!git-helpers default-branch"
   # fetch + update the local default branch, then rebase the current branch onto it
-  rb = "!f() { git fetch --prune origin; m=$(git default-branch); c=$(git symbolic-ref --short -q HEAD); [ \"$c\" != \"$m\" ] && git fetch origin $m:$m; git rebase origin/$m; }; f"
-  may-the-force-be-with-you = "!f() { echo \"Will: git push origin --force-with-lease\"; read -p \"Proceed? [y/N] \" ans; [ \"$ans\" = \"y\" ] || [ \"$ans\" = \"Y\" ] || { echo \"Aborted.\"; exit 1; }; git push origin --force-with-lease; }; f"
+  rb = "!git-helpers rb"
+  may-the-force-be-with-you = "!git-helpers may-the-force-be-with-you"
   me = "!git config user.name 'Taeik Lim' && git config user.email 'sibera21@gmail.com'"
   cm = "!git commit -s"
   # pr (usage: 'git pr 115', 'git pr 115 origin')
-  pr  = "!f() { git fetch -fu ${2:-origin} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
-  pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
-  amend-force-push = "!f() { echo \"Will: git add -A && git commit --amend --no-edit && git push --force-with-lease\"; read -p \"Proceed? [y/N] \" ans; [ \"$ans\" = \"y\" ] || [ \"$ans\" = \"Y\" ] || { echo \"Aborted.\"; exit 1; }; git add -A && git commit --amend --no-edit && git push --force-with-lease; }; f"
+  pr  = "!git-helpers pr"
+  pr-clean = "!git-helpers pr-clean"
+  amend-force-push = "!git-helpers amend-force-push"
   # prune worktrees whose upstream branch is gone (remote deleted); removes clean worktree + its branch, skips dirty
-  wt-gone = "!f() { git fetch --prune >/dev/null 2>&1; gone=$(git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads | awk '$2==\"[gone]\"{print $1}'); [ -z \"$gone\" ] && { echo 'no worktree with gone upstream'; return 0; }; git worktree list --porcelain | awk '/^worktree /{w=$2} /^branch /{sub(\"refs/heads/\",\"\",$2); print w\" \"$2}' | while read -r p b; do echo \"$gone\" | grep -qxF \"$b\" && { echo \"remove $p ($b)\"; git worktree remove \"$p\" && git branch -D \"$b\"; }; done; git worktree prune; }; f"
+  wt-gone = "!git-helpers wt-gone"
+  # open current branch's PR in Orca IDE browser (falls back to system browser); no PR -> ask to open repo
+  open-browser = "!git-helpers open-browser"
 
 # you have to keep it manually for each repository
 # git config --local user.name "${USER_NAME}"

@@ -1,0 +1,142 @@
+#!/bin/sh
+# git helper, invoked by gitconfig aliases as `git-helpers <name> [args...]`
+# (e.g. alias `pb = "!git-helpers pb"`).
+#
+# Each subcommand is a `cmd_<name>` function. The dispatcher at the bottom maps
+# <name> to it (hyphens -> underscores), so adding a subcommand is just adding a
+# function. `git-helpers` itself is symlinked onto PATH by setup.sh.
+
+# prune branch: delete local branches whose upstream is gone
+cmd_pb() {
+  git fetch --prune && git branch -vv \
+    | awk '/: gone/ && $1!="+" {b=$1; sub(/^\*/,"",b); if(b!="")print b}' \
+    | xargs -r git branch -D
+}
+
+# clean all local branches except the current one
+cmd_cb() {
+  current=$(git branch --show-current)
+  branches=$(git branch --format='%(refname:short)' | grep -vxF "$current")
+  if [ -z "$branches" ]; then
+    echo 'no branches to delete'
+    return 0
+  fi
+  echo "$branches"
+  printf '\nRemove these branches? [y|n] '
+  read -r answer
+  if [ "$answer" = 'y' ]; then
+    echo "$branches" | xargs git branch -D
+  fi
+}
+
+# print origin's default branch (main/master), falling back if origin/HEAD is unset
+cmd_default_branch() {
+  git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null \
+    | sed 's@^refs/remotes/origin/@@' \
+    || { git show-ref -q --verify refs/remotes/origin/main && echo main || echo master; }
+}
+
+# fetch + update the local default branch, then rebase the current branch onto it
+cmd_rb() {
+  git fetch --prune origin
+  m=$(git default-branch)
+  c=$(git symbolic-ref --short -q HEAD)
+  [ "$c" != "$m" ] && git fetch origin "$m:$m"
+  git rebase "origin/$m"
+}
+
+# force-push the current branch (with lease), after confirmation
+cmd_may_the_force_be_with_you() {
+  echo "Will: git push origin --force-with-lease"
+  printf "Proceed? [y/N] "
+  read -r ans
+  [ "$ans" = "y" ] || [ "$ans" = "Y" ] || { echo "Aborted."; return 1; }
+  git push origin --force-with-lease
+}
+
+# check out a PR by number (usage: 'git pr 115', 'git pr 115 origin')
+cmd_pr() {
+  git fetch -fu "${2:-origin}" "refs/pull/$1/head:pr/$1" && git checkout "pr/$1"
+}
+
+# delete all local pr/* branches created by `git pr`
+cmd_pr_clean() {
+  git for-each-ref refs/heads/pr/* --format='%(refname)' | while read -r ref ; do
+    branch=${ref#refs/heads/}
+    git branch -D "$branch"
+  done
+}
+
+# amend all changes into the last commit and force-push (with lease), after confirmation
+cmd_amend_force_push() {
+  echo "Will: git add -A && git commit --amend --no-edit && git push --force-with-lease"
+  printf "Proceed? [y/N] "
+  read -r ans
+  [ "$ans" = "y" ] || [ "$ans" = "Y" ] || { echo "Aborted."; return 1; }
+  git add -A && git commit --amend --no-edit && git push --force-with-lease
+}
+
+# prune worktrees whose upstream branch is gone (remote deleted); removes clean worktree + its branch, skips dirty
+cmd_wt_gone() {
+  git fetch --prune >/dev/null 2>&1
+  gone=$(git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads | awk '$2=="[gone]"{print $1}')
+  [ -z "$gone" ] && { echo 'no worktree with gone upstream'; return 0; }
+  git worktree list --porcelain \
+    | awk '/^worktree /{w=$2} /^branch /{sub("refs/heads/","",$2); print w" "$2}' \
+    | while read -r p b; do
+        echo "$gone" | grep -qxF "$b" && { echo "remove $p ($b)"; git worktree remove "$p" && git branch -D "$b"; }
+      done
+  git worktree prune
+}
+
+# open $1 in Orca's built-in browser (cwd's worktree window) if available, else the system browser
+_open_url() {
+  url=$1
+  if command -v orca >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
+    wt=$(orca worktree current --json)
+    id=$(printf %s "$wt" | jq -r .result.worktree.id)
+    branch=$(printf %s "$wt" | jq -r .result.worktree.branch)
+    if [ "$id" = null ] || [ -z "$id" ]; then
+      selector="branch:$branch"
+    else
+      selector="id:$id"
+    fi
+    page=$(orca tab create --url "$url" --worktree "$selector" --json | jq -r .result.browserPageId)
+    orca tab switch --page "$page" --worktree "$selector" --focus >/dev/null 2>&1
+    echo "opened in orca: $url"
+  else
+    open "$url"
+    echo "opened in browser: $url"
+  fi
+}
+
+# open current branch's PR in a browser; no PR -> ask to open the repo
+cmd_open_browser() {
+  command -v gh >/dev/null 2>&1 || { echo "gh not found"; return 1; }
+
+  pr_url=$(gh pr view --json url -q .url 2>/dev/null)
+  if [ -n "$pr_url" ]; then
+    _open_url "$pr_url"
+    return 0
+  fi
+
+  repo_url=$(gh repo view --json url -q .url 2>/dev/null)
+  printf "No PR for this branch. Open repo (%s) in browser? [y/N] " "$repo_url"
+  read -r answer
+  case "$answer" in
+    y | Y) _open_url "$repo_url" ;;
+    *)     echo "Aborted." ;;
+  esac
+}
+
+# --- dispatch: <name> -> cmd_<name_with_underscores> ---
+name=${1:-}
+[ "$#" -gt 0 ] && shift
+fn="cmd_$(printf '%s' "$name" | tr '-' '_')"
+
+if [ "$(command -v "$fn")" = "$fn" ]; then
+  "$fn" "$@"
+else
+  echo "git-helpers: unknown subcommand '$name'" >&2
+  exit 1
+fi

@@ -18,6 +18,9 @@ function main() {
   if [[ ! -f "${HOME}/.gitconfig" ]]; then
     link "${SCRIPT_HOME}/gitconfig" "${HOME}/.gitconfig"
   fi
+
+  # git-helpers dispatcher on PATH; gitconfig aliases delegate to it as `git-helpers <name>`
+  link "${SCRIPT_HOME}/git-helpers" "${BIN_LINK_PATH}/git-helpers"
 }
 
 main "$@"
