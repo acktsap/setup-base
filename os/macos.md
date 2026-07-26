@@ -262,19 +262,23 @@ Settting
 
 ### RunCat
 
-- Monotoring tool
-- [Download](https://apps.apple.com/kr/app/runcat/id1429033973?mt=12)
+- [Download](https://apps.apple.com/kr/app/runcat-neo/id6757801838?l=en-GB&mt=12)
 - Setting
     - General
-        - Runner
-            - Uncheck All
         - Launch
-            - [X] Launch Runcat automatically at login
-    - System Info
-        - [x] Memory Performance
-        - [x] Storage Capacity
-        - [x] Battery State
-        - [x] Network Connection
+            - [X] Launch Runcat Neo automatically at login
+        - Monitoring
+        -    Update interval : 5s
+    - Runner
+        - Keep defaults
+    - Metrics
+        - Metrics Bar
+            - [ ] Show Metrics Bar
+        - System Metrics
+            - [x] Enable Memory Pressure Monitoring
+            - [x] Enable Storage Capacity Monitoring
+            - [x] Enable Battery Status Monitoring
+            - [x] Enable Network Connectivity Monitoring
 
 ### Hammerspoon
 
