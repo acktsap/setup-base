@@ -1,0 +1,6 @@
+bind generic d view-diff
+bind generic q view-close
+
+# Match the default page-down/page-up behavior of Space and - with Ctrl-f/Ctrl-b.
+bind generic <Ctrl-f> move-page-down
+bind generic <Ctrl-b> move-page-up

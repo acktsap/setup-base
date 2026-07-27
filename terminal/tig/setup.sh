@@ -33,6 +33,8 @@ function main() {
 
     link "${INSTALL_PATH}/tig/tig-2.5.3/bin/tig" "${BIN_LINK_PATH}/tig"
   fi
+
+  link "$SCRIPT_HOME/tigrc" "$HOME/.tigrc"
 }
 
 main "$@"
