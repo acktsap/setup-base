@@ -71,6 +71,7 @@ keybinding:
     return: q
     quit: <c-c>
     quit-alt1: <disabled>
+    remove: <disabled>
     # enter/ctrl+l : on a file-tree directory, toggle its collapsed state.
     # Lazygit exposes selected-directory collapse/expand as one toggle action.
     goInto: [<enter>, <c-l>]
@@ -81,6 +82,21 @@ keybinding:
     findBaseCommitForFixup: <disabled>
     openStatusFilter: <disabled>
     stashAllChanges: <disabled>
+    viewResetOptions: <disabled>
+    confirmDiscard: <disabled>
+  branches:
+    forceCheckoutBranch: <disabled>
+  commits:
+    viewResetOptions: <disabled>
+    squashDown: <disabled>
+    renameCommit: <disabled>
+    renameCommitWithEditor: <disabled>
+    squashAboveCommits: <disabled>
+    amendToCommit: <disabled>
+    pickCommit: <disabled>
+    revertCommit: <disabled>
+  stash:
+    popStash: <disabled>
   main:
     prevHunk: [<left>, h]
     nextHunk: [<right>, l]
