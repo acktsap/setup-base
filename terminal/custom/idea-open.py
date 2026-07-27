@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
+
 import argparse
 import json
-from pathlib import Path
+import os
 import re
+import shutil
+import subprocess
 import sys
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
 
 GRADLE_MARKERS = (
@@ -16,6 +20,7 @@ GRADLE_MARKERS = (
 
 INTELLIJ_PRODUCT_INFO = Path("/Applications/IntelliJ IDEA.app/Contents/Resources/product-info.json")
 JETBRAINS_CONFIG_ROOT = Path.home() / "Library/Application Support/JetBrains"
+DEFAULT_LAUNCHER = Path("/usr/local/bin/idea")
 
 
 def indent(element, level=0):
@@ -39,7 +44,7 @@ def indent(element, level=0):
 
 def parse_xml(path):
     try:
-        return ET.parse(path)
+        return ET.parse(str(path))
     except ET.ParseError as exc:
         raise SystemExit("{} is not valid XML: {}".format(path, exc))
 
@@ -132,7 +137,7 @@ def resolve_jdk_name(requested):
     available = ", ".join(dict.fromkeys(sdk["name"] for sdk in sdks)) or "none"
     for sdk in sdks:
         if sdk["name"] == requested:
-            return requested, requested, sdk["table"]
+            return requested
 
     major = requested_java_major(requested)
     if major is None:
@@ -158,8 +163,7 @@ def resolve_jdk_name(requested):
         temurin_rank = 0 if "temurin" in lower_name or "temurin" in lower_home else 1
         return (sdk["tableRank"], preferred_rank, temurin_rank, sdk["order"])
 
-    chosen = sorted(candidates, key=sort_key)[0]
-    return requested, chosen["name"], chosen["table"]
+    return sorted(candidates, key=sort_key)[0]["name"]
 
 
 def write_xml(tree, path):
@@ -257,6 +261,7 @@ def ensure_gradle_xml(path, jdk_name, has_wrapper):
         linked.append(settings)
         project_settings = linked.findall(".//GradleProjectSettings")
 
+    # delegatedBuild=false + testRunner=PLATFORM make build/test run through IntelliJ instead of Gradle.
     for settings in project_settings:
         ensure_option(settings, "delegatedBuild", "false")
         ensure_option(settings, "testRunner", "PLATFORM")
@@ -302,44 +307,67 @@ def configure_gradle_project(target, jdk_name):
     }
 
 
+def resolve_launcher(override):
+    if override:
+        launcher = Path(override).expanduser()
+    elif os.access(str(DEFAULT_LAUNCHER), os.X_OK):
+        launcher = DEFAULT_LAUNCHER
+    else:
+        found = shutil.which("idea")
+        if not found:
+            raise SystemExit(
+                "No IntelliJ launcher found. Create one from Toolbox (Settings > Tools > Shell scripts), "
+                "or pass --launcher."
+            )
+        launcher = Path(found)
+
+    if not os.access(str(launcher), os.X_OK):
+        raise SystemExit("{} is not executable".format(launcher))
+    return launcher
+
+
 def main():
-    parser = argparse.ArgumentParser(description="Configure IntelliJ project-local Gradle and JDK settings.")
-    parser.add_argument("target_path")
-    parser.add_argument("jdk_name", nargs="?", default="jdk21")
-    parser.add_argument("--phase", choices=("prepare", "finalize", "apply"), default="prepare")
-    parser.add_argument("--wait-seconds", type=int, default=120)
+    parser = argparse.ArgumentParser(
+        prog="idea-open",
+        description="Open a directory in IntelliJ IDEA, applying project-local Gradle runner and JDK settings first.",
+        epilog=(
+            "Whether IntelliJ reuses the current window is a global IDE setting, not a project one: "
+            "confirmOpenNewProject2 in ide.general.xml (0 = new window, 1 = this window, -1 = ask)."
+        ),
+    )
+    parser.add_argument("target_path", nargs="?", default=".", help="Directory to open. Default: current directory.")
+    parser.add_argument("jdk_name", nargs="?", default="jdk21", help="IntelliJ SDK name or Java version. Default: jdk21.")
+    parser.add_argument("-n", "--no-open", action="store_true", help="Apply settings without launching IntelliJ.")
+    parser.add_argument("--launcher", help="IntelliJ launcher path. Default: /usr/local/bin/idea, then PATH.")
     args = parser.parse_args()
 
     target = Path(args.target_path).expanduser().resolve()
     if not target.is_dir():
         raise SystemExit("{} is not a directory".format(target))
 
-    gradle_project = any((target / marker).is_file() for marker in GRADLE_MARKERS)
-    if gradle_project:
-        requested_jdk_name, resolved_jdk_name, sdk_table = resolve_jdk_name(args.jdk_name)
+    launcher = None
+    if not args.no_open:
+        launcher = resolve_launcher(args.launcher)
+
+    print("target   : {}".format(target))
+
+    if any((target / marker).is_file() for marker in GRADLE_MARKERS):
+        jdk_name = resolve_jdk_name(args.jdk_name)
+        result = configure_gradle_project(target, jdk_name)
+        if jdk_name == args.jdk_name:
+            print("jdk      : {}".format(jdk_name))
+        else:
+            print("jdk      : {} (requested {})".format(jdk_name, args.jdk_name))
+        print("gradle   : delegatedBuild=false, testRunner=PLATFORM, gradleJvm={}".format(jdk_name))
+        print("settings : .idea/gradle.xml {}, .idea/misc.xml {}".format(result["gradleXml"], result["miscXml"]))
     else:
-        requested_jdk_name, resolved_jdk_name, sdk_table = args.jdk_name, args.jdk_name, None
+        print("settings : skipped, not a Gradle project")
 
-    result = {
-        "targetPath": str(target),
-        "requestedJdkName": requested_jdk_name,
-        "jdkName": resolved_jdk_name,
-        "sdkTable": sdk_table,
-        "gradleProject": gradle_project,
-        "gradleXml": "skipped",
-        "miscXml": "skipped",
-        "phase": args.phase,
-        "preOpenSettingsApplied": False,
-        "settingsApplied": False,
-    }
+    if launcher is None:
+        return 0
 
-    if gradle_project:
-        result.update(configure_gradle_project(target, resolved_jdk_name))
-        result["settingsApplied"] = True
-        result["preOpenSettingsApplied"] = args.phase == "prepare"
-
-    print(json.dumps(result, ensure_ascii=True, sort_keys=True))
-    return 0
+    print("opening  : {}".format(launcher))
+    return subprocess.run([str(launcher), str(target)]).returncode
 
 
 if __name__ == "__main__":
