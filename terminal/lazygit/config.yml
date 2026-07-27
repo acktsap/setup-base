@@ -5,7 +5,7 @@ quitOnTopLevelReturn: true
 
 gui:
   # bigger jump per main-panel scroll keypress (default 2 lines).
-  scrollHeight: 8
+  scrollHeight: 16
   # narrow the left side panels (1-4) so the main diff panel gets more width.
   # default 0.3333; lower = narrower side panels.
   sidePanelWidth: 0.2
@@ -55,12 +55,17 @@ git:
 
 keybinding:
   universal:
-    # ctrl+j / ctrl+k : move selection within the side panels (1-5). arrows still work.
-    prevItem-alt: <c-k>
-    nextItem-alt: <c-j>
-    # j / k : scroll the main (diff) panel while staying on the list.
-    scrollUpMain: k
-    scrollDownMain: j
+    # j / k : move selection within the side panels (1-5). arrows still work.
+    prevItem-alt: k
+    nextItem-alt: j
+    # ctrl+k/ctrl+j and ctrl+b/ctrl+f : scroll the main (diff) panel while staying on the list.
+    scrollUpMain: [<c-k>, <c-b>]
+    scrollDownMain: [<c-j>, <c-f>]
+    # s : deliberate select/stage; keep space inert in the files panel.
+    select: s
+    # h / l : move focus between side panels and the main panel.
+    prevBlock-alt: h
+    nextBlock-alt: l
     # q : go back one level; at the root view it quits (quitOnTopLevelReturn).
     # esc no longer goes back — q replaces it. real quit is ctrl+c.
     return: q
@@ -72,3 +77,10 @@ keybinding:
     # screen mode (enlarge/shrink focused panel) on shift-free keys instead of +/_.
     nextScreenMode: ;
     prevScreenMode: \
+  files:
+    findBaseCommitForFixup: <disabled>
+    openStatusFilter: <disabled>
+    stashAllChanges: <disabled>
+  main:
+    prevHunk: [<left>, h]
+    nextHunk: [<right>, l]
