@@ -16,6 +16,25 @@ Orca is an Electron IDE; its `orca` CLI opens built-in browser tabs. Do not use 
 
 Run only the allowed commands as separate tool calls. Do not wrap them in shell scripts, variable assignments, command substitutions, pipes, `jq`, `echo`, or output redirection; those extra shell operations fall outside the skill's allowlist and trigger permission prompts. Read JSON from each command's output and copy the needed value into the next command.
 
+#### Codex
+
+Codex does not interpret the `allowed-tools` frontmatter. Its sandbox blocks access to Orca's
+daemon socket and token under `~/Library/Application Support/orca`, and may block internal GitHub
+network access. Run every `/usr/local/bin/orca` and `gh` command in this skill with
+`sandbox_permissions: "require_escalated"` from the first attempt. Set `justification` and use a
+stable, subcommand-specific `prefix_rule`, such as:
+
+```text
+["/usr/local/bin/orca", "worktree", "current"]
+["/usr/local/bin/orca", "tab", "create"]
+["/usr/local/bin/orca", "tab", "switch"]
+["/usr/local/bin/orca", "tab", "current"]
+["gh", "pr", "view"]
+["gh", "repo", "view"]
+```
+
+Do not first run these commands in the default sandbox.
+
 **Each git worktree has its own browser window.** A worktree (e.g. `.worktree/NELO-1234`) has a browser separate from the main workspace window. During a `do-jira-task` / worktree flow the shell cwd is inside that worktree, so **default to the cwd's worktree, not the main workspace.** Only target another window when the user explicitly asks for it.
 
 **Do not rely on the `current`/`active` selector for `tab create` — it is unreliable and has placed tabs in the wrong window.** Resolve the cwd's worktree explicitly first and target it by `id:`, using `branch:` only if the worktree id is missing.
