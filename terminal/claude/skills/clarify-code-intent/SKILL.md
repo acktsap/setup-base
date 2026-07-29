@@ -37,9 +37,15 @@ This misfires hardest right after an investigation, when findings feel hard-won 
 
 Clauses that survive are usually about code that is *absent* (why a check is not there), a deliberate choice among alternatives that the surviving branch cannot show, or a constraint enforced somewhere the reader has no reason to open.
 
+### In a test, the name and body are the documentation
+
+A test's name states the scenario and the expected outcome, and its body shows the setup. Prose retelling that scenario is restatement even when it rewords it or adds motivation: `shouldReturnZeroWhenDisabled` needs no comment explaining that disabling yields zero, nor why that matters.
+
+Comment a test only for what neither the name nor the body can carry — a ticket or spec that fixed an expected value, or why the test is shaped oddly (a sleep, an ordering dependency, a skip condition). Whether the scenario is even reachable belongs in the contract the test pins, not in the test.
+
 ## Stay within the documented code's own responsibility
 
-When a comment must reference something across a boundary, state it as this code's own contract or its requirement on others — never as a description of how a collaborator, downstream, framework, or library behaves. Describing another component's behavior couples the doc to it and usually restates what the reader can find at that component.
+Applies to test code as much as production code. When a comment must reference something across a boundary, state it as this code's own contract or its requirement on others — never as a description of how a collaborator, downstream, framework, or library behaves. Describing another component's behavior couples the doc to it and usually restates what the reader can find at that component.
 
 - Wrong: `// safe because the downstream store's upsert merges duplicates by key`
 - Right: `// may emit an item more than once after a restart; consumers must be idempotent`
