@@ -55,6 +55,7 @@ return {
           end,
           ["<C-h>"] = "close_node",
           ["<C-l>"] = "open",
+          ["H"] = "toggle_hidden",
           ["P"] = { "toggle_preview", config = { use_float = false } },
         },
       },
