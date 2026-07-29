@@ -28,17 +28,30 @@ If a skipped type has a non-obvious boundary, invariant, normalization or unit r
 
 ## Required Content
 
-For documented types, include at least one section that justifies the Javadoc:
+For documented types, include at least one fact that justifies the Javadoc:
 
-- `Responsibility`: the role the type owns, when the type owns behavior or a boundary.
-- `Invariant`: strong state constraints, system-wide assumptions, or value-object facts agents are likely to break.
+- The responsibility the type owns, when it owns behavior or a boundary.
+- A strong invariant, system-wide assumption, or value-object fact agents are likely to break.
 
-Add optional sections only when they matter:
+Use labeled sections only when two or more distinct concerns need separation. A Javadoc with only
+one responsibility or invariant should state it directly without a `Responsibility:` or `Invariant:`
+label.
+
+Add optional labeled sections only when they matter:
 
 - `Non-responsibilities`: roles the type does not own when ownership is likely to be confused.
 - `Thread-safety`: only for concurrent or shared objects.
 
 ## Template
+
+Single-responsibility example:
+
+```java
+/**
+ * Translates validated YAML objects into runtime configurations.
+ */
+public final class ConfigMapper {
+```
 
 Boundary example with optional exclusions:
 
@@ -59,7 +72,6 @@ Value object invariant example:
 
 ```java
 /**
- * Invariant:
  * Amount is stored in normalized USD minor units.
  */
 public record MoneyAmount(long cents) {
@@ -97,7 +109,7 @@ public final class SchedulerState {
    * Consumers must therefore be idempotent.
    */
   ```
-- Write the minimum useful Javadoc; responsibility is mandatory for behavior or boundary owners, invariant may be primary for invariant-only value types, and exclusions are optional.
+- Write the minimum useful Javadoc; responsibility is mandatory for behavior or boundary owners, invariant may be primary for invariant-only value types, and exclusions are optional. Omit section labels when only one concern is documented.
 - Do not add IDE-generated or obvious Javadoc.
 - Do not write generic summaries such as "Service implementation" or "Utility class."
 - Do not rewrite useful prose Javadoc only to force the section labels in the examples.

@@ -29,6 +29,14 @@ For each clause, ask: "If I deleted this, would a reader seeing this file cold b
 
 If a comment mixes kept and removed clauses, rewrite it to preserve only the useful intent.
 
+### Discovery cost is not reader cost
+
+The test measures what the *reader* cannot recover, not what *you* had to work out. Effort spent discovering a fact — tracing a call chain, reading a sibling implementation, finding an asymmetry between two code paths — does not make that fact non-obvious at the call site. Usually it means the code did show it and you had not read it yet.
+
+This misfires hardest right after an investigation, when findings feel hard-won and get written down as comments. Before keeping such a clause, re-read the code as if the investigation had not happened, and ask what the clause still tells the reader.
+
+Clauses that survive are usually about code that is *absent* (why a check is not there), a deliberate choice among alternatives that the surviving branch cannot show, or a constraint enforced somewhere the reader has no reason to open.
+
 ## Stay within the documented code's own responsibility
 
 When a comment must reference something across a boundary, state it as this code's own contract or its requirement on others — never as a description of how a collaborator, downstream, framework, or library behaves. Describing another component's behavior couples the doc to it and usually restates what the reader can find at that component.

@@ -29,17 +29,25 @@ If a Java change moves responsibility across package boundaries, update the affe
 
 ## Required Content
 
-Every package doc that is worth writing must include:
+Every package doc that is worth writing must state what the package owns. When that responsibility
+is the only concern documented, write it directly without a `Responsibility:` label.
 
-- `Responsibility`: what this package owns.
-
-Add optional sections only when they matter:
+Use labeled sections only when optional concerns also matter:
 
 - `Non-responsibilities`: what this package explicitly does not own when ownership is likely to be confused.
 - `Invariant`: package-wide domain rules or cross-type consistency constraints.
 - `Extension points`: only when the package intentionally exposes externally extensible types.
 
 ## Template
+
+Single-responsibility example:
+
+```java
+/**
+ * Executes benchmark workloads and records their observable results.
+ */
+package com.foo.execution;
+```
 
 Boundary example with optional exclusions and extension points:
 
@@ -64,6 +72,7 @@ package com.foo.execution;
 - Document responsibility and boundaries, not implementation steps.
 - Make boundaries concrete enough to guide where future code should and should not be added.
 - Keep prose short; use bullet lists for exclusions only when exclusions clarify a likely ownership mistake.
+- Omit section labels when only one concern is documented; use them to separate multiple concerns, not as mandatory boilerplate.
 - Do not rewrite useful prose package Javadoc only to force the section labels in the examples.
 - Do not invent boundaries. Infer them from package contents, names, tests, and nearby docs; report uncertainty when evidence is insufficient.
 - Avoid generic text such as "Contains execution classes" or "Package for utilities."
