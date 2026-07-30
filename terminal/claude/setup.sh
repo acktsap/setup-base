@@ -80,6 +80,13 @@ function main() {
     fi
   fi
 
+  # Merge read-only permissions into settings.json.
+  # Non-fatal: a missing jq shouldn't abort the rest of the setup.
+  if [[ -f "${SCRIPT_HOME}/allow-read-permissions.sh" ]]; then
+    "${SCRIPT_HOME}/allow-read-permissions.sh" "${claude_home}/settings.json" \
+      || echo "-- Skipping read permissions"
+  fi
+
 }
 
 main "$@"
