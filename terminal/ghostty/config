@@ -38,12 +38,16 @@ keybind = super+digit_9=esc:9
 keybind = super+9=esc:9
 keybind = super+o=esc:o
 keybind = super+i=esc:i
+keybind = super+d=esc:d
+keybind = super+t=esc:t
 keybind = super+w=esc:w
 # Bracket shortcuts use tmux user-keys because ESC [ is also a CSI prefix.
 keybind = super+[=text:\x1b[9001u
 keybind = super+]=text:\x1b[9002u
 keybind = super+p=text:\x1b[9003u
 keybind = super+n=esc:n
+# Keep window navigation in tmux instead of Ghostty's single tab.
+keybind = ctrl+tab=text:\x1b[9004u
 
 # Keep terminal chrome close to the local IntelliJ Darcula Neovim scheme.
 background = #2b2b2b
