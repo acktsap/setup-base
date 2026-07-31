@@ -20,7 +20,7 @@ function main() {
   fi
 
   if [[ $(check_bin_installed idea-open) != "true" ]]; then
-    link "${SCRIPT_HOME}/idea-open.py" "${BIN_LINK_PATH}/idea-open"
+    link "${SCRIPT_HOME}/idea-open.sh" "${BIN_LINK_PATH}/idea-open"
   fi
 }
 
