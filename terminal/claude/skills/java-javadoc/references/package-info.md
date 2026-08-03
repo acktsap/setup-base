@@ -66,10 +66,34 @@ Boundary example with optional exclusions and extension points:
 package com.foo.execution;
 ```
 
+## Write From The Layer, Not From The Current Arrangement
+
+State what the package owns at the level of its layer. A package doc outlives the code that happens
+to sit in it today, so it must not lean on which types currently live there, which collaborator holds
+the counterpart, or which feature prompted the package.
+
+Cut a clause when it names a sibling package's role, a specific job or use case, or a placement
+decision that a later refactor would invalidate.
+
+```java
+// Wrong - pins today's arrangement and a neighbouring package's role:
+/**
+ * Identifiers and limits the execution package is written against, kept out of the transport package's wire models.
+ */
+package com.foo.domain;
+
+// Right - the layer's own responsibility:
+/**
+ * Domain model of the benchmark workloads.
+ */
+package com.foo.domain;
+```
+
 ## Writing Rules
 
 - Prefer no Javadoc over low-value Javadoc; add documentation only when it clarifies package responsibility, durable boundaries, ownership confusion, package-wide invariants, or extension points.
 - Document responsibility and boundaries, not implementation steps.
+- Describe the layer, not the current contents: no clause that a type moving in or out would falsify.
 - Make boundaries concrete enough to guide where future code should and should not be added.
 - Keep prose short; use bullet lists for exclusions only when exclusions clarify a likely ownership mistake.
 - Omit section labels when only one concern is documented; use them to separate multiple concerns, not as mandatory boilerplate.
