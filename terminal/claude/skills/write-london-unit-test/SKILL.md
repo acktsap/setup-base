@@ -11,6 +11,21 @@ description: Write unit tests following London School (mockist) TDD style.
 
 Test what the method promises (its contract), not how it works internally. If the contract does not change, the test should not break.
 
+### Test only the essential properties
+
+Write a test when a plausible mistake in the SUT would change an outcome someone depends on: a routing decision, a boundary, an aggregation, an ordering guarantee, or success turning into silent failure. One test per such decision.
+
+Skip the rest. A test that costs a screen of stubbing to pin one line of plumbing is not cheap insurance; it is a second copy of the code that has to be edited every time the first one moves.
+
+Do not write a test for:
+
+- **Pass-through and delegation with no decision** — a value handed to a collaborator unchanged, a getter, a one-line guard on a value type. If it broke, the tests of the code that uses it fail anyway.
+- **Language or framework plumbing the SUT only relays** — unwrapping an `ExecutionException` and rethrowing its cause, wrapping a checked exception, restoring an interrupt flag. The worst realistic regression is a cosmetic one, such as an extra frame in a stack trace.
+- **The absence of code** — an exception that propagates because nothing catches it. There is no branch to pin; the test only forbids a future change.
+- **Where a call happens** — that a clock is read once outside the loop, that a field is computed before another. Pin the observable outcome, not the shape of the code.
+
+When a guarantee matters operationally but is only observable end to end — a failed unit of work must surface to the caller or scheduler rather than being swallowed — cover it at the acceptance level instead of by stubbing internals.
+
 ### Mock all collaborators
 
 Only the SUT is real. Every dependency is a mock.
@@ -93,3 +108,5 @@ Mock return values must also be randomized (UUID, Fixture Monkey, etc.). Extract
 - No `test` prefix in method names.
 - No state-only assertions when the SUT delegates and nothing about that delegation surfaces in the return value. Verify the call.
 - No fixed exception message strings — couples tests to wording. Assert type only, or type plus a test-injected identifier when multiple paths share the type.
+- No test whose only subject is plumbing, delegation, or a missing branch — see "Test only the essential properties".
+- No fake dressed as a mock: a stub that runs the submitted work, replays a queue, or otherwise simulates the collaborator's behavior. Stub the return value, and if the SUT hands work to a collaborator, capture it and run it in the Then phase where the reader can see it.
