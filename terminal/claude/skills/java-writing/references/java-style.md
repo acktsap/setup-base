@@ -257,6 +257,37 @@ String load(Path path) {
 }
 ```
 
+## Submitted Tasks
+
+- Submit first, then await. Hold the futures in a plain list in submission order; key them only when a caller consumes
+  the key, and do not keep a parallel structure of labels or failures alongside them.
+- `Future.get` already surfaces the task's failure. Let it throw instead of collecting failures to rethrow later; add
+  aggregation only when the scope must not leave submitted work unobserved, such as during shutdown or when partial
+  work is not idempotent.
+- Unwrap `ExecutionException` and pass its cause to the translated exception. The wrapper itself carries no information
+  a caller can act on.
+- Handle `InterruptedException` separately from task failure: restore the interrupt status and propagate.
+- Let each task name its own subject in the exception it throws, so the submitter needs no per-task bookkeeping to
+  report where the work stopped.
+
+```java
+List<Future<?>> submitted = new ArrayList<>();
+for (Item item : items) {
+    submitted.add(executor.submit(() -> handle(item)));
+}
+
+for (Future<?> future : submitted) {
+    try {
+        future.get();
+    } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        throw new IllegalStateException("Interrupted while handling items", e);
+    } catch (ExecutionException e) {
+        throw new IllegalStateException("Failed to handle items", e.getCause());
+    }
+}
+```
+
 ## Resource Ownership
 
 - Close only resources whose ownership the current scope retains. Treat injected or borrowed resources as non-owned
