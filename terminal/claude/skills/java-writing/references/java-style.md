@@ -21,6 +21,38 @@ final class TextNormalizer {
 }
 ```
 
+## Private Helpers
+
+- Keep every method at a single level of abstraction. A helper earns its place by hiding a lower level from its caller —
+  naming a mechanism, a classification, or a policy — so the caller reads as one story rather than a mix of what and how.
+- Do not extract a helper that sits at the caller's own level. One that only forwards to another call, or whose body reads
+  the same as its name, adds indirection without raising the caller.
+- A helper that mixes levels itself cannot be named honestly. Needing a name like `doItAndAlsoThat` means the body holds
+  two steps that belong to different levels; split them or inline them.
+- Prefer restructuring the caller over adding a helper to deduplicate. Merging branches that shared a tail removes the
+  duplication and the need for the helper together.
+
+```java
+// Avoid - same level as the caller, forwarding only.
+private void writeBreadcrumbs(HttpServletResponse response, String id, Breadcrumbs breadcrumbs) {
+    String filename = "breadcrumbs-%d-%s.txt".formatted(breadcrumbs.logTime(), toFilenameSafe(id));
+    writeAttachment(response, filename, TEXT_PLAIN, breadcrumbs.content(), LABEL_BREADCRUMBS);
+}
+
+// Prefer - each helper names one lower level, so the caller stays a single story.
+try {
+    content = client.getObject(bucket, key).getObjectContent();
+    return Optional.of(decompressing(content));
+} catch (Exception e) {
+    if (isAbsent(e)) {
+        return Optional.empty();
+    }
+
+    release(content);
+    throw new ResponseException(ErrorCode.UNEXPECTED_ERROR, e, "failed to retrieve crash event detail");
+}
+```
+
 ## Declaration Order
 
 - Order declarations as constants, other static fields, instance fields, static factories, constructors, other static
@@ -211,6 +243,22 @@ Result process(Item item) {
 }
 ```
 
+## Nullable Defaults
+
+- When substituting a default for a nullable value, use an explicit `if (value == null)` reassignment
+  before use; do not fold the substitution into a ternary.
+- The read, the default substitution, any validation of the same value, and the use form one cohesive
+  block: no blank lines inside it. Separate the block from surrounding phases with blank lines
+  instead; this refines the guard-clause spacing rule for blocks about a single value.
+
+```java
+Duration timeout = config.timeout();
+if (timeout == null) {
+    timeout = DEFAULT_TIMEOUT;
+}
+this.timeout = timeout;
+```
+
 ## Vertical Spacing
 
 - Separate distinct logical phases with a blank line. Leave one after a guard clause before the next statement,
@@ -238,7 +286,8 @@ Set<String> collectNames(List<Item> items) {
 - Catch an exception only to recover, compensate, perform failure-specific cleanup or failure accounting, or enforce an
   abstraction boundary's failure contract. At that boundary, translate lower-level exceptions, preserve the original
   cause, and let exceptions already valid for the contract propagate unchanged.
-- Catch the narrowest relevant type. Catch `Exception` only at a deliberate failure-containment boundary.
+- Catch the narrowest relevant type. Catch `Exception` only at a deliberate failure-containment boundary, or to make a
+  declared single failure type total, where any other escaping exception would violate the documented contract.
 - Handle interruption and cancellation separately from ordinary failures. Propagate them when possible; if
   `InterruptedException` is caught rather than propagated, restore the interrupt status.
 - For a non-obvious caller-visible exception contract, apply `java-javadoc`: add `@throws` and describe the triggering

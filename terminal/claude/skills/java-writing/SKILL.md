@@ -16,9 +16,12 @@ description: >-
 3. For Java unit tests, use `write-london-unit-test`, then read `references/unit-test.md`.
 4. For Javadoc kept or added by the code-intent gate, use `java-javadoc`.
 5. For a class used only as a namespace for static members, read `references/utility-class.md`.
+6. For a method that calls a remote endpoint, read `references/remote-client.md`.
 
 ## References
 
 - `references/java-style.md`: common Java style rules for production and test code.
 - `references/unit-test.md`: Java unit-test data generation and property-oriented assertion style.
 - `references/utility-class.md`: design and writing rules for non-instantiable static utility classes.
+- `references/remote-client.md`: request validation, response verification, and failure contract for remote client
+  methods.
