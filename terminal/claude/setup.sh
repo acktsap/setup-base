@@ -35,6 +35,9 @@ function main() {
       mkdir -p "${claude_home}/rules"
     fi
     for item in "${SCRIPT_HOME}/rules"/*; do
+      # An empty source dir leaves the glob unexpanded, and linking the literal
+      # `*` creates a symlink named `*` pointing nowhere.
+      [[ -e "${item}" ]] || continue
       local name=$(basename "${item}")
       link "${item}" "${claude_home}/rules/${name}"
     done
@@ -47,6 +50,7 @@ function main() {
       mkdir -p "${claude_home}/skills"
     fi
     for item in "${SCRIPT_HOME}/skills"/*; do
+      [[ -e "${item}" ]] || continue
       local name=$(basename "${item}")
       link "${item}" "${claude_home}/skills/${name}"
     done
@@ -59,6 +63,7 @@ function main() {
       mkdir -p "${claude_home}/agents"
     fi
     for item in "${SCRIPT_HOME}/agents"/*; do
+      [[ -e "${item}" ]] || continue
       local name=$(basename "${item}")
       link "${item}" "${claude_home}/agents/${name}"
     done
@@ -80,13 +85,16 @@ function main() {
     fi
   fi
 
-  # Merge read-only permissions into settings.json.
-  # Non-fatal: a missing jq shouldn't abort the rest of the setup.
-  if [[ -f "${SCRIPT_HOME}/allow-read-permissions.sh" ]]; then
-    "${SCRIPT_HOME}/allow-read-permissions.sh" "${claude_home}/settings.json" \
-      || echo "-- Skipping read permissions"
-  fi
+  # Register this repo's permission list, and expose the applier at a fixed path
+  # so other repos can run it without knowing where this one is checked out.
+  mkdir -p "${claude_home}/permission-lists"
+  link "${SCRIPT_HOME}/permissions.allow.txt" "${claude_home}/permission-lists/setup-base.allow.txt"
+  link "${SCRIPT_HOME}/permissions.deny.txt" "${claude_home}/permission-lists/setup-base.deny.txt"
+  link "${SCRIPT_HOME}/apply-permissions.sh" "${claude_home}/apply-permissions.sh"
 
+  # Non-fatal: a missing jq shouldn't abort the rest of the setup.
+  "${SCRIPT_HOME}/apply-permissions.sh" "${claude_home}/settings.json" \
+    || echo "-- Skipping permissions"
 }
 
 main "$@"

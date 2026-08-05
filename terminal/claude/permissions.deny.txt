@@ -1,0 +1,53 @@
+# Host-neutral deny rules. deny beats allow, so the broad grants in
+# permissions.allow.txt keep their dangerous flags carved out here instead of
+# being narrowed into dozens of task-anchored lines.
+#
+# Flag position is not expressible, so each is matched anywhere in the command.
+# ` -f` keeps its spaces because a bare `-f` glob also matches branch names
+# like `my-feature`. Parens must be escaped as \( — Claude Code skips a rule
+# with a bare one, which for a deny rule fails open.
+#
+# Residual: a combined short flag evades these. `curl -so out` and
+# `git switch -fq` are not caught, which is why curl is not granted broadly.
+
+#
+# `-f` glob also matches branch names like `my-feature`.
+
+# `--upload-pack <cmd>` names the program git runs as the fetch server, and with
+# a local path as the remote it runs on this machine. Verified: `git fetch
+# --upload-pack="touch PWNED; git-upload-pack" .` created the file and exited 0.
+# No legitimate use here, and it is the reason git ls-remote is not granted.
+Bash(*--upload-pack*)
+
+# `git switch -f` / `--discard-changes` restores the index and working tree to
+# HEAD, throwing away uncommitted work; `--orphan` removes all tracked files;
+# `-C` / `--force-create` resets an existing branch. Residual: a combined short
+# flag such as `-fq` is not caught.
+Bash(git switch* --discard-changes*)
+Bash(git switch* --force*)
+Bash(git switch* -f)
+Bash(git switch* -f *)
+Bash(git switch* --orphan*)
+Bash(git switch* -C)
+Bash(git switch* -C *)
+
+# `rg --pre <cmd>` runs an arbitrary program per file, which is the only reason
+# ripgrep was ever in question. `--hostname-bin` is a second exec vector.
+Bash(*--pre *)
+Bash(*--pre=*)
+Bash(*--hostname-bin*)
+
+# awk's escapes are program text, not flags: system() runs a command, `print >`
+# writes a file, and `print | "cmd"` pipes into one. Scoped to awk so that
+# grepping a codebase for the string "system(" is not caught. This holds only
+# because a chain is split on `|` first, leaving the awk segment starting with
+# `awk` and any `|` inside the quoted program still in it.
+#
+# The `(` must be escaped. Written bare, Claude Code rejects the rule with
+# "Mismatched parentheses" and SKIPS it — which for a deny rule silently drops
+# the carve-out and leaves the broad allow standing. apply-permissions.sh now
+# refuses to write an entry with unescaped parentheses for that reason.
+Bash(awk*system\(*)
+Bash(awk*print >*)
+Bash(awk*printf >*)
+Bash(awk*| "*)
