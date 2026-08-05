@@ -19,10 +19,11 @@ Skip the rest. A test that costs a screen of stubbing to pin one line of plumbin
 
 Do not write a test for:
 
-- **Pass-through and delegation with no decision** — a value handed to a collaborator unchanged, a getter, a one-line guard on a value type. If it broke, the tests of the code that uses it fail anyway.
+- **Pass-through and delegation with no decision** — a value handed to a collaborator unchanged, a getter. If it broke, the tests of the code that uses it fail anyway.
 - **Language or framework plumbing the SUT only relays** — unwrapping an `ExecutionException` and rethrowing its cause, wrapping a checked exception, restoring an interrupt flag. The worst realistic regression is a cosmetic one, such as an extra frame in a stack trace.
 - **The absence of code** — an exception that propagates because nothing catches it. There is no branch to pin; the test only forbids a future change.
 - **Where a call happens** — that a clock is read once outside the loop, that a field is computed before another. Pin the observable outcome, not the shape of the code.
+- **Constructor validation on a value type** — a record, value object, or settings type whose constructor rejects a null, blank, or out-of-range argument. Each guard is a single assertion that fails loudly at construction, so nothing downstream can observe the invalid value. Test the code that *reads* the value and decides something from it instead. This holds however the type is populated, including a framework binding it from configuration.
 
 When a guarantee matters operationally but is only observable end to end — a failed unit of work must surface to the caller or scheduler rather than being swallowed — cover it at the acceptance level instead of by stubbing internals.
 
@@ -86,6 +87,26 @@ Each test follows this strict ordering:
 
 The three phases (Given/When/Then) should be visually distinguishable by a blank line between them, without requiring comments to label them. Within Given, do not insert blank lines between the four sub-steps — the blank line is reserved for the phase boundary.
 
+In Then, bind the value under assertion to a named local — conventionally `actual` — before asserting on it. This applies to the SUT's return value, a captured argument, and a helper's result alike, and it applies even when a single field is asserted. Assertions then read as property checks on one named subject rather than re-deriving it each line. Separate the binding from the assertions with a blank line, the same way the phases are separated.
+
+```java
+@Test
+void processShouldPublishResultCarryingRequestIdWhenInputIsValid() {
+    String requestId = UUID.randomUUID().toString();
+    Input input = fixtureMonkey.giveMeOne(Input.class);
+    Publisher publisher = mock();
+    Processor sut = new Processor(publisher);
+
+    sut.process(input, requestId);
+
+    ArgumentCaptor<Result> captor = ArgumentCaptor.forClass(Result.class);
+    verify(publisher).publish(captor.capture());
+    Result actual = captor.getValue();
+
+    assertThat(actual.requestId()).isEqualTo(requestId);
+}
+```
+
 ## Test Organization
 
 ### Flat structure for simple classes
@@ -109,4 +130,5 @@ Mock return values must also be randomized (UUID, Fixture Monkey, etc.). Extract
 - No state-only assertions when the SUT delegates and nothing about that delegation surfaces in the return value. Verify the call.
 - No fixed exception message strings — couples tests to wording. Assert type only, or type plus a test-injected identifier when multiple paths share the type.
 - No test whose only subject is plumbing, delegation, or a missing branch — see "Test only the essential properties".
+- No producing call inlined into an assertion — `assertThat(captor.getValue().status())`. Bind it to `actual` first, then assert on `actual`.
 - No fake dressed as a mock: a stub that runs the submitted work, replays a queue, or otherwise simulates the collaborator's behavior. Stub the return value, and if the SUT hands work to a collaborator, capture it and run it in the Then phase where the reader can see it.
