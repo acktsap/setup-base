@@ -14,6 +14,7 @@
       "workspace.delete": ["Mod+Shift+W"],
       "sidebar.right.toggle": [],
       "sidebar.explorer.toggle": ["Mod+Shift+E"],
+      "terminal.clear": [],
       "terminal.focusPreviousPane": ["Mod+H"],
       "terminal.focusNextPane": ["Mod+L"],
       "terminal.splitRight": ["Mod+D"],
