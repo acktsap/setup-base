@@ -3,48 +3,27 @@ name: orca-ide-open-browser
 description: Open a URL, the current GitHub repository, or the current PR in the Orca IDE's built-in browser tab. Triggers on "orca 브라우저로 열어줘", "orca ide 내장 브라우저", "open in orca browser", "orca-ide-open-browser".
 model: haiku
 allowed-tools:
-  - Bash(/usr/local/bin/orca tab create *)
-  - Bash(/usr/local/bin/orca tab switch *)
-  - Bash(/usr/local/bin/orca tab list *)
-  - Bash(/usr/local/bin/orca tab current *)
-  - Bash(/usr/local/bin/orca worktree current *)
-  - Bash(gh pr view *)
-  - Bash(gh repo view *)
+  - Bash(orca-ide-open-browser)
+  - Bash(orca-ide-open-browser:*)
 ---
 
-Orca is an Electron IDE; its `orca` CLI opens built-in browser tabs. Do not use `open` or redirect-HTML workarounds.
+Open the target page in the Orca IDE's built-in browser by running the `orca-ide-open-browser` command, which resolves the worktree's browser window, resolves the URL, opens the tab, focuses it, and verifies it landed in the right window.
 
-Run only the allowed commands as separate tool calls. Do not wrap them in shell scripts, variable assignments, command substitutions, pipes, `jq`, `echo`, or output redirection; those extra shell operations fall outside the skill's allowlist and trigger permission prompts. Read JSON from each command's output and copy the needed value into the next command.
+`orca-ide-open-browser` owns everything except argument selection. Do not call `orca` or `gh` directly, and do not use `Read`, `Edit`, `Write`, `jq`, `echo`, command separators, command substitutions, pipes, or output redirection; those fall outside the allowlist or duplicate what the command already does. Do not use `open` or redirect-HTML workarounds.
+
+1. Pick one argument form and run it as a single call:
+   - A URL the user supplied: `orca-ide-open-browser <url>` — passed through unchanged.
+   - "this PR" or no stated target: `orca-ide-open-browser`. On the default branch this opens the repository instead, by design.
+   - "this repository": `orca-ide-open-browser --repo`.
+2. Add `--worktree <selector>` only when the user says they are looking at a different window than the shell's cwd — for example `--worktree path:<repo-root>` for the main workspace. **Each git worktree has its own browser window**, so during a `do-jira-task` / worktree flow the default is already correct and this flag should be omitted.
+3. Report the command's output as-is: which kind of page it opened, the URL, the page id, and the worktree it landed in.
+
+Exit status 3 means the tab was created but landed in the wrong window; the command prints the active tab's raw JSON. Report that rather than claiming success.
 
 #### Codex
 
-Codex does not interpret the `allowed-tools` frontmatter. Its sandbox blocks access to Orca's
-daemon socket and token under `~/Library/Application Support/orca`, and may block internal GitHub
-network access. Run every `/usr/local/bin/orca` and `gh` command in this skill with
-`sandbox_permissions: "require_escalated"` from the first attempt. Set `justification` and use a
-stable, subcommand-specific `prefix_rule`, such as:
+Codex does not interpret the `allowed-tools` frontmatter, and its sandbox blocks Orca's daemon socket and token under `~/Library/Application Support/orca` as well as internal GitHub network access. Run the command with `sandbox_permissions: "require_escalated"` from the first attempt — do not first try it in the default sandbox. Set `justification` and use this `prefix_rule`:
 
 ```text
-["/usr/local/bin/orca", "worktree", "current"]
-["/usr/local/bin/orca", "tab", "create"]
-["/usr/local/bin/orca", "tab", "switch"]
-["/usr/local/bin/orca", "tab", "current"]
-["gh", "pr", "view"]
-["gh", "repo", "view"]
+["orca-ide-open-browser"]
 ```
-
-Do not first run these commands in the default sandbox.
-
-**Each git worktree has its own browser window.** A worktree (e.g. `.worktree/NELO-1234`) has a browser separate from the main workspace window. During a `do-jira-task` / worktree flow the shell cwd is inside that worktree, so **default to the cwd's worktree, not the main workspace.** Only target another window when the user explicitly asks for it.
-
-**Do not rely on the `current`/`active` selector for `tab create` — it is unreliable and has placed tabs in the wrong window.** Resolve the cwd's worktree explicitly first and target it by `id:`, using `branch:` only if the worktree id is missing.
-
-1. Resolve the target worktree explicitly: run `/usr/local/bin/orca worktree current --json` and read `result.worktree.id` and `result.worktree.branch`. Build the selector as `id:<result.worktree.id>` when `id` is present; otherwise use `branch:<result.worktree.branch>`. Quote the whole `--worktree` value because ids contain `::` and `/`. Use this same selector verbatim in every step below. Only override this default (e.g. `path:<repo-root>` for the main workspace) when the user says they're viewing a different window.
-2. Resolve URL:
-   - Use a URL supplied by the user unchanged.
-   - For "this repository", run `gh repo view --json url -q .url`.
-   - For "this PR", first run `gh repo view --json url,defaultBranchRef`. If `result.worktree.branch` equals `defaultBranchRef.name`, use the repository `url`; otherwise run `gh pr view --json url -q .url` and use the PR URL.
-3. Create the tab: `/usr/local/bin/orca tab create --url <URL> --worktree "<selector>" --json`. Take the page id from `result.browserPageId` — NOT the top-level `id`.
-4. Focus it: `/usr/local/bin/orca tab create` only opens the tab in the background, so switch to it with `/usr/local/bin/orca tab switch --page <browserPageId> --worktree "<selector>" --focus` — pass the SAME selector.
-5. Verify placement with `/usr/local/bin/orca tab current --worktree "<selector>" --json` and confirm `result.tab.browserPageId` matches the page you created and `result.tab.worktreeId` matches the intended worktree. `browser_no_tab` means the tab landed in the wrong window — re-create it with the correct explicit `id:` selector. (`tab list` without a `--worktree` selector reports the cwd worktree's tabs only, so an empty list there does not mean the tab failed.)
-6. Report the tab id and which window (worktree) it opened in.

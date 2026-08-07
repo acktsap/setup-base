@@ -22,6 +22,10 @@ function main() {
   if [[ $(check_bin_installed idea-open) != "true" ]]; then
     link "${SCRIPT_HOME}/idea-open.sh" "${BIN_LINK_PATH}/idea-open"
   fi
+
+  if [[ $(check_bin_installed orca-ide-open-browser) != "true" ]]; then
+    link "${SCRIPT_HOME}/orca-ide-open-browser.sh" "${BIN_LINK_PATH}/orca-ide-open-browser"
+  fi
 }
 
 main "$@"
