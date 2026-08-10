@@ -43,6 +43,24 @@ A test's name states the scenario and the expected outcome, and its body shows t
 
 Comment a test only for what neither the name nor the body can carry — a ticket or spec that fixed an expected value, or why the test is shaped oddly (a sleep, an ordering dependency, a skip condition). Whether the scenario is even reachable belongs in the contract the test pins, not in the test.
 
+### A declaration's coordinate and scope are its documentation
+
+In build scripts, dependency manifests, and configuration files, a declaration already names the thing and the
+scope it applies to. A comment announcing which feature or module needs it restates that, and rots as soon as a
+second consumer appears. What survives is a decision the declaration cannot show: a pinned or forced version, an
+exclusion, an ordering requirement among entries, or one artifact chosen over its sibling. State the constraint,
+not the consumer. Where the project already has a home for such rationale, put it there and not in both places.
+
+```
+// Cut - the scope already says who needs it:
+// needed by the integration tests
+testImplementation("org.example:fake-server")
+
+// Keep - which of two artifacts, and why, is not derivable:
+// the shaded build; the plain one resolves a second servlet container
+testImplementation("org.example:fake-server-standalone")
+```
+
 ## Stay within the documented code's own responsibility
 
 Applies to test code as much as production code. When a comment must reference something across a boundary, state it as this code's own contract or its requirement on others — never as a description of how a collaborator, downstream, framework, or library behaves. Describing another component's behavior couples the doc to it and usually restates what the reader can find at that component.
@@ -56,6 +74,7 @@ Applies to test code as much as production code. When a comment must reference s
 - Paraphrases names or types.
 - Decorative section headers (`// --- helpers ---`); keep navigational headers when they clarify large or non-obvious structure.
 - "Used by X" / "Called from Y" when usage is trivially discoverable; keep it if it documents external, framework, generated, reflective, or operational coupling.
+- Announces which consumer, feature, or test a declaration serves when its own name, coordinate, or scope shows it.
 - Task or PR narration (`// added for #1234`).
 - Commented-out code.
 - Docstrings/Javadoc/TSDoc/KDoc that only repeat the symbol name, parameters, return type, or implementation steps.

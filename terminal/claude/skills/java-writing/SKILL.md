@@ -13,10 +13,15 @@ description: >-
 1. Before editing any Java source or Java test, read `references/java-style.md`.
 2. Apply it while writing touched code; preserve unrelated code and prefer a more specific package convention.
    Do not change an established API or lifecycle contract solely for style conformance.
-3. For Java unit tests, use `write-london-unit-test`, then read `references/unit-test.md`.
-4. For Javadoc kept or added by the code-intent gate, use `java-javadoc`.
-5. For a class used only as a namespace for static members, read `references/utility-class.md`.
-6. For a method that calls a remote endpoint, read `references/remote-client.md`.
+3. Review scope: when reviewing Java changes I authored — the local working diff, a branch or PR
+   created in this session, or a PR whose author is my account — read `references/java-style.md`
+   first and treat its rules as review criteria, flagging violations in touched code as findings.
+   When reviewing another author's changes, do not raise findings from this guide: judge their
+   code by correctness and the repository's own conventions only.
+4. For Java unit tests, use `write-london-unit-test`, then read `references/unit-test.md`.
+5. For Javadoc kept or added by the code-intent gate, use `java-javadoc`.
+6. For a class used only as a namespace for static members, read `references/utility-class.md`.
+7. For a method that calls a remote endpoint, read `references/remote-client.md`.
 
 ## References
 

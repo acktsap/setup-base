@@ -7,6 +7,11 @@ Defer to more-specific package conventions for naming, ordering, formatting, and
 - Keep object responsibilities on instances even without field access. Reserve `static` for class-level behavior such as
   factories, utility operations, constant initialization, and required entry points. Do not make private helpers static
   merely because possible.
+- This holds in test code too: a fixture or assertion helper on a test class is an instance method, not
+  `private static`. Static *fields* — constants, shared immutable fixtures — stay fine everywhere.
+- The exception is a class that exists only as a namespace for static members, such as a per-module `TestSupports`.
+  There, every member is static by design; see `utility-class.md`. Put a helper that several test classes share in
+  such a holder rather than making it static on one test class.
 - Extract a collaborator or value type when a helper becomes independently reusable; do not accumulate static helpers.
 
 ```java
@@ -201,6 +206,22 @@ List<Result> results = items.stream()
     .toList();
 ```
 
+## Fluent Chains
+
+- Format multi-call fluent chains (builders, fluent configurers) vertically like stream pipelines:
+  the receiver on the first line, every call — including the terminal `.build()` — on its own line.
+  Never fold a builder chain onto one line.
+- Assign the built value to a named variable instead of nesting the chain inside another call's
+  arguments.
+
+```java
+Config config = Config.builder()
+    .host(host)
+    .port(port)
+    .build();
+Client client = new Client(config);
+```
+
 ## Loops
 
 - Use enhanced `for` for ordinary iteration, an index-based loop when the index is needed, and an explicit iterator only
@@ -362,6 +383,27 @@ final class ArchiveReader implements AutoCloseable {
         archive.close();
     }
 }
+```
+
+## Call Results
+
+- Bind a call's result to a named local before invoking anything on it, whenever the producing call does
+  more than navigate — it acquires or opens something, performs I/O, mutates state, or decides which
+  instance you get. Chaining collapses two distinct steps into one line, so the acquisition reads as
+  incidental to the use and the intermediate value is left unnamed for the debugger and stack trace.
+- Chains of plain accessors that only walk an existing structure need no local; naming each hop there adds
+  noise without separating any step.
+
+```java
+// Avoid - acquiring the range disappears into the read.
+var read = openRange().read(bytes, offset, count);
+
+// Prefer - obtain, then use.
+var range = openRange();
+var read = range.read(bytes, offset, count);
+
+// Fine - navigation only, nothing is acquired or decided.
+MessageType schema = reader.getFooter().getFileMetaData().getSchema();
 ```
 
 ## Local Variable Types

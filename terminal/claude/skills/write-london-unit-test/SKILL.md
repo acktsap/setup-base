@@ -19,7 +19,7 @@ Skip the rest. A test that costs a screen of stubbing to pin one line of plumbin
 
 Do not write a test for:
 
-- **Pass-through and delegation with no decision** — a value handed to a collaborator unchanged, a getter. If it broke, the tests of the code that uses it fail anyway.
+- **Pass-through and delegation with no decision** — a value handed to a *collaborator* unchanged, a getter. Both halves must hold: the value leaves the SUT for another object, *and* some existing test would fail if it broke. A one-line body alone does not qualify — a contract the type owns is a decision however short its implementation (`return bytes` meaning "an uncompressed page decompresses to itself" is one), and if nothing else exercises that path, nothing would catch it breaking. Check the second half rather than assuming it.
 - **Language or framework plumbing the SUT only relays** — unwrapping an `ExecutionException` and rethrowing its cause, wrapping a checked exception, restoring an interrupt flag. The worst realistic regression is a cosmetic one, such as an extra frame in a stack trace.
 - **The absence of code** — an exception that propagates because nothing catches it. There is no branch to pin; the test only forbids a future change.
 - **Where a call happens** — that a clock is read once outside the loop, that a field is computed before another. Pin the observable outcome, not the shape of the code.
