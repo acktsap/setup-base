@@ -8,6 +8,7 @@ return {
         bashls = {},
         clangd = {},
         gopls = {},
+        helm_ls = {},
         jdtls = { mason = false },
       },
     },
