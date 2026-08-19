@@ -54,6 +54,7 @@
   diffFilter = delta --color-only
 
 [delta]
+  dark = true
   navigate = true
   line-numbers = true
   # Match Ghostty's IntelliJ Darcula palette; avoid delta's bright bundled theme.
