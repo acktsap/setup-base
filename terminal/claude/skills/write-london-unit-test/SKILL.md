@@ -37,6 +37,22 @@ Assert the SUT calls the right methods with the right arguments, the right numbe
 
 If the return value already proves the interaction happened, asserting on the return value is enough — skip the redundant `verify()`.
 
+### No helper methods
+
+A unit test has no private helper methods. The test body holds the whole scenario, so a reader learns what is
+exercised without jumping, and no two tests get coupled through shared setup.
+
+Where the urge comes from, and where it goes instead:
+
+- **repeated fixture construction** — register the type on the module's shared generator holder (a `TestSupports`
+  style utility class) so plain generation yields a valid value everywhere, rather than re-deriving it per test class.
+- **a value that needs converting before the assertion** — do not convert. Assert against the shape the SUT already
+  returns: iterate the iterator it hands back instead of draining it into a list.
+- **the same few setup lines in two tests** — repeat them. Duplication between tests is cheaper than indirection.
+
+Anything genuinely shared across test classes belongs in the module's test-support holder, never as a method on one
+test class.
+
 ### No shared state between tests
 
 No shared setup or class-level fields. Each test creates its own mocks and SUT inline.
@@ -130,5 +146,6 @@ Mock return values must also be randomized (UUID, Fixture Monkey, etc.). Extract
 - No state-only assertions when the SUT delegates and nothing about that delegation surfaces in the return value. Verify the call.
 - No fixed exception message strings — couples tests to wording. Assert type only, or type plus a test-injected identifier when multiple paths share the type.
 - No test whose only subject is plumbing, delegation, or a missing branch — see "Test only the essential properties".
+- No private helper methods. Inline the scenario; put anything shared across classes in the test-support holder.
 - No producing call inlined into an assertion — `assertThat(captor.getValue().status())`. Bind it to `actual` first, then assert on `actual`.
 - No fake dressed as a mock: a stub that runs the submitted work, replays a queue, or otherwise simulates the collaborator's behavior. Stub the return value, and if the SUT hands work to a collaborator, capture it and run it in the Then phase where the reader can see it.

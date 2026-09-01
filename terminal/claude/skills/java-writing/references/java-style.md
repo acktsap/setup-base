@@ -36,6 +36,8 @@ final class TextNormalizer {
   two steps that belong to different levels; split them or inline them.
 - Prefer restructuring the caller over adding a helper to deduplicate. Merging branches that shared a tail removes the
   duplication and the need for the helper together.
+- Do not write Javadoc on private helpers. The name and signature must carry the intent; rename or extract further until
+  they do, and use at most a short `//` comment for what still cannot be expressed that way.
 
 ```java
 // Avoid - same level as the caller, forwarding only.

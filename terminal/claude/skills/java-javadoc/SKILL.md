@@ -7,15 +7,16 @@ description: Write or update Java Javadoc for package, type, and method contract
 
 ## Workflow
 
-1. Start default-deny: prefer no Javadoc over low-value Javadoc.
+1. Start default-deny: prefer no Javadoc over low-value Javadoc. Keep total Javadoc minimal.
 2. Add or update Javadoc only for a non-obvious caller-visible contract, durable boundary, responsibility, invariant, lifecycle, thread-safety, side effect, exception, ordering, or performance constraint.
-3. Load only the reference files that match the changed surface:
+3. Never write Javadoc on private methods: express intent through the method name, parameter names, and extraction into smaller well-named methods; at most use a short `//` implementation comment.
+4. Load only the reference files that match the changed surface:
    - `references/package-info.md` for package boundaries and `package-info.java`.
    - `references/class.md` for class, interface, abstract type, SPI, extension type, factory, coordinator, or core domain type docs.
    - `references/method.md` for public, protected, interface, SPI, extension-point, or reused internal method contracts.
-4. If multiple surfaces are changed, load each matching reference before editing that surface.
-5. Keep each Javadoc within the documented element's own responsibility.
-6. Do not invent contracts; derive them from code, tests, existing docs, API behavior, package structure, and caller-visible effects. Report uncertainty when evidence is insufficient.
+5. If multiple surfaces are changed, load each matching reference before editing that surface.
+6. Keep each Javadoc within the documented element's own responsibility.
+7. Do not invent contracts; derive them from code, tests, existing docs, API behavior, package structure, and caller-visible effects. Report uncertainty when evidence is insufficient.
 
 ## Shared Rules
 

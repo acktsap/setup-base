@@ -20,7 +20,9 @@ Usually skip:
 - simple framework overrides that only adapt or delegate to the conventional hook
 - simple private helper methods
 
-Write Javadoc for non-public methods only when they act as reused internal APIs or have a durable contract, such as:
+Do not write Javadoc for private methods. Express intent through the method name, parameter names, and extraction into smaller well-named methods instead. If a private method still needs explanation after renaming and extracting, use a short implementation comment (`//`), not Javadoc.
+
+Write Javadoc for other non-public methods (package-private, protected non-API) only when they act as reused internal APIs or have a durable contract, such as:
 
 - a strong precondition
 - an ordering, mutability, concurrency, or performance guarantee
@@ -88,6 +90,7 @@ Performance example:
 ## Writing Rules
 
 - Prefer no Javadoc over low-value Javadoc; add documentation only when it clarifies a boundary, contract, invariant, side effect, or performance constraint.
+- Never write Javadoc on private methods; make the name and signature carry the intent, extracting or renaming as needed.
 - Document responsibility and contract, not implementation details.
 - Help future maintainers and agents understand where changes are allowed and where they are not.
 - Keep docs minimal, but always state important boundaries and contracts.
