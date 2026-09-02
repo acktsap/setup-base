@@ -1,32 +1,24 @@
 ---
 name: java-javadoc
-description: Write or update Java Javadoc for package, type, and method contracts using default-deny documentation rules. Use when Java work touches package-info.java, public/protected/API/SPI methods, interfaces, abstract or extension types, factories, core domain types, or any non-obvious responsibility, boundary, invariant, lifecycle, threading, ordering, side effect, exception, or performance contract.
+description: Apply a naming-first Javadoc policy during Java work. Preserve existing Javadoc and package-info.java files, document interface method contracts, and otherwise add only necessary @throws tags.
 ---
 
-`java-javadoc <file-or-task>` - decide whether Java Javadoc is needed and load the narrow reference.
+`java-javadoc <file-or-task>` - keep Java intent in the code instead of adding prose documentation.
 
-## Workflow
+## Policy
 
-1. Start default-deny: prefer no Javadoc over low-value Javadoc. Keep total Javadoc minimal.
-2. Add or update Javadoc only for a non-obvious caller-visible contract, durable boundary, responsibility, invariant, lifecycle, thread-safety, side effect, exception, ordering, or performance constraint.
-3. Never write Javadoc on private methods: express intent through the method name, parameter names, and extraction into smaller well-named methods; at most use a short `//` implementation comment.
-4. Load only the reference files that match the changed surface:
-   - `references/package-info.md` for package boundaries and `package-info.java`.
-   - `references/class.md` for class, interface, abstract type, SPI, extension type, factory, coordinator, or core domain type docs.
-   - `references/method.md` for public, protected, interface, SPI, extension-point, or reused internal method contracts.
-5. If multiple surfaces are changed, load each matching reference before editing that surface.
-6. Keep each Javadoc within the documented element's own responsibility.
-7. Do not invent contracts; derive them from code, tests, existing docs, API behavior, package structure, and caller-visible effects. Report uncertainty when evidence is insufficient.
+1. Do not add type-, field-, constructor-, or non-interface-method Javadoc, except for the narrow `@throws` case below.
+2. Express intent through precise class, method, parameter, field, and local-variable names and through small, cohesive code structure.
+3. Preserve existing Javadoc. Do not remove, rewrite, expand, or normalize unrelated content.
+4. Leave every `package-info.java` file unchanged: do not create, edit, move, or delete one.
+5. Document the contract of every new or changed interface method in method Javadoc. Load `references/method.md` before editing an interface method.
+6. Outside interface methods, the only new Javadoc content allowed is an `@throws` tag for a non-obvious, caller-visible exception condition. Load `references/method.md` before adding or changing one.
+7. Do not rename an existing public or protected API solely to avoid Javadoc. Prefer expressive names for new code and rename existing symbols only when the task already permits the compatibility impact.
 
-## Shared Rules
-
-- Document responsibility and contract, not implementation steps.
-- Do not add IDE-generated or obvious Javadoc.
-- Do not rewrite useful existing prose only to force the templates in the references.
-- If a doc fails the default-deny test, remove or avoid it even when a matching reference exists.
+When a changed exception contract requires an `@throws` tag in an existing Javadoc block, change only the affected tag and preserve all surrounding documentation.
 
 ## References
 
-- `references/package-info.md`: package-level Javadoc and `package-info.java` boundaries.
-- `references/class.md`: class, interface, SPI, abstract type, factory, coordinator, and core domain type Javadoc.
-- `references/method.md`: method-level Javadoc for caller-visible or durable internal contracts.
+- `references/class.md`: naming-first rules for types and fields.
+- `references/method.md`: interface method contracts, naming-first rules for other methods, and the narrow `@throws` exception.
+- `references/package-info.md`: the do-not-touch rule for `package-info.java`.

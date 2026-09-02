@@ -1,100 +1,50 @@
-# Method Javadoc
+# Methods And Exceptions
 
-## Goal
+## Interface Methods
 
-Document the method contract: what callers must satisfy before calling and what the method guarantees after returning. Do not describe internal implementation steps.
+Write method Javadoc for every new or changed interface method. State the contract that callers and implementations must follow, including relevant preconditions, return guarantees, nullability, ordering, side effects, lifecycle constraints, or implementation obligations. Include only established contract facts; do not invent guarantees from the current implementation.
 
-## When To Write
+Do not restate what the method name, parameter names, return type, or annotations already say. Use `@param` and `@return` only when they carry contract information beyond the signature. A subinterface override needs Javadoc only when it refines the inherited contract, and an implementing class must not repeat the interface Javadoc.
 
-Consider writing or updating method-level Javadoc for API-facing methods when their caller-visible contract is non-obvious, including:
+Preserve unrelated content in existing Javadoc. When the interface method's contract changes, edit only the affected contract statements and tags.
 
-- SPI methods and extension points
-- protected APIs intended for subclassing
-- interface methods whose inherited contract is absent or insufficient
-- methods with lifecycle, validation, ordering, mutability, exception, side-effect, or performance constraints
+## Interface Method Template
 
-Usually skip:
-
-- simple getters and setters
-- methods whose contract is fully expressed by the name, signature, annotations, or inherited Javadoc
-- simple framework overrides that only adapt or delegate to the conventional hook
-- simple private helper methods
-
-Do not write Javadoc for private methods. Express intent through the method name, parameter names, and extraction into smaller well-named methods instead. If a private method still needs explanation after renaming and extracting, use a short implementation comment (`//`), not Javadoc.
-
-Write Javadoc for other non-public methods (package-private, protected non-API) only when they act as reused internal APIs or have a durable contract, such as:
-
-- a strong precondition
-- an ordering, mutability, concurrency, or performance guarantee
-- an externally visible, non-local, durable, or concurrency-visible side effect
-
-For complex algorithms without a durable caller or internal contract, prefer a short implementation comment or a refactor over method Javadoc.
-
-## Contract Content
-
-Include `Contract` when the method has caller-visible preconditions or postconditions.
-
-Preconditions describe what must be true before calling:
-
-- `request must already be validated.`
-- `caller must hold the scheduler lock.`
-
-Postconditions describe what is guaranteed after return:
-
-- `returned list preserves insertion order.`
-- `returned collection is unmodifiable.`
-
-Use `@throws` to describe when exceptions occur if those exceptions are part of the caller-visible contract. Do not only name the exception type.
-
-Add optional sections only when they matter:
-
-- `Side effects`: when external, durable, shared, or otherwise non-local state changes.
-- `Performance`: when the method is hot-path or must avoid expensive work.
-
-## Template
+Use this shape and omit every line that does not convey a non-obvious contract:
 
 ```java
 /**
- * Creates an execution plan.
+ * {Caller-visible guarantee or behavior not conveyed by the signature.}
+ * {Implementation obligation, when one exists.}
  *
- * Contract:
- * - request must already be validated.
- * - returned plan is immutable.
- *
- * @param request validated request
- * @return immutable execution plan
+ * @param input {Non-obvious caller obligation, when needed.}
+ * @return {Non-obvious return guarantee, when needed.}
+ * @throws ExceptionType {Caller-visible triggering condition, when needed.}
+ */
+ReturnType method(ParameterType input);
+```
+
+## Other Methods
+
+Do not add method- or constructor-level Javadoc to explain purpose, parameters, return values, lifecycle, side effects, ordering, performance, or other contracts. Prefer a precise method name, parameter names that identify each argument's role, and extraction into small, cohesive methods.
+
+Preserve existing Javadoc without rewriting, expanding, normalizing, or deleting it, except for an affected `@throws` tag.
+
+## The `@throws` Exception
+
+Add or update an `@throws` tag only when all of these are true:
+
+- the exception condition is caller-visible
+- the triggering condition is not obvious from the signature, standard Java convention, or a validation annotation
+- the condition is established by the code or tests rather than inferred speculatively
+
+Describe the triggering condition, not merely the exception type. Outside interface methods, do not add a summary, `@param`, `@return`, or other tags to accompany a new `@throws` tag.
+
+```java
+/**
  * @throws IllegalStateException if no planner is registered for the request type
  */
 ExecutionPlan create(Request request);
 ```
 
-Side effects example:
-
-```java
-/**
- * Side effects:
- * - Persists metrics to the database.
- * - Publishes events to Kafka.
- */
-```
-
-Performance example:
-
-```java
-/**
- * Performance:
- * Invoked on every record. Must not perform blocking I/O.
- */
-```
-
-## Writing Rules
-
-- Prefer no Javadoc over low-value Javadoc; add documentation only when it clarifies a boundary, contract, invariant, side effect, or performance constraint.
-- Never write Javadoc on private methods; make the name and signature carry the intent, extracting or renaming as needed.
-- Document responsibility and contract, not implementation details.
-- Help future maintainers and agents understand where changes are allowed and where they are not.
-- Keep docs minimal, but always state important boundaries and contracts.
-- Avoid IDE-generated Javadoc such as `@param request request` or `@return result`.
-- Do not repeat inherited Javadoc unless the method changes or sharpens the inherited contract.
-- Do not rewrite useful prose Javadoc only to force the section labels in the examples.
-- Do not invent contracts. Derive them from type signatures, validation, tests, docs, and established behavior; report uncertainty when evidence is insufficient.
+If a Javadoc block already exists, add or change only the affected `@throws` tag and leave its other content untouched. Do not document unchecked exceptions whose conditions are ordinary language or library behavior, such as null dereferences, index errors, or unsupported collection mutations.
