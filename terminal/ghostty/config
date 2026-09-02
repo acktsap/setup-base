@@ -54,28 +54,20 @@ background = #2b2b2b
 foreground = #a9b7c6
 # cursor-color, cursor-text, selection-foreground, selection-background
 # are unset by default (cursor follows fg/bg, selection is inverted)
-palette = 0=#1d1f21
-# red: default #cc6666, brightened for error visibility
-palette = 1=#e05252
-# green: default #b5bd68, brightened for tmux AI status visibility
-palette = 2=#8cc265
-# yellow: default #f0c674, brightened for visibility
-palette = 3=#e5b84c
-# blue: default #81a2be, brightened for tab visibility
-palette = 4=#5aafe6
-palette = 5=#b294bb
-# cyan: default #8abeb7, brightened for directory visibility
-palette = 6=#6edcd0
-palette = 7=#c5c8c6
-# brightblack: default #666666, brightened for comment readability
-palette = 8=#7a7a7a
-# bright red: default #d54e53, brightened to match red
-palette = 9=#f04444
-palette = 10=#b9ca4a
-palette = 11=#e7c547
-# bright blue: default #7aa6da, brightened for directory visibility
-palette = 12=#5aafe6
-palette = 13=#c397d8
-# bright cyan: default #70c0b1, brightened for directory visibility
-palette = 14=#82e2d8
-palette = 15=#eaeaea
+# Keep ANSI output consistent with terminal_color_* in the Neovim Darcula scheme.
+palette = 0=#000000
+palette = 1=#cf5b56
+palette = 2=#629755
+palette = 3=#ffc66d
+palette = 4=#6897bb
+palette = 5=#9876aa
+palette = 6=#3a8484
+palette = 7=#a9b7c6
+palette = 8=#606366
+palette = 9=#ff0000
+palette = 10=#77b767
+palette = 11=#bbb529
+palette = 12=#4f86cd
+palette = 13=#bfa1f8
+palette = 14=#46a6b2
+palette = 15=#ffffff

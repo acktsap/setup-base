@@ -62,12 +62,13 @@
   file-style = "#6897bb" bold
   hunk-header-style = syntax bold
   zero-style = syntax
-  minus-style = "#cf5b56" "#432f2f"
-  minus-emph-style = "#dc6a63" "#513636"
-  minus-empty-line-marker-style = normal "#432f2f"
-  plus-style = "#7fa461" "#344033"
-  plus-emph-style = "#8db46f" "#3e4c3d"
-  plus-empty-line-marker-style = normal "#344033"
+  # Keep line backgrounds subtle so syntax stays primary; emphasize only changed tokens.
+  minus-style = syntax "#493738"
+  minus-emph-style = syntax bold "#5e3c3d"
+  minus-empty-line-marker-style = normal "#493738"
+  plus-style = syntax "#343e34"
+  plus-emph-style = syntax bold "#394939"
+  plus-empty-line-marker-style = normal "#343e34"
   line-numbers-left-style = "#555555"
   line-numbers-right-style = "#555555"
   line-numbers-minus-style = "#cf5b56"
