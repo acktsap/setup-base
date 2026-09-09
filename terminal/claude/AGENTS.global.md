@@ -12,7 +12,7 @@
 
 ## Code Intent
 
-- When writing or modifying code, treat `clarify-code-intent` as an authoring-time gate, not a cleanup pass: as you write each comment or doc, default to none and add it only if it clears the skill's cut-test: a non-obvious WHY, contract, or constraint that a cold reader cannot recover from the code. This still applies when the mechanics are obvious. Do not write comments the skill lists under "Remove."
+- When writing or modifying code, treat `comment-writing` as an authoring-time gate, not a cleanup pass: as you write each comment or doc, default to none and add it only if it clears the skill's cut-test: a non-obvious WHY, contract, or constraint that a cold reader cannot recover from the code. This still applies when the mechanics are obvious. Do not write comments the skill lists under "Remove."
 
 ## Java Writing
 

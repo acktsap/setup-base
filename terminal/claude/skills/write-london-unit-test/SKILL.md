@@ -37,6 +37,24 @@ Assert the SUT calls the right methods with the right arguments, the right numbe
 
 If the return value already proves the interaction happened, asserting on the return value is enough — skip the redundant `verify()`.
 
+Prefer argument matchers over an `ArgumentCaptor`. When the constraint on an argument is expressible as a matcher —
+equality, a prefix, a type, a range — state it inside `verify()`; the expectation then reads on one line and a
+mismatch reports both the expected and the actual argument. Reach for a captor only when the assertion must compute
+something from the argument that no matcher expresses readably — decompressing it, parsing it, or asserting on the
+fields of an object the SUT constructed — and bind the captured value to `actual` as below.
+
+```java
+// Prefer - the constraint is a matcher.
+verify(client).listKeys(and(startsWith(prefix), endsWith(suffix)));
+
+// Captor - the assertion decodes the argument first.
+ArgumentCaptor<byte[]> captor = ArgumentCaptor.forClass(byte[].class);
+verify(client).put(anyString(), captor.capture());
+byte[] actual = captor.getValue();
+
+assertThat(decompress(actual)).isEqualTo(expected);
+```
+
 ### No helper methods
 
 A unit test has no private helper methods. The test body holds the whole scenario, so a reader learns what is
@@ -62,24 +80,6 @@ No shared setup or class-level fields. Each test creates its own mocks and SUT i
 Wire mocks via constructor. No reflection or annotation-driven injection.
 
 When the production constructor hides a collaborator (a no-arg constructor that builds its own dependency), add a package-private constructor that takes the collaborator and keep the test in the same package, so the test injects a double through it — preferred over reflection, field injection, or static mocking.
-
-```java
-public class Reader {
-    private final Parser parser;
-
-    public Reader() {            // production
-        this(new RealParser());
-    }
-
-    Reader(Parser parser) {      // package-private: test seam
-        this.parser = parser;
-    }
-}
-
-// test, in the same package:
-Parser parser = mock();
-Reader sut = new Reader(parser);
-```
 
 ## Test Method Structure
 
@@ -123,16 +123,6 @@ void processShouldPublishResultCarryingRequestIdWhenInputIsValid() {
 }
 ```
 
-## Test Organization
-
-### Flat structure for simple classes
-
-One level of test methods directly inside the test class.
-
-### Nested classes for complex scenarios
-
-Group related test methods under a nested class when a single class has many behaviors worth grouping (e.g., per-method or per-scenario).
-
 ## Test Data
 
 Use a test data generator (Fixture Monkey, AutoFixture, faker). Only constrain fields relevant to the test — randomize everything else. Assert against generated values, not hardcoded ones — that is, derive the *expected* side from the generated inputs instead of pinning literals. This does **not** mean asserting the whole value: assert the property that expresses the contract (a size, a key's presence, a single field), and compute its expected form from the generated data. A coarser assertion (e.g. `hasSameSizeAs(input)`) is fine when that property is the contract; do not add finer value checks the contract does not require, especially when they would couple the test to an implementation detail (rounding, truncation, formatting).
@@ -141,11 +131,6 @@ Mock return values must also be randomized (UUID, Fixture Monkey, etc.). Extract
 
 ## Anti-patterns
 
-- No shared setup (`@Mock`, `@InjectMocks`, `beforeEach`, `setUp`). Construct explicitly per test.
 - No `test` prefix in method names.
-- No state-only assertions when the SUT delegates and nothing about that delegation surfaces in the return value. Verify the call.
 - No fixed exception message strings — couples tests to wording. Assert type only, or type plus a test-injected identifier when multiple paths share the type.
-- No test whose only subject is plumbing, delegation, or a missing branch — see "Test only the essential properties".
-- No private helper methods. Inline the scenario; put anything shared across classes in the test-support holder.
-- No producing call inlined into an assertion — `assertThat(captor.getValue().status())`. Bind it to `actual` first, then assert on `actual`.
 - No fake dressed as a mock: a stub that runs the submitted work, replays a queue, or otherwise simulates the collaborator's behavior. Stub the return value, and if the SUT hands work to a collaborator, capture it and run it in the Then phase where the reader can see it.

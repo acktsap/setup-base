@@ -1,9 +1,9 @@
 ---
-name: clarify-code-intent
+name: comment-writing
 description: Improve comments and docs so they capture non-obvious intent, caller-visible contracts, invariants, and why-context; prune comments that only restate code. Use whenever writing or modifying code (any new or edited source file), not just on explicit cleanup requests. Triggers on "주석 정리", "주석 다듬기", "comment cleanup", "prune comments", "의도 정리", "clarify code intent", "intent comments", "contract docs", "API contract comments".
 ---
 
-`clarify-code-intent <file-or-dir>` (no path -> only the single unambiguous recently edited file)
+`comment-writing <file-or-dir>` (no path -> only the single unambiguous recently edited file)
 
 ## Goal
 
@@ -19,7 +19,7 @@ Prefer intent in this order when the requested scope allows it:
 4. Module README or ADR for cross-cutting decisions.
 5. Inline comments for local WHY that code cannot show.
 
-When the user asks for comment cleanup only, modify comments/docs only and never change behavior. If intent belongs in tests, types, or design docs outside the requested scope, report it instead of broadening the edit.
+If intent belongs in tests, types, or design docs outside the requested scope, report it instead of broadening the edit.
 
 ## Comment Test
 
@@ -40,6 +40,8 @@ Clauses that survive are usually about code that is *absent* (why a check is not
 ### In a test, the name and body are the documentation
 
 A test's name states the scenario and the expected outcome, and its body shows the setup. Prose retelling that scenario is restatement even when it rewords it or adds motivation: `shouldReturnZeroWhenDisabled` needs no comment explaining that disabling yields zero, nor why that matters.
+
+When a test class doc is required, write one sentence beginning with `Covers`. State only the class's non-obvious responsibility boundary, invariant, compatibility reason, or why it is separated from adjacent suites. Never inventory its methods, overloads, fixtures, scenario variants, or assertions; those belong in test names and bodies. If no intent survives the Comment Test, omit the doc unless the user explicitly requires one.
 
 Comment a test only for what neither the name nor the body can carry — a ticket or spec that fixed an expected value, or why the test is shaped oddly (a sleep, an ordering dependency, a skip condition). Whether the scenario is even reachable belongs in the contract the test pins, not in the test.
 
@@ -102,24 +104,11 @@ Applies to test code as much as production code. When a comment must reference s
 - License / copyright headers; files marked `@generated` or `DO NOT EDIT`.
 - Tool-tag lines and their continuations (`@param`, `@returns`, `:param name:`, `:returns:`); doctest `>>>` blocks.
 
-## Java Javadoc
-
-When the file is Java and the work touches a docstring the Comment Test says to keep or add, use `java-javadoc` for placement rules and apply it, then continue:
-
-- package-info.java or package-boundary docs
-- class / interface / SPI / abstract type / factory / core domain docs
-- method contract docs (public, protected, interface, SPI, or reused internal)
-
-Skip loading when only removing restatement or editing non-Java files; `java-javadoc` is default-deny too, so a doc that fails the Comment Test here still gets cut.
-
 ## Workflow
 
 1. Identify the user's scope: comment pruning, intent clarification, or API contract documentation.
-2. Skip generated files and files with "DO NOT EDIT".
-3. Remove comments that merely restate code.
-4. Preserve or tighten comments that explain invisible intent.
-5. Add missing comments only when the intent is local, important, supported by evidence, and cannot be represented better in code, tests, or module docs.
-6. Do not invent rationale. If the reason or contract is unclear, report the gap instead of guessing or leaving unresolved questions in code.
+2. Do not invent rationale. If the reason or contract is unclear, report the gap instead of guessing or leaving
+   unresolved questions in code.
 
 ## Example
 
@@ -138,23 +127,4 @@ becomes:
 # Auth service returns 503 during its 30s post-deploy warmup (#1421).
 for attempt in range(3):
     ...
-```
-
-Keep - the constraint is invisible from the type:
-
-```typescript
-// Use Map (not object): V8 reorders integer-like string keys ascending,
-// which corrupts insertion order for numeric IDs.
-const cache = new Map<number, Entry>();
-```
-
-Keep contract docs - the behavior is caller-visible (state this method's own contract and its
-requirement on callers, not how any collaborator behaves):
-
-```java
-/**
- * Sends each event at most once; a retryable transport failure drops the event instead of retrying.
- * Callers that require delivery must detect and resend dropped events.
- */
-void publish(Event event);
 ```

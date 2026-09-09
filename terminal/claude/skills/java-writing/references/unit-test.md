@@ -28,25 +28,19 @@ Read this after `write-london-unit-test`; it adds only Java test-data and assert
 
 ## Comments
 
-- Default to no comment on a test. The method name states the scenario and the expected outcome, and the body shows the
-  setup; a Javadoc or inline comment that retells either is restatement even when it rewords it.
-- Motivation is restatement too. Why the asserted outcome matters, what would break otherwise, and what bug the test
-  guards belong in the name, or in the contract doc of the code under test — not in prose above the test.
-- When a comment feels necessary, the usual cause is a name that stops at the action. Extend the name to carry the
-  condition and the outcome instead of adding prose.
+- Test comments follow `comment-writing`. The Java-specific part: when a comment feels necessary, the usual cause
+  is a name that stops at the action, so extend the name to carry the condition and the outcome instead.
 
-  ```java
-  // Avoid - the comment carries what the name omitted.
-  /** A zero-padded tail would decode as a silently truncated page, so a short write must not pass. */
-  @Test
-  void decompressShouldFail() {
+    ```java
+    // Avoid - the comment carries what the name omitted.
+    /** A zero-padded tail would decode as a silently truncated page, so a short write must not pass. */
+    @Test
+    void decompressShouldFail() {
 
-  // Prefer - the name carries it.
-  @Test
-  void decompressShouldFailWhenThePageDecompressesToFewerBytesThanDeclared() {
-  ```
+    // Prefer - the name carries it.
+    @Test
+    void decompressShouldFailWhenThePageDecompressesToFewerBytesThanDeclared() {
+    ```
 
-- Comment a test only for what neither the name nor the body can carry: a ticket or spec that fixed an expected literal,
-  or why the test is shaped oddly (a sleep, an ordering dependency, a skip condition, a deliberately degraded double).
-- Test support types — fixtures, builders, fakes, custom doubles — follow the production rules in `java-javadoc`, since a
-  reader meets them without a test name to explain them.
+- Test support types — fixtures, builders, fakes, custom doubles — follow the production rules in
+  `javadoc.md`, since a reader meets them without a test name to explain them.

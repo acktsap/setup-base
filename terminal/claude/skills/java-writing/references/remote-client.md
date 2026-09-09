@@ -12,7 +12,7 @@ Read this for a method that calls a remote endpoint on a caller's behalf.
 - Pass the remote representation through unchanged. Interpreting it needs context the client does not have.
 - Declare one failure type for the operation and make it total: rethrow that type unchanged so its message survives, and
   translate every other exception with the cause attached.
-- Document the limits, the ordering guarantee, and the failure condition, per `java-javadoc`. They are caller-visible
+- Document the limits, the ordering guarantee, and the failure condition, per `javadoc.md`. They are caller-visible
   contract rather than implementation detail.
 
 ```java
