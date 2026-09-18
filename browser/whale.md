@@ -14,7 +14,8 @@ Search and set
 
 - Select a search engine you want Whale to use in the address bar : Google
 - Show bookmarks bar: Check
-- Apperance -> [X] Use dark mode
+- Always enable bookmarks bar in new tab : Check
+- Appearence -> [X] Use dark mode
 - Sidebar view -> [ ] Show sidebar
 
 ## Extensions
@@ -28,5 +29,4 @@ In compatible store
         - Sepia : +35
         - Grayscale : off
 - [AdBlock — best ad blocker](https://chrome.google.com/webstore/detail/adblock-%E2%80%94-best-ad-blocker/gighmmpiobklfepjocnamgkkbiglidom?hl=en-US)
-- Better Pull Request for Github
 - [JSON Formatter](https://chrome.google.com/webstore/detail/json-formatter/bcjindcccaagfpapjjmafapmmgkkhgoa/related?hl=en)
