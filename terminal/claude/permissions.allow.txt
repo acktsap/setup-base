@@ -140,14 +140,14 @@ Bash(git fetch:*)
 Bash(git switch:*)
 
 # These anchor differently, so the lines above never match them. Never grant at
-# the `git --no-pager` or `git -C` level — that would cover push.
+# the `git --no-pager` or `git -C` level — that would cover push. `git -C * <sub> *`
+# is no safer: the leading * also swallows options at that position, so
+# `git -C /tmp -c core.pager=<cmd> log` matches and runs unprompted. No pattern
+# fixes it while the directory stays a wildcard, so `git -C` is not granted;
+# `cd` then plain `git` is the allowed route.
 Bash(git --no-pager log:*)
 Bash(git --no-pager diff:*)
 Bash(git --no-pager show:*)
-Bash(git -C * log *)
-Bash(git -C * status *)
-Bash(git -C * diff *)
-Bash(git -C * show *)
 
 # kubectl, for the NELO/n2c clusters. Bare kubectl carries apply, delete, patch,
 # and exec. Residual no prefix can exclude: --profile-output <path>.
