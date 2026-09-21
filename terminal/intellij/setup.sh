@@ -15,7 +15,7 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 . $SCRIPT_HOME/../common
 
 JETBRAINS_CONFIG_HOME="${HOME}/Library/Application Support/JetBrains"
-KEYMAP_FILE="macOS copy.xml"
+KEYMAP_FILE="acktsap_keymap.xml"
 
 #######################################
 # Turn off IntelliJ's "safe write", which saves to a temp file and renames it

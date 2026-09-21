@@ -5,7 +5,7 @@
 
 ## Keymap
 
-`keymaps/macOS copy.xml` is the keymap, linked into every JetBrains IDEA config
+`keymaps/acktsap_keymap.xml` is the keymap, linked into every JetBrains IDEA config
 directory (`~/Library/Application Support/JetBrains/{IntelliJIdea*,IdeaIC*}/keymaps`).
 Edit it in the IDE or in this repo; both sides see the same file.
 
@@ -26,5 +26,5 @@ Quit IntelliJ first; a running IDE flushes its in-memory settings on exit and
 undoes both steps (the script skips itself while the IDE is up).
 
 Every `IntelliJIdea*` / `IdeaIC*` config directory present at run time is
-covered, so rerun it after installing a new IDE version. Then pick `macOS copy`
+covered, so rerun it after installing a new IDE version. Then pick `acktsap_keymap`
 in `Settings -> Keymap` once per version.
