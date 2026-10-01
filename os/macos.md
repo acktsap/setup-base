@@ -80,14 +80,22 @@ vi ~/Library/LaunchAgents/com.user.hidutil.f18.plist
 ```shell
 launchctl load ~/Library/LaunchAgents/com.user.hidutil.f18.plist
 ```
-- Check
+- Check svc status
+```shell
+launchctl print gui/$(id -u)/com.user.hidutil.f18
+```
+- Check mapping
 ```shell
 hidutil property --get "UserKeyMapping"
+```
+```shell
 ```
 - Unload
 ```shell
 launchctl unload ~/Library/LaunchAgents/com.user.hidutil.f18.plist
 ```
+- Note
+    - Make sure that hidutils is enabled (General -> Login Items & Extensions -> App Background Activity)
 
 ## System preference
 
