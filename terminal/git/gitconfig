@@ -23,6 +23,8 @@
   amend-force-push = "!git-helpers amend-force-push"
   # prune worktrees whose upstream branch is gone (remote deleted); removes clean worktree + its branch, skips dirty
   wt-gone = "!git-helpers wt-gone"
+  # add .worktree/ to the repo-local .git/info/exclude
+  wt-exclude = "!git-helpers wt-exclude"
   # open current branch's PR in Orca IDE browser (falls back to system browser); no PR -> ask to open repo
   open-browser = "!git-helpers open-browser"
 

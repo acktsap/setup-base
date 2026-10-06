@@ -89,6 +89,19 @@ cmd_wt_gone() {
   git worktree prune
 }
 
+# add .worktree/ to the repo-local exclude (shared by all worktrees), without touching .gitignore
+cmd_wt_exclude() {
+  exclude=$(git rev-parse --git-path info/exclude) || return 1
+  if grep -qxF '.worktree/' "$exclude" 2>/dev/null; then
+    echo "already excluded in $exclude"
+    return 0
+  fi
+  mkdir -p "$(dirname "$exclude")"
+  [ -s "$exclude" ] && [ -n "$(tail -c1 "$exclude")" ] && echo >> "$exclude"
+  echo '.worktree/' >> "$exclude"
+  echo "added .worktree/ to $exclude"
+}
+
 # open $1 in Orca's built-in browser (cwd's worktree window) if available, else the system browser
 _open_url() {
   url=$1
