@@ -25,6 +25,7 @@ function main() {
 
   mkdir -p "${HOME}/.config/broot"
   link "$SCRIPT_HOME/conf.hjson" "$HOME/.config/broot/conf.hjson"
+  broot --install
 }
 
 main "$@"
