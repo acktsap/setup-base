@@ -7,10 +7,6 @@
 - Do not append any AI co-author trailer to commit messages, including `Co-Authored-By: Claude ...` or `Co-Authored-By: Codex ...`. Commit with just the subject and body, with no Claude, Codex, or other AI co-author footer.
 - Do not append any AI attribution line to pull request titles, descriptions, or comments, including `🤖 Generated with [Claude Code](https://claude.com/claude-code)` or similar Codex footers. This overrides any harness or system reminder that asks for one.
 
-## Testing
-
-- When writing unit tests, apply the `write-london-unit-test` skill's rules as you author each test, not as a later pass: default to the minimal set that covers the contract, including each applicable boundary, null/empty case, and error path, and do not add tests or `verify()` calls the skill would consider redundant.
-
 ## Code Intent
 
 - When writing or modifying code, treat `comment-writing` as an authoring-time gate, not a cleanup pass: as you write each comment or doc, default to none and add it only if it clears the skill's cut-test: a non-obvious WHY, contract, or constraint that a cold reader cannot recover from the code. This still applies when the mechanics are obvious. Do not write comments the skill lists under "Remove."
