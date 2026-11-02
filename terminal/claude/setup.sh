@@ -13,6 +13,7 @@ SCRIPT_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 
 
 . $SCRIPT_HOME/../common
+. $SCRIPT_HOME/skill-exclusions.sh
 
 function main() {
   local claude_home="${HOME}/.claude"
@@ -52,6 +53,7 @@ function main() {
     for item in "${SCRIPT_HOME}/skills"/*; do
       [[ -e "${item}" ]] || continue
       local name=$(basename "${item}")
+      is_excluded_skill "${name}" && continue
       link "${item}" "${claude_home}/skills/${name}"
     done
   fi
